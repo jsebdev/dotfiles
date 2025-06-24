@@ -1,0 +1,3 @@
+alias zed="open -a /Applications/Zed.app -n"
+alias shiftsubs="python ~/coding/shift_subs/shift_subs.py"
+
