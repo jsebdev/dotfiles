@@ -5,7 +5,7 @@ set -e
 echo "🔧 Starting dotfiles installation..."
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-BACKUP_DIR="$HOME/dotfiles_backup/$(date +%Y%m%d%H%M%S)"
+BACKUP_DIR="$HOME/dotfiles_backup/$(date +%Y-%m-%d-%H:%M:%S)"
 SHELL_NAME="$(basename "$SHELL")"
 
 # Detect active shell
