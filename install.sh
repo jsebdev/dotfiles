@@ -30,6 +30,7 @@ fi
 
 # Always link .gitconfig (shared)
  FILES_TO_LINK+=(".gitconfig")
+ FILES_TO_LINK+=(".tmux.conf")
 
 # Backup and link
 mkdir -p "$BACKUP_DIR"
@@ -51,7 +52,7 @@ for FILE in "${FILES_TO_LINK[@]}"; do
 
   if [ -f "$SOURCE" ]; then
     echo "🔗 Linking $SOURCE → $TARGET"
-    #ln -s "$SOURCE" "$TARGET"
+    ln -s "$SOURCE" "$TARGET"
   else
     echo "⚠️ Skipping missing $SOURCE"
   fi
