@@ -32,6 +32,12 @@ fi
  FILES_TO_LINK+=(".gitconfig")
  FILES_TO_LINK+=(".tmux.conf")
 
+echo ""
+echo "Files to link:"
+for FILE in "${FILES_TO_LINK[@]}"; do
+  echo " - $FILE"
+done
+
 # Backup and link
 mkdir -p "$BACKUP_DIR"
 
@@ -40,14 +46,19 @@ for FILE in "${FILES_TO_LINK[@]}"; do
   TARGET="$HOME/$BASENAME"
   SOURCE="$DOTFILES_DIR/$FILE"
 
+  echo ""
   echo "🔗 Processing $FILE"
-  echo "📂 Target basename: $BASENAME"
   echo "📂 Target path: $TARGET"
   echo "📂 Source path: $SOURCE"
 
   if [ -e "$TARGET" ] || [ -L "$TARGET" ]; then
-    echo "📦 Backing up $TARGET to $BACKUP_DIR"
-    mv "$TARGET" "$BACKUP_DIR/"
+    if [ -L "$TARGET" ] && [ "$(readlink "$TARGET")" == "$SOURCE" ]; then
+      echo "✅ $TARGET already correctly linked. Skipping backup."
+      rm "$TARGET"
+    else
+      echo "📦 Backing up $TARGET to $BACKUP_DIR"
+      mv "$TARGET" "$BACKUP_DIR/"
+    fi
   fi
 
   if [ -f "$SOURCE" ]; then
