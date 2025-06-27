@@ -5,7 +5,7 @@ set -e
 echo "🔧 Starting dotfiles installation..."
 
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
-BACKUP_DIR="$HOME/dotfiles_backup/$(date +%Y-%m-%d-%H:%M:%S)"
+BACKUP_DIR="$HOME/dotfiles_backup/$(date +%Y-%m-%d_%H-%M-%S)"
 SHELL_NAME="$(basename "$SHELL")"
 
 # Detect active shell
@@ -39,7 +39,6 @@ for FILE in "${FILES_TO_LINK[@]}"; do
 done
 
 # Backup and link
-mkdir -p "$BACKUP_DIR"
 
 for FILE in "${FILES_TO_LINK[@]}"; do
   BASENAME=$(basename "$FILE")
@@ -57,6 +56,7 @@ for FILE in "${FILES_TO_LINK[@]}"; do
       rm "$TARGET"
     else
       echo "📦 Backing up $TARGET to $BACKUP_DIR"
+      mkdir -p "$BACKUP_DIR"
       mv "$TARGET" "$BACKUP_DIR/"
     fi
   fi
