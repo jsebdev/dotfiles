@@ -1,6 +1,8 @@
 alias zed="open -a /Applications/Zed.app -n"
 alias shiftsubs="python ~/coding/shift_subs/shift_subs.py"
 
+alias mysource="source ~/.zshrc"
+
 # change directories
 ## personal
 alias cddf="cd ~/coding/dotfiles/"

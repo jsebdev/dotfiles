@@ -4,4 +4,6 @@
 	email = jsebdev@gmail.com
 [alias]
 	logad = log --oneline --graph --all --decorate
+	logadu = log --oneline --graph --all --decorate --pretty=format:'%h (%an) %s'
 	logd = log --oneline --graph --decorate
+	logdu = log --oneline --graph --decorate --pretty=format:'%h (%an) %s'
