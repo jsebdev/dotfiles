@@ -2,3 +2,6 @@
 [user]
 	name = Sebastian Caicedo
 	email = jsebdev@gmail.com
+[alias]
+	logad = log --oneline --graph --all --decorate
+	logd = log --oneline --graph --decorate
