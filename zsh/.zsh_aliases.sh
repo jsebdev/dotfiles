@@ -1,4 +1,4 @@
-[ -f ~/.aliases ] && source ~/.aliases
+load_if_exists ~/.shared_aliases.sh
 
 alias mysource="source ~/.zshrc"
 

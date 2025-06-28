@@ -8,4 +8,4 @@ alias cddf="cd ~/coding/dotfiles/"
 ## work
 alias cdsf="cd ~/coding/macheight/safefreight/repo/"
 
-
+load_if_exists ~/.m8_aliases.sh

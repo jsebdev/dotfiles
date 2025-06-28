@@ -15,13 +15,14 @@ echo "🐚 Detected shell: $SHELL_NAME"
 if [[ "$SHELL_NAME" == "zsh" ]]; then
   FILES_TO_LINK=(
     "zsh/.zshrc"
-    "zsh/.zsh_aliases"
+    "zsh/.zsh_aliases.sh"
+    "zsh/.zsh_secrets.sh"
   )
 elif [[ "$SHELL_NAME" == "bash" ]]; then
   FILES_TO_LINK=(
     "bash/.bashrc"
-    "bash/.bash_aliases"
-    "bash/.bash_profile"
+    "bash/.bash_aliases.sh"
+    "bash/.bash_profile.sh"
   )
 else
   echo "❌ Unsupported shell: $SHELL_NAME"
@@ -29,9 +30,11 @@ else
 fi
 
 # Always link .gitconfig (shared)
- FILES_TO_LINK+=(".gitconfig")
- FILES_TO_LINK+=(".tmux.conf")
- FILES_TO_LINK+=("shared/.aliases")
+FILES_TO_LINK+=("shared/.dotfiles_utils.sh")
+FILES_TO_LINK+=(".gitconfig")
+FILES_TO_LINK+=(".tmux.conf")
+FILES_TO_LINK+=("shared/.shared_aliases.sh")
+FILES_TO_LINK+=("shared/.m8_aliases.sh")
 
 echo ""
 echo "Files to link:"
@@ -66,12 +69,6 @@ for FILE in "${FILES_TO_LINK[@]}"; do
     echo "⚠️ Skipping missing $SOURCE"
   fi
 done
-
-# Optional secrets
-if [ "$SHELL_NAME" == "zsh" ] && [ ! -f "$HOME/.zsh_secrets" ]; then
-  echo "🛡️ Creating blank .zsh_secrets"
-  touch "$HOME/.zsh_secrets"
-fi
 
 echo ""
 echo "✅ Dotfiles setup complete!"

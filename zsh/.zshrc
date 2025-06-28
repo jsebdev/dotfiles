@@ -1,3 +1,5 @@
+[ -f ~/.dotfiles_utils.sh ] && source ~/.dotfiles_utils.sh
+
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
@@ -47,6 +49,5 @@ export MQLD="/Users/sebastian/Library/Application Support/net.metaquotes.wine.me
 
 export AWS_PROFILE=sebastian-onerallypoint
 
-[ -f ~/.zsh_secrets ] && source ~/.zsh_secrets
-
-[ -f ~/.zsh_aliases ] && source ~/.zsh_aliases
+load_if_exists ~/.zsh_secrets.sh
+load_if_exists ~/.zsh_aliases.sh
