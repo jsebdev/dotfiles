@@ -31,6 +31,7 @@ fi
 # Always link .gitconfig (shared)
  FILES_TO_LINK+=(".gitconfig")
  FILES_TO_LINK+=(".tmux.conf")
+ FILES_TO_LINK+=("shared/.aliases")
 
 echo ""
 echo "Files to link:"
@@ -46,9 +47,6 @@ for FILE in "${FILES_TO_LINK[@]}"; do
   SOURCE="$DOTFILES_DIR/$FILE"
 
   echo ""
-  echo "🔗 Processing $FILE"
-  echo "📂 Target path: $TARGET"
-  echo "📂 Source path: $SOURCE"
 
   if [ -e "$TARGET" ] || [ -L "$TARGET" ]; then
     if [ -L "$TARGET" ] && [ "$(readlink "$TARGET")" == "$SOURCE" ]; then
@@ -75,5 +73,6 @@ if [ "$SHELL_NAME" == "zsh" ] && [ ! -f "$HOME/.zsh_secrets" ]; then
   touch "$HOME/.zsh_secrets"
 fi
 
+echo ""
 echo "✅ Dotfiles setup complete!"
 
