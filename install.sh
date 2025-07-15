@@ -35,6 +35,7 @@ FILES_TO_LINK+=(".gitconfig")
 FILES_TO_LINK+=(".tmux.conf")
 FILES_TO_LINK+=("shared/.shared_aliases.sh")
 FILES_TO_LINK+=("shared/.m8_aliases.sh")
+FILES_TO_LINK+=("shared/.dotfiles_shared.sh")
 
 echo ""
 echo "Files to link:"

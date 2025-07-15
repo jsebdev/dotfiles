@@ -49,5 +49,7 @@ export MQLD="/Users/sebastian/Library/Application Support/net.metaquotes.wine.me
 
 export AWS_PROFILE=sebastian-onerallypoint
 
+load_if_exists ~/.dotfiles_shared.sh
+
 load_if_exists ~/.zsh_secrets.sh
 load_if_exists ~/.zsh_aliases.sh
