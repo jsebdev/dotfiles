@@ -1,0 +1,1 @@
+alias mysource="source ~/.bashrc"
