@@ -1,5 +1,5 @@
 alias cdsw='cd /mnt/c/Users/sebas/coding/macheight/safefreight'
-alias cdrc='cd /home/ubuntu/coding_wsl/macheight/onerallypoint/rallyclaim'
+alias cdrc='cd /home/ubuntu/coding/macheight/onerallypoint/rallyclaim'
 
 alias lrcst="aws ecs list-tasks --cluster rally-claim-cluster-staging"
 alias lrcpt="aws ecs list-tasks --cluster rally-claim-cluster-prod"
