@@ -53,3 +53,4 @@ load_if_exists ~/.dotfiles_shared.sh
 
 load_if_exists ~/.zsh_secrets.sh
 load_if_exists ~/.zsh_aliases.sh
+load_if_exists ~/.shared.sh
