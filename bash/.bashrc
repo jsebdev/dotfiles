@@ -173,6 +173,15 @@ volition_toggle_staging_db_forwarding() {
     echo "SSH tunnel established with PID: $pid"
 }
 
+# check one rally point lint:
+rallyclaim_lints() {
+    cd /home/ubuntu/coding/macheight/onerallypoint/rallyclaim
+    docker compose run --rm react npm run lint
+    docker compose run --rm react npm run typecheck
+    docker compose run --rm django mypy .
+    docker compose run --rm django ruff check .
+}
+
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 . "$HOME/.cargo/env"
