@@ -21,3 +21,12 @@ rallyclaim_run_django_task_terminal() {
       --command "/bin/bash"
 }
 
+# check one rally point lint:
+rallyclaim_lints() {
+    cdrc
+    docker compose run --rm react npm run lint
+    docker compose run --rm react npm run typecheck
+    docker compose run --rm django mypy .
+    docker compose run --rm django ruff check .
+}
+
