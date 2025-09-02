@@ -31,9 +31,15 @@ rallyclaim_run_django_task_terminal() {
 # check one rally point lint:
 rallyclaim_lints() {
     cdrc
-    docker compose run --rm react npm run lint
+    echo "Running linters and type checks for RallyClaim..."
+    echo "----------------------------------------"
+    echo "npm run lint (React)"
+    docker compose run --rm react npm run lint --fix
+    echo "npm run typecheck (React)"
     docker compose run --rm react npm run typecheck
+    echo "mypy (Django)"
     docker compose run --rm django mypy .
+    echo "ruff (Django)"
     docker compose run --rm django ruff check . --fix
 }
 
