@@ -34,7 +34,7 @@ rallyclaim_lints() {
     echo "Running linters and type checks for RallyClaim..."
     echo "----------------------------------------"
     echo "npm run lint (React)"
-    docker compose run --rm react npm run lint --fix
+    docker compose run --rm react npm run lint
     echo "npm run typecheck (React)"
     docker compose run --rm react npm run typecheck
     echo "mypy (Django)"
