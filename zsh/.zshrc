@@ -39,6 +39,8 @@ export PKG_CONFIG_PATH="/usr/local/opt/llvm/lib/pkgconfig"
 
 # postgres
 export PATH="/opt/homebrew/opt/postgresql@15/bin:$PATH"
+export PATH="/opt/homebrew/opt/postgresql@17/bin:$PATH"
+
 
 #MQL5 folder alias
 export MQLD="/Users/sebastian/Library/Application Support/net.metaquotes.wine.metatrader5/drive_c/Program Files/MetaTrader 5/MQL5"
