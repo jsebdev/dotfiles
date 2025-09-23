@@ -30,16 +30,26 @@ rallyclaim_run_django_task_terminal() {
 
 # check one rally point lint:
 rallyclaim_lints() {
+    local service="${1:-all}"
+    if [[ "$service" != "all" && "$service" != "react" && "$service" != "django" ]]; then
+        echo "Invalid service. Use 'all', 'react', or 'django'."
+        return 1
+    fi
     cdrc
-    echo "Running linters and type checks for RallyClaim..."
+    echo "Running linters and type checks for RallyClaim. service=$service"
     echo "----------------------------------------"
-    echo "npm run lint (React)"
-    docker compose run --rm react npm run lint
-    echo "npm run typecheck (React)"
-    docker compose run --rm react npm run typecheck
-    echo "mypy (Django)"
-    docker compose run --rm django mypy .
-    echo "ruff (Django)"
-    docker compose run --rm django ruff check . --fix
+
+    if [[ "$service" == "all" || "$service" == "react" ]]; then
+        echo "npm run lint (React)"
+        docker compose run --rm react npm run lint
+        echo "npm run typecheck (React)"
+        docker compose run --rm react npm run typecheck
+    fi 
+    if [[ "$service" == "all" || "$service" == "django" ]]; then
+        echo "mypy (Django)"
+        docker compose run --rm django mypy .
+        echo "flake8 (Django)"
+        docker compose run --rm django ruff check . --fix
+    fi
 }
 
