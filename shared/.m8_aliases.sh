@@ -2,9 +2,20 @@ alias cdsw='cd /mnt/c/Users/sebas/coding/macheight/safefreight'
 alias cdrc='cd ~/coding/macheight/onerallypoint/rallyclaim'
 
 rallyclaim_run_django_task_terminal() {
-    local environment="${1:-test}"
+    local environment="test"
+    while getopts "e:" opt; do
+        case $opt in
+            e)
+                environment="$OPTARG"
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                return 1
+                ;;
+        esac
+    done
     if [[ "$environment" != "test" && "$environment" != "stage" && "$environment" != "prod" ]]; then
-        echo "Invalid environment. Use 'test', or 'stage', or 'prod' ."
+        echo "Error: Invalid environment '$environment'. Usage: rallyclaim_run_django_task_terminal -e <test|stage|prod>"
         return 1
     fi
     echo "Opening Django task in $environment environment..."
