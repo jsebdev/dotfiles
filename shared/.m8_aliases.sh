@@ -3,10 +3,14 @@ alias cdrc='cd ~/coding/macheight/onerallypoint/rallyclaim'
 
 rallyclaim_run_django_task_terminal() {
     local environment="test"
-    while getopts "e:" opt; do
+    local custom_command=""
+    while getopts "e:c:" opt; do
         case $opt in
             e)
                 environment="$OPTARG"
+                ;;
+            c)
+                custom_command="$OPTARG"
                 ;;
             \?)
                 echo "Invalid option: -$OPTARG" >&2
@@ -31,12 +35,18 @@ rallyclaim_run_django_task_terminal() {
     local container_name="rally-claim-$environment-app"
     echo "Container Name: $container_name"
 
+    local command_to_run="/bin/bash"
+    if [[ -n "$custom_command" ]]; then
+        echo "Running custom command: $custom_command"
+        command_to_run="$custom_command"
+    fi
+
     aws ecs execute-command \
       --cluster $cluster_name \
       --task $task_id \
       --container $container_name \
       --interactive \
-      --command "/bin/bash"
+      --command "$command_to_run"
 }
 
 # check one rally point lint:
