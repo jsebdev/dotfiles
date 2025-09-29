@@ -3,8 +3,8 @@ alias cdrc='cd ~/coding/macheight/onerallypoint/rallyclaim'
 
 rallyclaim_run_django_task_terminal() {
     local environment="${1:-test}"
-    if [[ "$environment" != "test" && "$environment" != "stage" ]]; then
-        echo "Invalid environment. Use 'test' or 'stage'."
+    if [[ "$environment" != "test" && "$environment" != "stage" && "$environment" != "prod" ]]; then
+        echo "Invalid environment. Use 'test', or 'stage', or 'prod' ."
         return 1
     fi
     echo "Opening Django task in $environment environment..."
@@ -41,7 +41,7 @@ rallyclaim_lints() {
 
     if [[ "$service" == "all" || "$service" == "react" ]]; then
         echo "npm run lint (React)"
-        docker compose run --rm react npm run lint
+        docker compose run --rm react npm run lint:quiet:fix
         echo "npm run typecheck (React)"
         docker compose run --rm react npm run typecheck
     fi 
