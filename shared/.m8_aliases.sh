@@ -4,13 +4,17 @@ alias cdrc='cd ~/coding/macheight/onerallypoint/rallyclaim'
 rallyclaim_run_django_task_terminal() {
     local environment="test"
     local custom_command=""
-    while getopts "e:c:" opt; do
+    local output_file=""
+    while getopts "e:c:o:" opt; do
         case $opt in
             e)
                 environment="$OPTARG"
                 ;;
             c)
                 custom_command="$OPTARG"
+                ;;
+            o)
+                output_file="$OPTARG"
                 ;;
             \?)
                 echo "Invalid option: -$OPTARG" >&2
@@ -41,12 +45,22 @@ rallyclaim_run_django_task_terminal() {
         command_to_run="$custom_command"
     fi
 
-    aws ecs execute-command \
-      --cluster $cluster_name \
-      --task $task_id \
-      --container $container_name \
-      --interactive \
-      --command "$command_to_run"
+    if [[ -n "$output_file" ]]; then
+        echo "Saving output to: $output_file"
+        aws ecs execute-command \
+          --cluster $cluster_name \
+          --task $task_id \
+          --container $container_name \
+          --interactive \
+          --command "$command_to_run" > "$output_file" 2>&1
+    else
+        aws ecs execute-command \
+          --cluster $cluster_name \
+          --task $task_id \
+          --container $container_name \
+          --interactive \
+          --command "$command_to_run"
+    fi
 }
 
 # check one rally point lint:
