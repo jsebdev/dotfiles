@@ -22,6 +22,7 @@ rallyclaim_run_django_task_terminal() {
                 ;;
         esac
     done
+    OPTIND=1
     if [[ "$environment" != "test" && "$environment" != "stage" && "$environment" != "prod" ]]; then
         echo "Error: Invalid environment '$environment'. Usage: rallyclaim_run_django_task_terminal -e <test|stage|prod>"
         return 1
