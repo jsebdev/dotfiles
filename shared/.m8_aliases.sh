@@ -31,8 +31,12 @@ rallyclaim_run_django_task_terminal() {
     local cluster_name="rally-claim-$environment-cluster"
     echo "Cluster Name: $cluster_name"
 
+    local service_name="rally-claim-$environment-service"
+    echo "Service Name: $service_name"
+
     local task_id=$(aws ecs list-tasks \
         --cluster "$cluster_name" \
+        --service-name "$service_name" \
         --query 'taskArns[0]' \
         --output text)
     echo "Task ID: $task_id"
