@@ -73,5 +73,9 @@ for FILE in "${FILES_TO_LINK[@]}"; do
 done
 
 echo ""
+echo "📦 Installing packages..."
+"$DOTFILES_DIR/install_packages/install_fzf.sh"
+
+echo ""
 echo "✅ Dotfiles setup complete!"
 
