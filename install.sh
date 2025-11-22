@@ -74,7 +74,7 @@ done
 
 echo ""
 echo "📦 Installing packages..."
-"$DOTFILES_DIR/install_packages/install_fzf.sh"
+"$DOTFILES_DIR/package_installers/install_fzf.sh"
 
 echo ""
 echo "✅ Dotfiles setup complete!"
