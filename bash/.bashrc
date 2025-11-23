@@ -181,3 +181,5 @@ export AWS_PROFILE=default
 
 load_if_exists ~/.dotfiles_shared.sh
 load_if_exists ~/.bash_aliases.sh
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

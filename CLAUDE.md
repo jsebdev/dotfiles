@@ -129,7 +129,9 @@ export ANTHROPIC_API_KEY="your-key-here"
 
 The `package_installers/` directory contains idempotent installation scripts for tools:
 - `install_fzf.sh` - Installs FZF fuzzy finder from GitHub if not already present
-- `install_nvim.sh` - Installs Neovim
+- `install_nvim.sh` - Installs Neovim (calls `setup_nvim_dependencies.sh` and `setup_nvim_config.sh`)
+- `setup_nvim_dependencies.sh` - Installs C compiler (build-essential on Linux, Xcode tools on macOS) required for Treesitter
+- `setup_nvim_config.sh` - Sets up Neovim configuration from `configs/nvim/`
 - `install_claude_code.sh` - Installs Claude Code CLI using the official installer
 
 To add new installers, create similar scripts and call them from `install.sh`.

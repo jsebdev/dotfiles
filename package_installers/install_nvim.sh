@@ -162,6 +162,9 @@ else
   exit 1
 fi
 
-# Setup Neovim configuration
+# Setup Neovim dependencies (C compiler for Treesitter)
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+"$SCRIPT_DIR/setup_nvim_dependencies.sh"
+
+# Setup Neovim configuration
 "$SCRIPT_DIR/setup_nvim_config.sh"
