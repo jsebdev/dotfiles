@@ -88,6 +88,7 @@ The repository integrates these version managers and tools:
 - **nvm** - Node.js version management
 - **conda** - Anaconda Python distribution
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
+- **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`)
 
 ## Shell-Specific Features
 
@@ -128,6 +129,8 @@ export ANTHROPIC_API_KEY="your-key-here"
 
 The `package_installers/` directory contains idempotent installation scripts for tools:
 - `install_fzf.sh` - Installs FZF fuzzy finder from GitHub if not already present
+- `install_nvim.sh` - Installs Neovim
+- `install_claude_code.sh` - Installs Claude Code CLI using the official installer
 
 To add new installers, create similar scripts and call them from `install.sh`.
 
