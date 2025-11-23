@@ -21,6 +21,7 @@ This is a personal dotfiles repository that manages shell configurations, applic
 - Shared functions and aliases to reduce duplication
 - Automated installation via bootstrap script
 - Secrets excluded from version control (`.gitignore` excludes `*secrets` pattern)
+- **Linux package management**: All Linux installers assume `apt-get` (Debian/Ubuntu-based distributions). Other package managers (dnf, yum, pacman) are not supported.
 
 ## Installation
 
@@ -84,6 +85,7 @@ The `load_if_exists` function (from `.dotfiles_utils.sh`) safely sources files a
 
 ### Development Environment Setup
 The repository integrates these version managers and tools:
+- **unzip** - Archive extraction utility (installed via `package_installers/install_unzip.sh`, required for Mason.nvim package installations)
 - **pyenv** - Python version management (initialized in both shells)
 - **nvm** - Node.js version management
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
@@ -127,7 +129,11 @@ export ANTHROPIC_API_KEY="your-key-here"
 
 ## Package Installers
 
-The `package_installers/` directory contains idempotent installation scripts for tools:
+The `package_installers/` directory contains idempotent installation scripts for tools. All installers:
+- Check if the tool is already installed before attempting installation
+- Use `apt-get` for Linux package management
+- Support macOS via Homebrew where applicable
+- Are called sequentially by `install.sh`
 
 To add new installers, create similar scripts and call them from `install.sh`.
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# necessary for the telescope plugin in nvim
+
 set -e
 
 echo "🔍 Installing ripgrep..."
@@ -18,23 +20,9 @@ OS="$(uname -s)"
 
 case "$OS" in
   Linux)
-    echo "🐧 Installing ripgrep on Linux..."
-
-    # Try to detect the package manager
-    if command -v apt-get &> /dev/null; then
-      sudo apt-get update
-      sudo apt-get install -y ripgrep
-    elif command -v dnf &> /dev/null; then
-      sudo dnf install -y ripgrep
-    elif command -v yum &> /dev/null; then
-      sudo yum install -y ripgrep
-    elif command -v pacman &> /dev/null; then
-      sudo pacman -S --noconfirm ripgrep
-    else
-      echo "❌ No supported package manager found (apt, dnf, yum, pacman)"
-      echo "   Please install ripgrep manually: https://github.com/BurntSushi/ripgrep#installation"
-      exit 1
-    fi
+    echo "🐧 Installing ripgrep on Linux (using apt-get)..."
+    sudo apt-get update
+    sudo apt-get install -y ripgrep
     ;;
 
   Darwin)

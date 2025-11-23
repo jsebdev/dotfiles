@@ -23,7 +23,7 @@ else
 
   case "$OS" in
     Linux)
-      echo "🐧 Installing build dependencies on Linux..."
+      echo "🐧 Installing build dependencies on Linux (using apt-get)..."
       sudo apt-get update
       sudo apt-get install -y \
         make build-essential libssl-dev zlib1g-dev \
