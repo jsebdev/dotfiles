@@ -140,10 +140,6 @@ if ! pgrep ssh-agent > /dev/null; then
 fi
 
 
-# Set up the OpenAI API key and the Anthropic API key
-export OPENAI_API_KEY=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
-export ANTHROPIC_API_KEY=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
-
 LS_COLORS=$LS_COLORS:'di=0;36:' ; export LS_COLORS
 
 export LESS='-iFRX'
