@@ -172,8 +172,6 @@ volition_toggle_staging_db_forwarding() {
 
 export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
-. "$HOME/.cargo/env"
-
 
 complete -C /usr/bin/terraform terraform
 
