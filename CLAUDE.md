@@ -86,6 +86,7 @@ The `load_if_exists` function (from `.dotfiles_utils.sh`) safely sources files a
 ### Development Environment Setup
 The repository integrates these version managers and tools:
 - **unzip** - Archive extraction utility (installed via `package_installers/install_unzip.sh`, required for Mason.nvim package installations)
+- **miniconda** - Minimal Python distribution and package manager (installed via `package_installers/install_miniconda.sh`)
 - **pyenv** - Python version management (initialized in both shells)
 - **nvm** - Node.js version management
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
