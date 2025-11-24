@@ -37,7 +37,6 @@ echo "🧹 Cleaning up installer..."
 rm ~/miniconda3/miniconda.sh
 
 # Initialize conda for bash and zsh only (the shells managed by this dotfiles repo)
-# TODO: this repo is not tracking .bash_profile, so it should probably do it when you install miniconda in bash
 echo "🔧 Initializing conda for bash and zsh..."
 ~/miniconda3/bin/conda init bash
 ~/miniconda3/bin/conda init zsh
