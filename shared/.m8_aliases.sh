@@ -81,9 +81,9 @@ rallyclaim_lints() {
 
     if [[ "$service" == "all" || "$service" == "react" ]]; then
         echo "npm run lint (React)"
-        docker compose run --rm react npm run lint:quiet:fix
+        docker compose run --rm --no-deps react npm run lint:quiet:fix
         echo "npm run typecheck (React)"
-        docker compose run --rm react npm run typecheck
+        docker compose run --rm --no-deps react npm run typecheck
     fi 
     if [[ "$service" == "all" || "$service" == "django" ]]; then
         echo "mypy (Django)"
