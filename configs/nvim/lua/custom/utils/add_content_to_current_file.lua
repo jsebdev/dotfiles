@@ -27,6 +27,7 @@ local function build_block_lines(src_path, content)
 
   -- blank line before
   table.insert(lines, "")
+  table.insert(lines, "```")
   table.insert(lines, "<" .. rel .. ">")
 
   -- add file content lines
@@ -41,6 +42,7 @@ local function build_block_lines(src_path, content)
   -- If content didn't end with newline, the last element won't be "", which is OK:
   -- we’ll put the closing tag as its own new line below.
   table.insert(lines, "</" .. rel .. ">")
+  table.insert(lines, "```")
 
   -- blank line after
   table.insert(lines, "")
@@ -56,12 +58,14 @@ local function append_block_to_file(dest_path, src_path, content)
   local ok, err = pcall(function()
     local f = assert(io.open(dest_path, "a"))
     f:write("\n") -- ensure we start on a new line
+    f:write("```\n")
     f:write("<" .. rel .. ">\n")
     f:write(content)
     if not content:match("\n$") then
       f:write("\n")
     end
     f:write("</" .. rel .. ">\n\n")
+    f:write("```\n")
     f:close()
   end)
   if not ok then
