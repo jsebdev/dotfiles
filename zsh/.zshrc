@@ -58,3 +58,6 @@ unset __conda_setup
 
 
 export PATH="$HOME/.local/bin:$PATH"
+
+# avoid special character being part of a word
+export WORDCHARS=""
