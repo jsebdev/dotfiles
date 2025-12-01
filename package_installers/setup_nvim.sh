@@ -26,6 +26,9 @@ if command -v nvim &> /dev/null; then
     echo "⚠️  Version v$NVIM_VERSION is below minimum requirement ($MIN_VERSION). Upgrading..."
     "$SCRIPT_DIR/install_nvim.sh"
   fi
+else
+  echo "⚠️  Neovim is not installed. Installing..."
+  "$SCRIPT_DIR/install_nvim.sh"
 fi
 
 # Verify installation
