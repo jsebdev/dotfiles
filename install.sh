@@ -74,6 +74,10 @@ done
 
 echo ""
 echo "📦 Installing packages..."
+"$DOTFILES_DIR/package_installers/install_tmux.sh"
+echo ""
+echo "-----"
+echo ""
 "$DOTFILES_DIR/package_installers/install_unzip.sh"
 echo ""
 echo "-----"

@@ -85,6 +85,7 @@ The `load_if_exists` function (from `.dotfiles_utils.sh`) safely sources files a
 
 ### Development Environment Setup
 The repository integrates these version managers and tools:
+- **tmux** - Terminal multiplexer (installed via `package_installers/install_tmux.sh`)
 - **unzip** - Archive extraction utility (installed via `package_installers/install_unzip.sh`, required for Mason.nvim package installations)
 - **miniconda** - Minimal Python distribution and package manager (installed via `package_installers/install_miniconda.sh`)
 - **AWS CLI** - Amazon Web Services command-line interface (installed via `package_installers/install_aws_cli.sh`)
