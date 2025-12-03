@@ -14,7 +14,7 @@ vim.g.spelunker_disable_backquoted_checking = 1
 vim.g.spelunker_disable_auto_group = 0
 
 local spellcheck_filetypes = {
-  "vim", "js", "jsx", "json", "md", "ts", "html", "css", "scss"
+  "vim", "js", "jsx", "json", "md", "ts", "html", "css", "scss", "py"
 }
 
 local pattern = table.concat(
