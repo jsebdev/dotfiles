@@ -626,7 +626,10 @@ require('lazy').setup({
             pylsp = {
               plugins = {
                 flake8 = {
-                  enabled = true, -- Enable flake8 plugin
+                  enabled = false, -- Disable flake8 since we're using Ruff
+                },
+                pycodestyle = {
+                  enabled = false, -- Disable pycodestyle since we're using Ruff
                 },
               },
             },
