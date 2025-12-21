@@ -17,6 +17,7 @@ if [[ "$SHELL_NAME" == "zsh" ]]; then
     "zsh/.zshrc"
     "zsh/.zsh_aliases.sh"
     "zsh/.zsh_secrets.sh"
+    "zsh/.zprofile"
   )
 elif [[ "$SHELL_NAME" == "bash" ]]; then
   FILES_TO_LINK=(
