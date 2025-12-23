@@ -26,3 +26,19 @@ compile_cpp() {
   fi
 }
 
+search_s3_file() {
+  local filename="$1"
+
+  if [[ -z "$filename" ]]; then
+    echo "Usage: search_s3_file <filename-or-pattern>" >&2
+    return 1
+  fi
+
+  aws s3api list-buckets --query 'Buckets[].Name' --output text \
+  | tr '\t' '\n' \
+  | while read -r bucket; do
+      aws s3 ls "s3://$bucket" --recursive 2>/dev/null \
+      | grep -F "$filename" \
+      | awk -v b="$bucket" '{ print "s3://" b "/" $4 }'
+    done
+}
