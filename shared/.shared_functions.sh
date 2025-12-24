@@ -42,3 +42,7 @@ search_s3_file() {
       | awk -v b="$bucket" '{ print "s3://" b "/" $4 }'
     done
 }
+
+backup_claude_config() {
+  ~/.dotfiles_scripts/backup_ignored_claude_config.sh
+}

@@ -39,6 +39,9 @@ FILES_TO_LINK+=("shared/.dotfiles_shared.sh")
 FILES_TO_LINK+=("shared/.shared_aliases.sh")
 FILES_TO_LINK+=("shared/.shared_functions.sh")
 
+# Directory symlinks (handled separately below)
+DIRS_TO_LINK=("dotfiles_scripts")
+
 echo ""
 echo "Files to link:"
 for FILE in "${FILES_TO_LINK[@]}"; do
@@ -70,6 +73,25 @@ for FILE in "${FILES_TO_LINK[@]}"; do
     ln -s "$SOURCE" "$TARGET"
   else
     echo "⚠️ Skipping missing $SOURCE"
+  fi
+done
+
+# Link directories
+echo ""
+for DIR in "${DIRS_TO_LINK[@]}"; do
+  TARGET="$HOME/.${DIR}"
+  SOURCE="$DOTFILES_DIR/$DIR"
+
+  if [ -L "$TARGET" ] && [ "$(readlink "$TARGET")" == "$SOURCE" ]; then
+    echo "✅ $TARGET already correctly linked."
+  else
+    if [ -e "$TARGET" ] || [ -L "$TARGET" ]; then
+      echo "📦 Backing up $TARGET to $BACKUP_DIR"
+      mkdir -p "$BACKUP_DIR"
+      mv "$TARGET" "$BACKUP_DIR/"
+    fi
+    echo "🔗 Linking $SOURCE → $TARGET"
+    ln -s "$SOURCE" "$TARGET"
   fi
 done
 
