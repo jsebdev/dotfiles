@@ -142,8 +142,6 @@ fi
 
 LS_COLORS=$LS_COLORS:'di=0;36:' ; export LS_COLORS
 
-export LESS='-iFRX'
-
 # forward volition staging db to localport in 5432
 volition_toggle_staging_db_forwarding() {
     local pid=$(ps aux | grep -E "viq-staging.*juliana" | grep -v grep | awk '{print $2}')
