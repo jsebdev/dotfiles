@@ -110,7 +110,7 @@ vim.keymap.set('n', '<leader>zpp', function()
 end, { desc = "Smart print in python" })
 
 vim.keymap.set('n', '<leader>zpl', function()
-  require('custom.utils.smart_print').print_current_line_with_formats('logger.debug(\'>>>>> %s:%d "%s"\')', 'logger.debug(%s)')
+  require('custom.utils.smart_print').print_current_line_with_formats('logger.info(\'>>>>> %s:%d "%s"\')', 'logger.info(%s)')
 end, { desc = "Log print in python" })
 
 vim.keymap.set('n', '<leader>zjj', function()
