@@ -98,3 +98,8 @@ rallyclaim_lints() {
 #     docker compose run --rm react npm run build
 #     aws s3 sync react/build/client/ s3://rally-claim-prod-frontend-6wsxt216
 # }
+#
+
+def connect_to_local_rallyclaim_db() {
+    psql postgres://postgres:\$local-password@localhost:5432/rallyclaim
+}
