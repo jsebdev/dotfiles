@@ -1,5 +1,6 @@
 alias cdsw='cd /mnt/c/Users/sebas/coding/macheight/safefreight'
 alias cdrc='cd ~/coding/macheight/onerallypoint/rallyclaim'
+alias cdai='cd ~/coding/macheight/arena.io'
 
 rallyclaim_run_django_task_terminal() {
     local environment="test"
