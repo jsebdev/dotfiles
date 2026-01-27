@@ -28,7 +28,7 @@ export MQLD="$HOME/Library/Application Support/net.metaquotes.wine.metatrader5/d
 
 export AWS_PROFILE=onerally
 
-load_if_exists ~/.dotfiles_shared.sh
+load_all_shared_scripts
 
 load_if_exists ~/.zsh_secrets.sh
 load_if_exists ~/.zsh_aliases.sh

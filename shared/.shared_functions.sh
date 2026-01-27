@@ -46,3 +46,6 @@ search_s3_file() {
 backup_claude_config() {
   ~/.dotfiles_scripts/backup_ignored_claude_config.sh
 }
+
+
+# arena functions

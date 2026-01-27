@@ -175,7 +175,9 @@ complete -C /usr/bin/terraform terraform
 
 export AWS_PROFILE=default
 
-load_if_exists ~/.dotfiles_shared.sh
+load_all_shared_scripts
+
+load_if_exists ~/.bash_secrets.sh
 load_if_exists ~/.bash_aliases.sh
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

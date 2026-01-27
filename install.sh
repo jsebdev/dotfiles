@@ -40,6 +40,7 @@ FILES_TO_LINK+=("shared/.shared_aliases.sh")
 FILES_TO_LINK+=("shared/.shared_functions.sh")
 FILES_TO_LINK+=("shared/.shared_secrets.sh")
 FILES_TO_LINK+=("shared/.m8_secrets.sh")
+FILES_TO_LINK+=("shared/.m8_functions.sh")
 
 # Directory symlinks (handled separately below)
 DIRS_TO_LINK=("dotfiles_scripts")
