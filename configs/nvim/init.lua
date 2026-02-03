@@ -606,7 +606,7 @@ require('lazy').setup({
          },
         },
         clangd = {},
-        -- gopls = {},
+        gopls = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -947,7 +947,7 @@ require('lazy').setup({
     opts = {
       ensure_installed = { 'bash', 'c', 'diff', 'html', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'vim',
         'vimdoc',
-        'python', 'javascript', 'typescript', 'tsx', 'json', 'yaml', 'css', 'scss' },
+        'python', 'javascript', 'typescript', 'tsx', 'json', 'yaml', 'css', 'scss', 'go', 'gomod' },
       -- Autoinstall languages that are not installed
       auto_install = true,
       highlight = {

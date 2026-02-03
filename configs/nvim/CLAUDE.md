@@ -46,6 +46,7 @@ The configuration uses lazy.nvim as plugin manager with these key additions beyo
 - **avante.nvim** - AI coding assistant with Claude provider
 - **copilot.vim** - GitHub Copilot integration
 - **haskell-tools.nvim** - Enhanced Haskell development
+- **go.nvim** - Comprehensive Go development tooling
 - **git-blame.nvim** - Git blame information
 - **Various utilities** - autoclose, emmet, spell checking, file operations
 
@@ -56,6 +57,7 @@ Configured for:
 - **Lua** - lua_ls, stylua formatting
 - **HTML/CSS** - emmet support, auto-tagging
 - **Haskell** - haskell-tools integration
+- **Go** - gopls LSP, go.nvim with test runner, code generation, formatting on save
 - **C/C++** - clangd support
 
 ### Key Custom Keybindings
