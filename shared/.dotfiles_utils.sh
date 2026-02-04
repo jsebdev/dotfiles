@@ -14,4 +14,5 @@ load_all_shared_scripts() {
     load_if_exists ~/.shared_functions.sh
     load_if_exists ~/.m8_aliases.sh
     load_if_exists ~/.m8_functions.sh
+    load_if_exists ~/.shared_secrets.sh
 }
