@@ -39,6 +39,7 @@ FILES_TO_LINK+=("shared/.dotfiles_shared.sh")
 FILES_TO_LINK+=("shared/.shared_aliases.sh")
 FILES_TO_LINK+=("shared/.shared_functions.sh")
 FILES_TO_LINK+=("shared/.shared_secrets.sh")
+FILES_TO_LINK+=("shared/.shared_environment.sh")
 FILES_TO_LINK+=("shared/.m8_secrets.sh")
 FILES_TO_LINK+=("shared/.m8_functions.sh")
 
