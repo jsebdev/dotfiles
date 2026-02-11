@@ -3,3 +3,4 @@ export GITHUB_PACKAGES_USER=sebastianMacheight
 export GO_ARENA_GIT_ROOT="$HOME/coding/macheight/arena.io/repos/dummy_repo"
 export PERSON_SERVICE_GIT_ROOT="$HOME/coding/macheight/arena.io/repos/dummy_repo"
 export QUESTIONNAIRE_V2_GIT_ROOT="$HOME/coding/macheight/arena.io/repos/questionnaire-v2"
+export CLIENT_CONFIG_GIT_ROOT="$HOME/coding/macheight/arena.io/repos/client-config"
