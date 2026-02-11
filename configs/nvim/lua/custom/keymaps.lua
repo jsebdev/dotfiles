@@ -83,7 +83,15 @@ vim.keymap.set('v', '<C-_>', 'gc', { remap = true, desc = 'comment single line' 
 vim.keymap.set({ 'o', 'x' }, 'iq', require('custom.utils.select_inside_unescaped_quotes').select_inside_unescaped_quotes, { desc = 'smart inside quotes' })
 
 -- formating
-vim.keymap.set({'n', 'x'}, '=', function() vim.lsp.buf.format {async = false} end, { desc = 'Autoformat'})
+vim.keymap.set({'n', 'x'}, '=', function()
+  vim.lsp.buf.format {async = false}
+  -- Also run golangci-lint for Go files
+  if vim.bo.filetype == 'go' then
+    vim.schedule(function()
+      vim.cmd('GoLint')
+    end)
+  end
+end, { desc = 'Autoformat'})
 vim.keymap.set('n', '<leader>cu', 'gUiwe', { desc = '[C]ode [u]ppercase'})
 vim.keymap.set('n', '<leader>cU', 'guiwe', { desc = '[C]ode lowercase [U]'})
 vim.keymap.set('v', '<leader>cu', 'gU', { desc = '[C]ode [u]ppercase'})
