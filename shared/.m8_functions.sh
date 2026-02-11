@@ -99,11 +99,19 @@ rallyclaim_lints() {
 #
 
 def connect_to_local_rallyclaim_db() {
-    psql postgres://postgres:\$local-password@localhost:5432/rallyclaim
+    psql postgres://postgres:\$local-password@127.0.0.1:5432/rallyclaim
 }
 
 # Arena.io
 
-def connect_to_local_client_config_db() {
+def connect_to_local_arena_client_config_db() {
     PGPASSWORD=postgres psql -h 127.0.0.1 -p 5010 -U postgres -d client_config
+}
+
+def connect_to_local_arena_sourcing_db() {
+    PGPASSWORD='postgres' psql \
+        --host=127.0.0.1 \
+        --port=5440 \
+        --username=postgres \
+        --dbname=model_view \
 }
