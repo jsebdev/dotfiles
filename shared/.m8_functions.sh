@@ -115,3 +115,12 @@ def connect_to_local_arena_sourcing_db() {
         --username=postgres \
         --dbname=model_view \
 }
+
+def execute_command_in_arena_person_service() {
+    local command="$*"
+    if [[ -z "$command" ]]; then
+        echo "Usage: execute_command_in_arena_person_service <command>"
+        return 1
+    fi
+    docker exec -u vscode  $(docker ps | grep person | awk '{print $NF}') sh -c "cd /workspaces/person-service && $command"
+}
