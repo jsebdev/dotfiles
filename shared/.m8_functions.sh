@@ -122,5 +122,5 @@ def execute_command_in_arena_person_service() {
         echo "Usage: execute_command_in_arena_person_service <command>"
         return 1
     fi
-    docker exec -u vscode  $(docker ps | grep person | awk '{print $NF}') sh -c "cd /workspaces/person-service && $command"
+    docker exec -u vscode  $(docker ps | grep person | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/person-service && $command"
 }
