@@ -92,6 +92,11 @@ rallyclaim_lints() {
 }
 
 # deploy local frontend to prod:
+rallyclaim_deploy_local_frontend_to_test() {
+    docker compose run --rm react npm run build
+    aws s3 sync react/build/client/ s3://rally-claim-test-frontend-XXXXXXXXXXXXXXXXXXX
+}
+
 # rallyclaim_deploy_local_frontend_to_prod() {
 #     docker compose run --rm react npm run build
 #     aws s3 sync react/build/client/ s3://rally-claim-prod-frontend-6wsxt216

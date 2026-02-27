@@ -48,4 +48,61 @@ backup_claude_config() {
 }
 
 
-# arena functions
+look_commands_in_current_pr() {
+  local regex=""
+  local reviewer=""
+
+  # --- Parse arguments ---
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      --reviewer)
+        reviewer="$2"
+        shift 2
+        ;;
+      -*)
+        echo "Unknown option: $1"
+        return 1
+        ;;
+      *)
+        if [[ -z "$regex" ]]; then
+          regex="$1"
+        else
+          echo "Unexpected argument: $1"
+          return 1
+        fi
+        shift
+        ;;
+    esac
+  done
+
+  if [[ -z "$regex" ]]; then
+    echo "Usage: look_commands_in_current_pr \"regex\" [--reviewer <login>]"
+    return 1
+  fi
+
+  # --- Resolve PR number ---
+  local pr_number
+  pr_number=$(gh pr view --json number -q '.number') || {
+    echo "Error: Not in a PR context or unable to determine PR number."
+    return 1
+  }
+
+  # --- Resolve repo ---
+  local repo
+  repo=$(gh repo view --json nameWithOwner -q '.nameWithOwner') || {
+    echo "Error: Unable to determine repository."
+    return 1
+  }
+
+  # --- Fetch + filter ---
+  gh api "repos/${repo}/pulls/${pr_number}/comments" |
+    jq --arg regex "$regex" --arg reviewer "$reviewer" '
+      .[]
+      | select(.body | test($regex; "i"))
+      | if ($reviewer == "") 
+          then .
+          else select(.user.login == $reviewer)
+        end
+      | {body, start_line, line, path}
+    '
+}
