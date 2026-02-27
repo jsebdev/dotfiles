@@ -103,6 +103,6 @@ look_commands_in_current_pr() {
           then .
           else select(.user.login == $reviewer)
         end
-      | {body, start_line, line, path}
+      | {body, start_line, line, path, user: .user.login}
     '
 }
