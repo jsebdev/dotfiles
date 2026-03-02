@@ -48,7 +48,7 @@ backup_claude_config() {
 }
 
 
-look_commands_in_current_pr() {
+look_comments_in_current_pr() {
   local regex=""
   local reviewer=""
 
@@ -59,26 +59,16 @@ look_commands_in_current_pr() {
         reviewer="$2"
         shift 2
         ;;
-      -*)
+      --regex|-E)
+        regex="$2"
+        shift 2
+        ;;
+      *)
         echo "Unknown option: $1"
         return 1
         ;;
-      *)
-        if [[ -z "$regex" ]]; then
-          regex="$1"
-        else
-          echo "Unexpected argument: $1"
-          return 1
-        fi
-        shift
-        ;;
     esac
   done
-
-  if [[ -z "$regex" ]]; then
-    echo "Usage: look_commands_in_current_pr \"regex\" [--reviewer <login>]"
-    return 1
-  fi
 
   # --- Resolve PR number ---
   local pr_number
@@ -98,8 +88,8 @@ look_commands_in_current_pr() {
   gh api "repos/${repo}/pulls/${pr_number}/comments" |
     jq --arg regex "$regex" --arg reviewer "$reviewer" '
       .[]
-      | select(.body | test($regex; "i"))
-      | if ($reviewer == "") 
+      | if ($regex == "") then . else select(.body | test($regex; "i")) end
+      | if ($reviewer == "")
           then .
           else select(.user.login == $reviewer)
         end
