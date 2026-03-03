@@ -63,6 +63,10 @@ look_comments_in_current_pr() {
         regex="$2"
         shift 2
         ;;
+      --help)
+        echo "Usage: look_comments_in_current_pr [--reviewer <username>] [--regex <pattern>]"
+        return 0
+        ;;
       *)
         echo "Unknown option: $1"
         return 1
