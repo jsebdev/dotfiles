@@ -129,3 +129,12 @@ def execute_command_in_arena_person_service() {
     fi
     docker exec -u vscode  $(docker ps | grep person | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/person-service && $command"
 }
+
+def execute_command_in_arena_client_config() {
+    local command="$*"
+    if [[ -z "$command" ]]; then
+        echo "Usage: execute_command_in_arena_client_config <command>"
+        return 1
+    fi
+    docker exec -u vscode  $(docker ps | grep client-config | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/client-config && $command"
+}
