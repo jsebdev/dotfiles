@@ -138,3 +138,7 @@ def execute_command_in_arena_client_config() {
     fi
     docker exec -u vscode  $(docker ps | grep client-config | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/client-config && $command"
 }
+
+def connect_to_local_arena_questionnaire_v2_db() {
+    mongosh "mongodb://user:pass@localhost:27050/questionnaire?authSource=admin"
+}
