@@ -1,0 +1,10 @@
+backups/
+cache/
+paste-cache/
+plugins/
+projects/
+session-env/
+sessions/
+shell-snapshots/
+history.jsonl
+policy-limits.json
