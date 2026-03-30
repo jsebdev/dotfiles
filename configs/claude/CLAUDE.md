@@ -48,6 +48,10 @@ The following branches are protected across all projects: `main`, `master`, `sta
 - Try to avoid compound commands (pipes | or &&, etc), or with $() command substitution, to minimize asking for permissions.
 - Avoid command that contains quoted characters in flag names.
 
+### DevContainer Rule
+
+If the project contains a `.devcontainer/` directory, use the `devcontainer` skill to locate the running container and execute ALL project commands (tests, linting, builds, migrations, etc.) inside it. Never run project commands on the host machine when a devcontainer is present.
+
 ### Docker Compose Environment Rule
 
 If the project contains a `docker-compose.yml` or `compose.yml` file, ALL commands (tests, linting, formatting, migrations, scripts, etc.) MUST be executed inside the appropriate Docker Compose service container using `docker compose exec <service> <command>` or `docker compose run <service> <command>`. Never run project commands directly on the host machine. No exceptions.
@@ -89,10 +93,11 @@ Use the appropriate agent for each task:
 
 ## Useful skills
 
-| Skill                       | Purpose                                                       |
-| --------------------------- | ------------------------------------------------------------- |
-| `implementation-workflow`   | Non-trivial code changes requiring planning                   |
-| `software-designer-mindset` | write/review code to use modern principles of software design |
+| Skill                       | Purpose                                                                          |
+| --------------------------- | -------------------------------------------------------------------------------- |
+| `implementation-workflow`   | Non-trivial code changes requiring planning                                      |
+| `software-designer-mindset` | write/review code to use modern principles of software design                    |
+| `devcontainer`              | Find and execute commands inside the VSCode devcontainer for the current project |
 
 ## Quick Reference
 
