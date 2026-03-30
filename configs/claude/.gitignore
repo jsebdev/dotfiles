@@ -1,10 +1,12 @@
 backups/
 cache/
+file-history/
 paste-cache/
 plugins/
 projects/
 session-env/
 sessions/
 shell-snapshots/
+telemetry/
 history.jsonl
 policy-limits.json
