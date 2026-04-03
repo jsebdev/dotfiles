@@ -94,6 +94,7 @@ The repository integrates these version managers and tools:
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
 - **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim)
 - **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`); config in `configs/claude/` is symlinked to `~/.claude` via `setup_claude_config.sh`
+- **GitHub CLI** - GitHub's official command-line tool (installed via `package_installers/install_gh_cli.sh`)
 
 ## Shell-Specific Features
 
