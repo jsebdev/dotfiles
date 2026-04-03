@@ -112,6 +112,7 @@ INSTALLERS=(
   "install_node.sh"
   "setup_nvim.sh"
   "install_claude_code.sh"
+  "install_git_delta.sh"
 )
 
 echo ""
