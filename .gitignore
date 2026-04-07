@@ -3,3 +3,7 @@ ignored
 **secrets**
 
 **/.DS_Store
+
+
+# CLAUDE
+**/claude/plans/**
