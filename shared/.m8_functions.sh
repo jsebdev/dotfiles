@@ -153,6 +153,25 @@ def execute_command_in_arena_questionnaire_v2_service() {
     docker exec -u vscode  $(docker ps | grep questionnaire-v2 | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/questionnaire-v2 && $command"
 }
 
+def execute_command_in_arena_platform_service() {
+    local command="$*"
+    if [[ -z "$command" ]]; then
+        echo "Usage: execute_command_in_arena_platform_service <command>"
+        return 1
+    fi
+    # docker exec -u node  $(docker ps | grep platform | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/platform && $command"
+    docker exec -w /workspaces/platform -u node  $(docker ps | grep platform | awk '{print $NF}') bash -c "$command"
+}
+
+def execute_command_in_arena_agents_service() {
+    local command="$*"
+    if [[ -z "$command" ]]; then
+        echo "Usage: execute_command_in_arena_agents_service <command>"
+        return 1
+    fi
+    docker exec -w /workspaces/agents -u vscode  $(docker ps | grep agents | awk '{print $NF}') bash -c "$command"
+}
+
 def connect_to_local_arena_questionnaire_v2_db() {
     mongosh "mongodb://user:pass@localhost:27050/questionnaire?authSource=admin"
 }
