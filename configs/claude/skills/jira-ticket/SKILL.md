@@ -58,5 +58,8 @@ Confirm the created ticket key and URL for each one. If creating multiple, creat
 - Keep acceptance criteria testable and specific. "System handles errors gracefully" is not acceptable. "When payment gateway returns a timeout, the system retries once and then displays an error message to the user with the transaction reference" is acceptable.
 - Each acceptance criterion must describe a verifiable outcome, not a behavior vague enough to pass any implementation.
 - The user story sentence must follow "As a / I want / so that" exactly — no variations.
-- Notes are optional. Only include them if there is genuinely useful context that does not fit in the acceptance criteria.
+- Notes are optional. Only include them if there is genuinely useful context that does not fit in the acceptance criteria. Avoid adding notes as much as possible, they should be the exception, not the norm.
 - If the user's idea is too broad for a single ticket, flag it and suggest splitting before drafting.
+- Tickets should be as small as possible while still delivering independent value. If in doubt, suggest splitting.
+- When drafting a set of related tickets, each AC must belong strictly to the ticket it lives in. Before finalising, scan every AC and ask: "Is this something that gets done *in this ticket*, or is it a side-effect / prerequisite of another ticket?" If it belongs elsewhere, move it there or convert it to a Note with a reference to the owning ticket (e.g. "Handled in PEB-123"). A common mistake is adding an AC that describes triggering or depending on work in a linked ticket — that is a Note, not an AC.
+
