@@ -109,6 +109,7 @@ INSTALLERS=(
   "install_ripgrep.sh"
   "install_gnu_grep.sh"
   "install_pyenv.sh"
+  "install_uv.sh"
   "install_node.sh"
   "setup_nvim.sh"
   "install_claude_code.sh"

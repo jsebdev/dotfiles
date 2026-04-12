@@ -90,6 +90,7 @@ The repository integrates these version managers and tools:
 - **miniconda** - Minimal Python distribution and package manager (installed via `package_installers/install_miniconda.sh`)
 - **AWS CLI** - Amazon Web Services command-line interface (installed via `package_installers/install_aws_cli.sh`)
 - **pyenv** - Python version management (initialized in both shells)
+- **uv** - Fast Python package and project manager (installed via `package_installers/install_uv.sh`)
 - **nvm** - Node.js version management
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
 - **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim)
