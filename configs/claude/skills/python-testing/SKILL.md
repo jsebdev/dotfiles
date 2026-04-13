@@ -7,6 +7,8 @@ description: Use this skill when writing or reviewing Python tests. Provides pyt
 
 Use pytest over unittest. Follow these guidelines for clean, maintainable tests.
 
+> Also apply the `general-testing-guidelines` skill — it covers language-agnostic naming, structure, and organization rules that govern all test code.
+
 ## Core Principles
 
 - Test file pattern: `test_*.py`, `*_tests.py`

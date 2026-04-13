@@ -93,11 +93,12 @@ Use the appropriate agent for each task:
 
 ## Useful skills
 
-| Skill                       | Purpose                                                                          |
-| --------------------------- | -------------------------------------------------------------------------------- |
-| `implementation-workflow`   | Non-trivial code changes requiring planning                                      |
-| `software-designer-mindset` | write/review code to use modern principles of software design                    |
-| `devcontainer`              | Find and execute commands inside the VSCode devcontainer for the current project |
+| Skill                         | Purpose                                                                          |
+| ----------------------------- | -------------------------------------------------------------------------------- |
+| `implementation-workflow`     | Non-trivial code changes requiring planning                                      |
+| `software-designer-mindset`   | write/review code to use modern principles of software design                    |
+| `devcontainer`                | Find and execute commands inside the VSCode devcontainer for the current project |
+| `general-testing-guidelines`  | Language-agnostic test naming, structure, and organization — use when writing or reviewing any tests |
 
 ## Quick Reference
 
