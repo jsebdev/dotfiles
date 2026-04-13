@@ -1,3 +1,13 @@
+pkill() {
+  for argument in "$@"; do
+    if [[ "$argument" == "." ]]; then
+      echo "pkill: argument '.' is too broad and has been blocked to prevent killing all processes."
+      return 1
+    fi
+  done
+  command pkill "$@"
+}
+
 compile_cpp() {
   if [[ $# -ne 1 ]]; then
     echo "Usage: compile_cpp filename.cpp"
