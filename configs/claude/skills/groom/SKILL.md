@@ -74,15 +74,9 @@ If the engineer wants to make further adjustments,
 iterate before pushing.
 
 ## Guidelines
-- Stay in the "what" realm. Do not suggest implementation approaches, data
-  models, or technical solutions.
-- Be opinionated about completeness but defer to the engineer's judgment on
-  scope.
-- If the story references domain concepts you don't understand, ask rather than
-  assume.
-- When suggesting acceptance criteria, use the format already established in
-  the story. Match the team's style.
-- Keep suggested acceptance criteria testable and specific. "System handles
-  errors gracefully" is not acceptable. "When payment gateway returns a
-  timeout, the system retries once and then displays an error message to the
-  user with the transaction reference" is acceptable.
+
+See @~/.claude/skills/shared/jira-guidelines.md for shared standards.
+
+- Be opinionated about completeness but defer to the engineer's judgment on scope.
+- If the story references domain concepts you don't understand, ask rather than assume.
+- When suggesting acceptance criteria, use the format already established in the story. Match the team's style.

@@ -54,9 +54,8 @@ Confirm the created ticket key and URL for each one. If creating multiple, creat
 
 ## Guidelines
 
-- Stay in the "what" realm. Do not suggest implementation approaches, data models, or technical solutions.
-- Keep acceptance criteria testable and specific. "System handles errors gracefully" is not acceptable. "When payment gateway returns a timeout, the system retries once and then displays an error message to the user with the transaction reference" is acceptable.
-- Each acceptance criterion must describe a verifiable outcome, not a behavior vague enough to pass any implementation.
+See @~/.claude/skills/shared/jira-guidelines.md for shared standards.
+
 - The user story sentence must follow "As a / I want / so that" exactly — no variations.
 - Notes are optional. Only include them if there is genuinely useful context that does not fit in the acceptance criteria. Avoid adding notes as much as possible, they should be the exception, not the norm.
 - If the user's idea is too broad for a single ticket, flag it and suggest splitting before drafting.
