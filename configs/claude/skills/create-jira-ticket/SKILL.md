@@ -1,6 +1,6 @@
 ---
-name: jira-ticket
-description: Write and create one or more Jira tickets with a structured user story format. Use when the user wants to create new Jira tickets, write user stories, or capture requirements in Jira.
+name: create-jira-ticket
+description: Write and create one or more NEW Jira tickets with a structured user story format. Use ONLY when the user wants to CREATE or WRITE new Jira tickets, user stories, or requirements. Do NOT use for reading, fetching, viewing, or looking up existing Jira tickets.
 ---
 
 # Write Jira Tickets
