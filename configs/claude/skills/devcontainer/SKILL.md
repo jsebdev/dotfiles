@@ -1,6 +1,6 @@
 ---
 name: devcontainer
-description: Locate and execute commands inside the VSCode devcontainer for the current repository. Use when you need to run tests, linting, builds, or any project command inside the devcontainer environment. Triggers when the user asks to run commands inside the devcontainer, or when the current project has a .devcontainer/ directory and commands should run inside the container.
+description: Locate and execute commands inside the VSCode devcontainer for the current repository. Use when the project has a .devcontainer/ directory and you need to run any project command (tests, linting, builds, migrations, etc.) inside the container.
 ---
 
 # DevContainer Access

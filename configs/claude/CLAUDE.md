@@ -48,22 +48,9 @@ The following branches are protected across all projects: `main`, `master`, `sta
 - Try to avoid compound commands (pipes | or &&, etc), or with $() command substitution, to minimize asking for permissions.
 - Avoid command that contains quoted characters in flag names.
 
-### DevContainer Rule
+### Container Environment Rule
 
-If the project contains a `.devcontainer/` directory, use the `devcontainer` skill to locate the running container and execute ALL project commands (tests, linting, builds, migrations, etc.) inside it. Never run project commands on the host machine when a devcontainer is present.
-
-### Docker Compose Environment Rule
-
-If the project contains a `docker-compose.yml` or `compose.yml` file, ALL commands (tests, linting, formatting, migrations, scripts, etc.) MUST be executed inside the appropriate Docker Compose service container using `docker compose exec <service> <command>` or `docker compose run <service> <command>`. Never run project commands directly on the host machine. No exceptions.
-
-Examples:
-
-- Tests: `docker compose exec web python -m pytest`
-- Formatting: `docker compose exec web black .`
-- Migrations: `docker compose exec web python manage.py migrate`
-- Linting: `docker compose exec web flake8`
-
-Always identify the correct service name from the compose file before running any command.
+Never run project commands on the host machine. Use the `devcontainer` skill when the project has a `.devcontainer/` directory, or the `docker-compose` skill when it has a `docker-compose.yml` or `compose.yml`. When both are present, `devcontainer` takes precedence.
 
 ### Package Management
 
@@ -98,6 +85,7 @@ Use the appropriate agent for each task:
 | `implementation-workflow`     | Non-trivial code changes requiring planning                                      |
 | `software-designer-mindset`   | write/review code to use modern principles of software design                    |
 | `devcontainer`                | Find and execute commands inside the VSCode devcontainer for the current project |
+| `docker-compose`              | Execute project commands inside Docker Compose services                          |
 | `general-testing-guidelines`  | Language-agnostic test naming, structure, and organization — use when writing or reviewing any tests |
 
 ## Quick Reference
