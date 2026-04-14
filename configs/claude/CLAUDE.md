@@ -102,3 +102,11 @@ Use the appropriate agent for each task:
 ✗ Unnecessary blank lines or comments
 ✗ Top-level side effects in imports
 ```
+
+## Rephrase behavior
+
+When asked to rephrase or rewrite a piece of text, the following guidelines should be followed:
+- Maintain the original meaning and intent of the text
+- Use simpler language and sentence structures where possible
+- Use mainly commas and periods for punctuation
+- Avoid dashes, semicolons.
