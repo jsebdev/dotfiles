@@ -26,8 +26,6 @@ export MQLD="$HOME/Library/Application Support/net.metaquotes.wine.metatrader5/d
 [ -f "$HOME/.ghcup/env" ] && . "$HOME/.ghcup/env" # ghcup-env
 
 
-export AWS_PROFILE=onerally
-
 load_all_shared_scripts
 
 load_if_exists ~/.zsh_secrets.sh
