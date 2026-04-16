@@ -49,7 +49,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 ## 6. Pull Request Creation
 
-- Create PR using: `gh pr create`
+- Create PR using: `gh pr create --draft`
 - **Naming convention**: `Andres/feature/<descriptive-name>` or `Andres/bugfix/<descriptive-name>`
 - **PR Description format**:
 
