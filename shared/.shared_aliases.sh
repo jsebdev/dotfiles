@@ -31,3 +31,6 @@ ipynb2jupy() {
   local filename_without_extension="${file_to_convert%.ipynb}"
   jupytext --to py:percent "$file_to_convert" -o "${filename_without_extension}.ju.py"
 }
+
+# git delta
+alias dss='delta --side-by-side'
