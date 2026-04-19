@@ -30,10 +30,38 @@ Design your data structures and schemas first. The right data model makes algori
 - Define your core entities, their attributes, and relationships before writing logic
 - Let the data shape drive the API and module boundaries
 - Use value objects and typed structures (dataclasses, TypedDict, Pydantic) to make data explicit
+- Wrap primitives in domain types — a `CustomerId` and a `ShopId` are both strings, but they are not interchangeable
+- Make invalid states unrepresentable: if mixing two types is a bug, make it a compile/type error instead
 
 **Apply when:** Designing a new feature, defining database models, planning an API.
 
-**Watch for:** Logic-first thinking that forces awkward data transformations later.
+**Watch for:** Logic-first thinking that forces awkward data transformations later. Functions with multiple parameters of the same primitive type (e.g., `def transfer(from_id: str, to_id: str)`) — these invite silent argument swaps that no type checker will catch.
+
+**Domain type examples:**
+
+```python
+from typing import NewType
+
+CustomerId = NewType("CustomerId", int)
+ShopId = NewType("ShopId", int)
+
+def get_orders(customer_id: CustomerId, shop_id: ShopId): ...
+
+# This is now a type error — swap is caught by the type checker
+get_orders(shop_id, customer_id)
+```
+
+```typescript
+type CustomerId = string & { readonly _brand: "CustomerId" };
+type ShopId = string & { readonly _brand: "ShopId" };
+
+function getOrders(customerId: CustomerId, shopId: ShopId): void {}
+
+// Type error — cannot assign ShopId to CustomerId
+getOrders(shopId, customerId);
+```
+
+The overhead is 2–5 lines per type. The benefit is compiler-enforced correctness, self-documenting signatures, and safe refactoring across the codebase.
 
 ## 3. High Cohesion
 
