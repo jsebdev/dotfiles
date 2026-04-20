@@ -114,7 +114,7 @@ vim.keymap.set({'n', 'v'}, '<C-c>', '"+y', { desc = 'Copy to clipboard' })
 
 -- smart debug prints
 vim.keymap.set('n', '<leader>zpp', function()
-  require('custom.utils.smart_print').print_current_line_with_formats('print(\'>>>>> %s:%d "%s"\')', 'print(%s)')
+  require('custom.utils.smart_print').print_current_line_with_formats('print(\'>>>>> %s:%d "%s"\')', 'print(%s, flush=True)')
 end, { desc = "Smart print in python" })
 
 vim.keymap.set('n', '<leader>zpl', function()
