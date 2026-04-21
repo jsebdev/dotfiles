@@ -117,6 +117,10 @@ vim.keymap.set('n', '<leader>zpp', function()
   require('custom.utils.smart_print').print_current_line_with_formats('print(\'>>>>> %s:%d "%s"\')', 'print(%s, flush=True)')
 end, { desc = "Smart print in python" })
 
+vim.keymap.set('n', '<leader>zpr', function()
+  require('custom.utils.smart_print').print_current_line_with_formats('print(\'>>>>> %s:%d "%s"\')', 'pprint(%s, stream=sys.stdout)')
+end, { desc = "Smart print in python with pprint" })
+
 vim.keymap.set('n', '<leader>zpl', function()
   require('custom.utils.smart_print').print_current_line_with_formats('logger.debug(\'>>>>> %s:%d "%s"\')', 'logger.debug(%s)')
 end, { desc = "Log print in python" })
