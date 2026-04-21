@@ -1,0 +1,13 @@
+{
+  "enabledPlugins": {
+    "mach-eight-dev@mach-eight-plugins": true
+  },
+  "extraKnownMarketplaces": {
+    "mach-eight-plugins": {
+      "source": {
+        "repo": "mach-eight/claude-plugins",
+        "source": "github"
+      }
+    }
+  }
+}

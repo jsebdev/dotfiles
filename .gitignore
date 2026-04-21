@@ -7,3 +7,5 @@ ignored
 
 # CLAUDE
 **/claude/plans/**
+configs/claude/mcp-needs-auth-cache.json
+
