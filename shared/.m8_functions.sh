@@ -175,3 +175,14 @@ def execute_command_in_arena_agents_service() {
 def connect_to_local_arena_questionnaire_v2_db() {
     mongosh "mongodb://user:pass@localhost:27050/questionnaire?authSource=admin"
 }
+
+def export_arena_client_config_db_url_and_connect_to_db() {
+    if [[ -z "$PGPASSWORD" ]]; then
+        echo "Error: PGPASSWORD environment variable is not set."
+        echo "Please make sure to source the appropriate file that sets the database credentials before running this command."
+        echo "E.G. source ./.config/catalyst-staging.sh"
+        return 1
+    fi
+    export DATABASE_URL="postgresql://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE?sslmode=verify-ca&sslrootcert=$PGSSLROOTCERT"
+    psql "$DATABASE_URL"
+}
