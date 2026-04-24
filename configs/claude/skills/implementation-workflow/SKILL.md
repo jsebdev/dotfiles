@@ -21,7 +21,6 @@ Follow this systematic approach to implement features or bug fixes professionall
   - Architecture decisions
   - Technology choices
   - Trade-offs between approaches
-- Commit the plan file before proceeding
 - Wait for user approval if significant architectural decisions are involved
 
 ## 3. Implementation
