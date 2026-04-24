@@ -107,6 +107,13 @@ look_comments_in_current_pr() {
           then .
           else select(.user.login == $reviewer)
         end
-      | {body, start_line, line, path, user: .user.login}
+      | {
+        body,
+        start_line,
+        line,
+        path,
+        commit_id,
+        user: .user.login
+      }
     '
 }
