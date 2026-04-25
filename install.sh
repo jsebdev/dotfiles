@@ -115,6 +115,7 @@ INSTALLERS=(
   "install_claude_code.sh"
   "install_git_delta.sh"
   "install_gh_cli.sh"
+  "setup_ssh_config.sh"
 )
 
 echo ""

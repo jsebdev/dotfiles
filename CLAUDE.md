@@ -52,7 +52,8 @@ dotfiles/
 │   ├── .shared_functions.sh    # Common functions
 │   └── .m8_aliases.sh          # Work-specific Mach8/RallyClaim shortcuts
 ├── configs/            # Application configurations
-│   └── nvim/           # Neovim configuration (see configs/nvim/CLAUDE.md)
+│   ├── nvim/           # Neovim configuration (see configs/nvim/CLAUDE.md)
+│   └── ssh/            # SSH client config (symlinked to ~/.ssh/config via setup_ssh_config.sh)
 ├── package_installers/ # Installation scripts for tools (e.g., install_fzf.sh)
 ├── ignored/            # Git-ignored personal notes
 ├── .gitconfig          # Git configuration
@@ -96,6 +97,7 @@ The repository integrates these version managers and tools:
 - **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim)
 - **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`); config in `configs/claude/` is symlinked to `~/.claude` via `setup_claude_config.sh`
 - **GitHub CLI** - GitHub's official command-line tool (installed via `package_installers/install_gh_cli.sh`)
+- **SSH config** - Client configuration with host aliases for personal and work GitHub; config in `configs/ssh/` is symlinked to `~/.ssh/config` via `setup_ssh_config.sh`. Requires SSH keys named `~/.ssh/id_rsa` (personal) and `~/.ssh/mach8_key_rsa` (work) to be present on each machine.
 
 ## Shell-Specific Features
 
