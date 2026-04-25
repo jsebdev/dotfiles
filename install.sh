@@ -115,6 +115,7 @@ INSTALLERS=(
   "install_claude_code.sh"
   "install_git_delta.sh"
   "install_gh_cli.sh"
+  "install_terminal_notifier.sh"
   "setup_ssh_config.sh"
 )
 
