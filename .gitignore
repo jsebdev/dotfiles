@@ -9,3 +9,8 @@ ignored
 **/claude/plans/**
 configs/claude/mcp-needs-auth-cache.json
 
+# OMC runtime state
+.omc/
+configs/claude/.omc/
+configs/claude/CLAUDE.md.backup.*
+

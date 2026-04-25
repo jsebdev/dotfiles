@@ -110,3 +110,8 @@ When asked to rephrase or rewrite a piece of text, the following guidelines shou
 - Use simpler language and sentence structures where possible
 - Use mainly commas and periods for punctuation
 - Avoid dashes, semicolons.
+
+
+<!-- OMC:IMPORT:START -->
+@CLAUDE-omc.md
+<!-- OMC:IMPORT:END -->
