@@ -1,5 +1,5 @@
 {
-  "defaultExecutionMode": "ultrawork",
+  "defaultExecutionMode": "standard",
   "taskTool": "builtin",
   "taskToolConfig": {
     "injectInstructions": true,
