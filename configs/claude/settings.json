@@ -1,5 +1,4 @@
 {
-  "skipAutoPermissionPrompt": true,
   "hooks": {
     "Notification": [
       {
@@ -23,5 +22,6 @@
         ]
       }
     ]
-  }
+  },
+  "editorMode": "vim"
 }
