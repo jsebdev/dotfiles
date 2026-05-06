@@ -41,6 +41,7 @@
       }
     }
   },
+  "theme": "dark",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true
 }
