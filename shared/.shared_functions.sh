@@ -101,6 +101,7 @@ look_comments_in_current_pr() {
   # --- Fetch + filter ---
   gh api "repos/${repo}/pulls/${pr_number}/comments" --paginate |
     jq --arg regex "$regex" --arg reviewer "$reviewer" '
+    [
       .[]
       | if ($regex == "") then . else select(.body | test($regex; "i")) end
       | if ($reviewer == "")
@@ -115,5 +116,5 @@ look_comments_in_current_pr() {
         commit_id,
         user: .user.login
       }
-    '
+    ]'
 }
