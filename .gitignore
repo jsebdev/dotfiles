@@ -8,6 +8,9 @@ ignored
 # CLAUDE
 **/claude/plans/**
 configs/claude/mcp-needs-auth-cache.json
+configs/claude/.last-cleanup
+configs/claude/stats-cache.json
+
 
 # OMC runtime state
 .omc/
