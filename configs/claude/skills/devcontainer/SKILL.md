@@ -56,6 +56,7 @@ docker exec -u vscode -w /workspaces/mobility festive_swartz sh -c "make test"
 
 ## Important Notes
 
+- always check for makefiles files to better understand how to run commands inside the container (e.g., `make test`, `make lint`, etc.)
 - Always use `sh -c "{command}"` to run commands, not bash directly (bash may not be available or configured the same way)
 - The working directory inside the container is `/workspaces/{repo-name}`, not the host path
 - If no matching container is found, the devcontainer is not running — ask the user to open the project in VSCode with "Reopen in Container"
