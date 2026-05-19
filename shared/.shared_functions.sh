@@ -109,6 +109,7 @@ look_comments_in_current_pr() {
           else select(.user.login == $reviewer)
         end
       | {
+        id,
         body,
         start_line,
         line,
