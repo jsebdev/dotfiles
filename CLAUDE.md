@@ -95,7 +95,7 @@ The repository integrates these version managers and tools:
 - **nvm** - Node.js version management
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
 - **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim)
-- **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`); config in `configs/claude/` is symlinked to `~/.claude` via `setup_claude_config.sh`
+- **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`); config in `configs/claude/` is symlinked to `~/.claude` via `setup_claude_config.sh`; MCP servers (jira-mach8, jira-arena) registered via `setup_claude_mcp.sh`
 - **GitHub CLI** - GitHub's official command-line tool (installed via `package_installers/install_gh_cli.sh`)
 - **SSH config** - Client configuration with host aliases for personal and work GitHub; config in `configs/ssh/` is symlinked to `~/.ssh/config` via `setup_ssh_config.sh`. Requires SSH keys named `~/.ssh/id_rsa` (personal) and `~/.ssh/mach8_key_rsa` (work) to be present on each machine.
 

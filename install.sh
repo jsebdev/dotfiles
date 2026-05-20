@@ -113,6 +113,8 @@ INSTALLERS=(
   "install_node.sh"
   "setup_nvim.sh"
   "install_claude_code.sh"
+  "setup_claude_config.sh"
+  "setup_claude_mcp.sh"
   "install_git_delta.sh"
   "install_gh_cli.sh"
   "install_terminal_notifier.sh"
