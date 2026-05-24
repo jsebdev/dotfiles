@@ -464,7 +464,16 @@ require('lazy').setup({
           --  This is where a variable was first declared, or where a function is defined, etc.
           --  To jump back, press <C-t>.
           map('gd', require('telescope.builtin').lsp_definitions,'[G]oto [D]efinition')
-          map('<F12>', require('custom.utils.lsp_def_in_new_tab_or_references').lsp_def_in_new_tab_or_references, '[G]oto [D]efinition')
+          map('<F12>', function()
+            if vim.bo.filetype == 'markdown' then
+              local pos = vim.api.nvim_win_get_cursor(0)
+              vim.cmd('tabnew %')
+              vim.api.nvim_win_set_cursor(0, pos)
+              vim.cmd('ObsidianFollowLink')
+            else
+              require('custom.utils.lsp_def_in_new_tab_or_references').lsp_def_in_new_tab_or_references()
+            end
+          end, '[G]oto [D]efinition')
 
           -- Find references for the word under your cursor.
           map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')

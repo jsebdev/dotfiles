@@ -59,6 +59,13 @@ return {
       min_chars = 2,
     },
 
+    mappings = {
+      ["gt"] = {
+        action = function() vim.cmd("ObsidianToday") end,
+        opts = { noremap = true, desc = "Open today's daily note" },
+      },
+    },
+
     picker = {
       -- Set your preferred picker. Can be one of 'telescope.nvim', 'fzf-lua', or 'mini.pick'.
       name = "telescope.nvim",
