@@ -23,7 +23,7 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "~/My Drive/second_brain/second_brain_vault",
+        path = "~/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain/second_brain_vault",
         overrides = {
           notes_subdir = "fleeting_notes",
         },
