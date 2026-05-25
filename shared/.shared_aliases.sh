@@ -15,7 +15,7 @@ fi
 ## personal
 alias cddf="cd ~/coding/dotfiles/"
 #TODO: most likely this will not work the same on other machines, so fix this
-alias cdsb="cd '/Users/sebastian/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain/second_brain_vault'"
+alias cdsb="cd ~/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My\ Drive/second_brain/second_brain_vault"
 
 ## work
 alias cdsf="cd ~/coding/macheight/safefreight/repo/"
