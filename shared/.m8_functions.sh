@@ -1,4 +1,25 @@
 # OneRallyClaim
+rallyclaim_login_using_keepass_mfa() {
+    local otp="$1"
+    if [[ -z "$otp" ]]; then
+        echo "Usage: rallyclaim_login_using_keepass_mfa <one-time-password>"
+        return 1
+    fi
+    local credentials
+    credentials=$(aws sts get-session-token \
+        --profile onerally \
+        --serial-number arn:aws:iam::102282313732:mfa/keepass \
+        --token-code "$otp")
+    if [[ $? -ne 0 ]]; then
+        echo "Failed to get session token."
+        return 1
+    fi
+    export AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq -r '.Credentials.AccessKeyId')
+    export AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq -r '.Credentials.SecretAccessKey')
+    export AWS_SESSION_TOKEN=$(echo "$credentials" | jq -r '.Credentials.SessionToken')
+    echo "AWS credentials exported successfully."
+}
+
 rallyclaim_run_django_task_terminal() {
     local environment="test"
     local custom_command=""
