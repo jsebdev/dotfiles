@@ -58,6 +58,54 @@ backup_claude_config() {
 }
 
 
+ecs_connect() {
+    echo "Fetching ECS clusters..."
+    local clusters_raw
+    clusters_raw=$(aws ecs list-clusters --query 'clusterArns[]' --output text 2>&1)
+    if echo "$clusters_raw" | grep -q "AccessDeniedException"; then
+        echo "Error: Access denied. Log in first (e.g. run your MFA login command) and try again."
+        return 1
+    fi
+
+    local cluster_arn
+    cluster_arn=$(echo "$clusters_raw" | tr '\t' '\n' | fzf --prompt="Select cluster: " --height=40%)
+    if [[ -z "$cluster_arn" ]]; then
+        echo "No cluster selected."
+        return 1
+    fi
+    echo "Selected cluster: ${cluster_arn##*/}"
+
+    echo "Fetching services..."
+    local service_arn
+    service_arn=$(aws ecs list-services --cluster "$cluster_arn" --query 'serviceArns[]' --output text | tr '\t' '\n' | fzf --prompt="Select service: " --height=40%)
+    if [[ -z "$service_arn" ]]; then
+        echo "No service selected."
+        return 1
+    fi
+    local service_name="${service_arn##*/}"
+    echo "Selected service: $service_name"
+
+    echo "Fetching tasks..."
+    local task_arn
+    task_arn=$(aws ecs list-tasks --cluster "$cluster_arn" --service-name "$service_name" --query 'taskArns[]' --output text | tr '\t' '\n' | fzf --prompt="Select task: " --height=40%)
+    if [[ -z "$task_arn" ]]; then
+        echo "No task selected."
+        return 1
+    fi
+    echo "Selected task: ${task_arn##*/}"
+
+    echo "Fetching containers..."
+    local container_name
+    container_name=$(aws ecs describe-tasks --cluster "$cluster_arn" --tasks "$task_arn" --query 'tasks[0].containers[].name' --output text | tr '\t' '\n' | fzf --prompt="Select container: " --height=40%)
+    if [[ -z "$container_name" ]]; then
+        echo "No container selected."
+        return 1
+    fi
+    echo "Connecting to container '$container_name'..."
+
+    aws ecs execute-command --cluster "$cluster_arn" --task "$task_arn" --container "$container_name" --interactive --command "/bin/bash"
+}
+
 look_comments_in_current_pr() {
   local regex=""
   local reviewer=""
