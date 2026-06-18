@@ -75,3 +75,22 @@ def export_arena_client_config_db_url_and_connect_to_db() {
     export DATABASE_URL="postgresql://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE?sslmode=verify-ca&sslrootcert=$PGSSLROOTCERT"
     psql "$DATABASE_URL"
 }
+
+def export_arena_sourcing_db_url_and_connect_to_db() {
+    [[ -z "$SOURCING_DB_PORT" ]] && export SOURCING_DB_PORT=5432
+    [[ -z "$FLYWAY_SCHEMA" ]] && export FLYWAY_SCHEMA=sourcing
+    if [[ -z "$SOURCING_DB_USER" ]]; then
+        export SOURCING_DB_USER=$(aws ssm get-parameter --name "/catalyst-staging/shared/PGUSER" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    fi
+    if [[ -z "$FLYWAY_DATABASE" ]]; then
+        export FLYWAY_DATABASE=$(aws ssm get-parameter --name "/catalyst-staging/shared/PGDATABASE" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    fi
+    if [[ -z "$SOURCING_DB_HOST" ]]; then
+        export SOURCING_DB_HOST=$(aws ssm get-parameter --name "/catalyst-staging/shared/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    fi
+    if [[ -z "$SOURCING_DB_PASSWORD" ]]; then
+        export SOURCING_DB_PASSWORD=$(aws ssm get-parameter --name "/catalyst-staging/shared/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    fi
+    export SOURCING_DATABASE_URL="postgresql://$SOURCING_DB_USER:$SOURCING_DB_PASSWORD@$SOURCING_DB_HOST:$SOURCING_DB_PORT/$FLYWAY_DATABASE"
+    psql "$SOURCING_DATABASE_URL"
+}
