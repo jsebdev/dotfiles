@@ -38,3 +38,5 @@ ipynb2jupy() {
 alias dss='delta --side-by-side'
 
 
+# Open in google chrome
+alias ogc="open -a 'Google Chrome'"
