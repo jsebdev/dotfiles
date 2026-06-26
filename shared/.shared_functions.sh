@@ -106,6 +106,10 @@ ecs_connect() {
     aws ecs execute-command --cluster "$cluster_arn" --task "$task_arn" --container "$container_name" --interactive --command "/bin/bash"
 }
 
+rm_lines() {
+  sed 's/^[[:space:]]*//' | grep -v '^$' | tr '\n' '\0' | xargs -0 rm
+}
+
 look_comments_in_current_pr() {
   local regex=""
   local reviewer=""
