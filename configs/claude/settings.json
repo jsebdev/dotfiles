@@ -30,9 +30,7 @@
     "type": "command",
     "command": "node ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud.mjs"
   },
-  "enabledPlugins": {
-    "oh-my-claudecode@omc": true
-  },
+  "enabledPlugins": {},
   "extraKnownMarketplaces": {
     "omc": {
       "source": {
