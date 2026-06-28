@@ -11,7 +11,7 @@ add_mcp_server() {
     if claude mcp list 2>/dev/null | grep -q "^$name:"; then
         echo "MCP server '$name' already configured. Skipping."
     else
-        claude mcp add --transport http "$name" "$url"
+        claude mcp add --transport http "$name" --scope user "$url"
         echo "Added MCP server '$name'."
     fi
 }
