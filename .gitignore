@@ -10,6 +10,8 @@ ignored
 configs/claude/mcp-needs-auth-cache.json
 configs/claude/.last-cleanup
 configs/claude/stats-cache.json
+configs/claude/.last-update-result.json
+configs/claude/teams/
 
 
 # OMC runtime state
