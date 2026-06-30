@@ -7,7 +7,7 @@ connect_to_local_arena_sourcing_db() {
         --host=127.0.0.1 \
         --port=5440 \
         --username=postgres \
-        --dbname=model_view \
+        --dbname=model_view
 }
 
 execute_command_in_arena_person_service() {
