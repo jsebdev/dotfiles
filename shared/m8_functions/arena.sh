@@ -1,8 +1,8 @@
-def connect_to_local_arena_client_config_db() {
+connect_to_local_arena_client_config_db() {
     PGPASSWORD=postgres psql -h 127.0.0.1 -p 5010 -U postgres -d client_config
 }
 
-def connect_to_local_arena_sourcing_db() {
+connect_to_local_arena_sourcing_db() {
     PGPASSWORD='postgres' psql \
         --host=127.0.0.1 \
         --port=5440 \
@@ -10,7 +10,7 @@ def connect_to_local_arena_sourcing_db() {
         --dbname=model_view \
 }
 
-def execute_command_in_arena_person_service() {
+execute_command_in_arena_person_service() {
     local command="$*"
     if [[ -z "$command" ]]; then
         echo "Usage: execute_command_in_arena_person_service <command>"
@@ -19,7 +19,7 @@ def execute_command_in_arena_person_service() {
     docker exec -u vscode  $(docker ps | grep person | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/person-service && $command"
 }
 
-def execute_command_in_arena_client_config() {
+execute_command_in_arena_client_config() {
     local command="$*"
     if [[ -z "$command" ]]; then
         echo "Usage: execute_command_in_arena_client_config <command>"
@@ -28,12 +28,12 @@ def execute_command_in_arena_client_config() {
     docker exec -u vscode  $(docker ps | grep client-config | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/client-config && $command"
 }
 
-def login_in_arena_questionnaire_v2_service() {
+login_in_arena_questionnaire_v2_service() {
     docker exec -it -u vscode  $(docker ps | grep questionnaire-v2 | awk '{print $NF}') bash
     # docker exec -u vscode  $(docker ps | grep questionnaire-v2 | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/questionnaire-v2 && bash"
 }
 
-def execute_command_in_arena_questionnaire_v2_service() {
+execute_command_in_arena_questionnaire_v2_service() {
     local command="$*"
     if [[ -z "$command" ]]; then
         echo "Usage: execute_command_in_arena_questionnaire_v2_service <command>"
@@ -42,7 +42,7 @@ def execute_command_in_arena_questionnaire_v2_service() {
     docker exec -u vscode  $(docker ps | grep questionnaire-v2 | awk '{print $NF}') bash -c "export PATH=\"\$HOME/.local/share/mise/shims:\$PATH\" && cd /workspaces/questionnaire-v2 && $command"
 }
 
-def execute_command_in_arena_platform_service() {
+execute_command_in_arena_platform_service() {
     local command="$*"
     if [[ -z "$command" ]]; then
         echo "Usage: execute_command_in_arena_platform_service <command>"
@@ -52,7 +52,7 @@ def execute_command_in_arena_platform_service() {
     docker exec -w /workspaces/platform -u node  $(docker ps | grep platform | awk '{print $NF}') bash -c "$command"
 }
 
-def execute_command_in_arena_agents_service() {
+execute_command_in_arena_agents_service() {
     local command="$*"
     if [[ -z "$command" ]]; then
         echo "Usage: execute_command_in_arena_agents_service <command>"
@@ -61,11 +61,11 @@ def execute_command_in_arena_agents_service() {
     docker exec -w /workspaces/agents -u vscode  $(docker ps | grep agents | awk '{print $NF}') bash -c "$command"
 }
 
-def connect_to_local_arena_questionnaire_v2_db() {
+connect_to_local_arena_questionnaire_v2_db() {
     mongosh "mongodb://user:pass@localhost:27050/questionnaire?authSource=admin"
 }
 
-def export_arena_client_config_db_url_and_connect_to_db() {
+export_arena_client_config_db_url_and_connect_to_db() {
     if [[ -z "$PGPASSWORD" ]]; then
         echo "Error: PGPASSWORD environment variable is not set."
         echo "Please make sure to source the appropriate file that sets the database credentials before running this command."
@@ -76,7 +76,7 @@ def export_arena_client_config_db_url_and_connect_to_db() {
     psql "$DATABASE_URL"
 }
 
-def export_arena_sourcing_db_url_and_connect_to_db() {
+export_arena_sourcing_db_url_and_connect_to_db() {
     local environment="catalyst-staging"
     local psql_command=""
     while [[ $# -gt 0 ]]; do
