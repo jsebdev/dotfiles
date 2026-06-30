@@ -78,10 +78,15 @@ def export_arena_client_config_db_url_and_connect_to_db() {
 
 def export_arena_sourcing_db_url_and_connect_to_db() {
     local environment="catalyst-staging"
+    local psql_command=""
     while [[ $# -gt 0 ]]; do
         case "$1" in
             --env)
                 environment="$2"
+                shift 2
+                ;;
+            -c|--command)
+                psql_command="$2"
                 shift 2
                 ;;
             *)
@@ -98,5 +103,9 @@ def export_arena_sourcing_db_url_and_connect_to_db() {
     export SOURCING_DB_HOST=$(aws ssm get-parameter --name "$ssm_prefix/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
     export SOURCING_DB_PASSWORD=$(aws ssm get-parameter --name "$ssm_prefix/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
     export SOURCING_DATABASE_URL="postgresql://$SOURCING_DB_USER:$SOURCING_DB_PASSWORD@$SOURCING_DB_HOST:$SOURCING_DB_PORT/$FLYWAY_DATABASE"
-    psql "$SOURCING_DATABASE_URL"
+    if [[ -n "$psql_command" ]]; then
+        psql "$SOURCING_DATABASE_URL" -c "$psql_command"
+    else
+        psql "$SOURCING_DATABASE_URL"
+    fi
 }
