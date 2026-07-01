@@ -9,7 +9,7 @@ M.print_current_line_with_formats = function(expr_format, eval_format)
     local indent = line:match '^%s*' or ''
     local trimmed_line = vim.trim(line)
 
-    local file = vim.fn.expand '%:t' -- file name
+    local file = vim.fn.expand '%:p' -- absolute file path
     local linenr = row
 
     local print_expr = indent .. string.format(expr_format, file, linenr, trimmed_line)
