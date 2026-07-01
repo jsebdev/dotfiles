@@ -81,6 +81,18 @@ export_arena_sourcing_db_url_and_connect_to_db() {
     local psql_command=""
     while [[ $# -gt 0 ]]; do
         case "$1" in
+            -h|--help)
+                echo "Usage: export_arena_sourcing_db_url_and_connect_to_db [-h|--help] [--env <environment>] [-c|--command <psql_command>]"
+                echo ""
+                echo "Fetches sourcing DB credentials from AWS SSM for the given environment,"
+                echo "exports them as SOURCING_DB_* / FLYWAY_* / SOURCING_DATABASE_URL, and connects via psql."
+                echo ""
+                echo "Options:"
+                echo "  -h, --help            Show this help message and return"
+                echo "  --env <environment>   SSM parameter prefix environment (default: catalyst-staging)"
+                echo "  -c, --command <sql>   Run a single psql command instead of an interactive session"
+                return 0
+                ;;
             --env)
                 environment="$2"
                 shift 2
