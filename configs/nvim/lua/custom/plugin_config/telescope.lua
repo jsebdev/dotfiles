@@ -39,6 +39,9 @@ function M.setup()
     defaults = {
       vimgrep_arguments = vimgrep_arguments,
       path_display = { 'filename_first' },
+      preview = {
+        filesize_limit = 1,  -- 1 MB
+      },
       layout_strategy = 'vertical',
       layout_config = {
         height = 0.99,
