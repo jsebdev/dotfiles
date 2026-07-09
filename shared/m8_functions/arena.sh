@@ -66,14 +66,48 @@ connect_to_local_arena_questionnaire_v2_db() {
 }
 
 export_arena_client_config_db_url_and_connect_to_db() {
-    if [[ -z "$PGPASSWORD" ]]; then
-        echo "Error: PGPASSWORD environment variable is not set."
-        echo "Please make sure to source the appropriate file that sets the database credentials before running this command."
-        echo "E.G. source ./.config/catalyst-staging.sh"
-        return 1
+    local environment="catalyst-staging"
+    local psql_command=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                echo "Usage: export_arena_client_config_db_url_and_connect_to_db [-h|--help] [--env <environment>] [-c|--command <psql_command>]"
+                echo ""
+                echo "Fetches client-config DB credentials from AWS SSM for the given environment,"
+                echo "exports them as PG* / DATABASE_URL, and connects via psql."
+                echo ""
+                echo "Options:"
+                echo "  -h, --help            Show this help message and return"
+                echo "  --env <environment>   SSM parameter prefix environment (default: catalyst-staging)"
+                echo "  -c, --command <sql>   Run a single psql command instead of an interactive session"
+                return 0
+                ;;
+            --env)
+                environment="$2"
+                shift 2
+                ;;
+            -c|--command)
+                psql_command="$2"
+                shift 2
+                ;;
+            *)
+                echo "Unknown argument: $1"
+                return 1
+                ;;
+        esac
+    done
+    local ssm_prefix="/$environment/client-config-api"
+    export PGUSER=$(aws ssm get-parameter --name "$ssm_prefix/PGUSER" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export PGPASSWORD=$(aws ssm get-parameter --name "$ssm_prefix/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export PGHOST=$(aws ssm get-parameter --name "$ssm_prefix/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export PGPORT=$(aws ssm get-parameter --name "$ssm_prefix/PGPORT" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export PGDATABASE=$(aws ssm get-parameter --name "$ssm_prefix/PGDATABASE" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export DATABASE_URL="postgresql://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE?sslmode=require"
+    if [[ -n "$psql_command" ]]; then
+        psql "$DATABASE_URL" -c "$psql_command"
+    else
+        psql "$DATABASE_URL"
     fi
-    export DATABASE_URL="postgresql://$PGUSER:$PGPASSWORD@$PGHOST:$PGPORT/$PGDATABASE?sslmode=verify-ca&sslrootcert=$PGSSLROOTCERT"
-    psql "$DATABASE_URL"
 }
 
 export_arena_sourcing_db_url_and_connect_to_db() {
