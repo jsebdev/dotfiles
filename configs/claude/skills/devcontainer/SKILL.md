@@ -7,6 +7,20 @@ description: Locate and execute commands inside the VSCode devcontainer for the 
 
 When working inside a repository that has a `.devcontainer/` configuration, all project commands must run inside the devcontainer rather than the host machine.
 
+## CRITICAL RULE: Container Must Be Running
+
+This rule only applies when you actually need to execute a command inside the devcontainer. If the task at hand does not require running any command in the container (e.g., reading or editing files, answering questions about the code), there is no need for the devcontainer to be running.
+
+When you do need to run a command and the devcontainer is not running (no matching container appears in `docker ps`), **STOP IMMEDIATELY** and ask the user to start the devcontainer first (e.g., open the project in VSCode and "Reopen in Container").
+
+**DO NOT attempt any workaround unless users ask for it.** This means never:
+- Running the command on the host machine instead
+- Starting the container yourself (`devcontainer up`, `docker start`, `docker run`, etc.)
+- Building the devcontainer image
+- Using a different container or environment as a substitute
+
+Wait for the user to confirm the devcontainer is running before proceeding.
+
 ## How to Find and Use the DevContainer
 
 ### Step 1: Identify the repository name
@@ -59,7 +73,7 @@ docker exec -u vscode -w /workspaces/mobility festive_swartz sh -c "make test"
 - always check for makefiles files to better understand how to run commands inside the container (e.g., `make test`, `make lint`, etc.)
 - Always use `sh -c "{command}"` to run commands, not bash directly (bash may not be available or configured the same way)
 - The working directory inside the container is `/workspaces/{repo-name}`, not the host path
-- If no matching container is found, the devcontainer is not running — ask the user to open the project in VSCode with "Reopen in Container"
+- If no matching container is found, the devcontainer is not running — stop immediately, ask the user to open the project in VSCode with "Reopen in Container", and do not look for workarounds
 - If `remoteUser` is not set in `devcontainer.json`, default to `vscode`
 - Never run project commands (tests, linting, migrations, etc.) on the host — always use the devcontainer
 
