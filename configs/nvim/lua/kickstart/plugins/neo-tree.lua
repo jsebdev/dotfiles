@@ -53,8 +53,29 @@ return {
       -- vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
       -- vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
 
+      local function save_modified_file_buffers()
+        vim.schedule(function()
+          for _, buffer in ipairs(vim.api.nvim_list_bufs()) do
+            if
+              vim.api.nvim_buf_is_loaded(buffer)
+              and vim.bo[buffer].modified
+              and vim.bo[buffer].buftype == ""
+              and vim.api.nvim_buf_get_name(buffer) ~= ""
+            then
+              vim.api.nvim_buf_call(buffer, function()
+                vim.cmd("silent update")
+              end)
+            end
+          end
+        end)
+      end
+
       require("neo-tree").setup({
         close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+        event_handlers = {
+          { event = "file_renamed", handler = save_modified_file_buffers },
+          { event = "file_moved", handler = save_modified_file_buffers },
+        },
         popup_border_style = "rounded",
         enable_git_status = true,
         enable_diagnostics = true,
