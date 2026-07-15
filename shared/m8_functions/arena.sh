@@ -110,6 +110,51 @@ export_arena_client_config_db_url_and_connect_to_db() {
     fi
 }
 
+export_arena_job_classifier_db_url_and_connect_to_db() {
+    local environment="catalyst-staging"
+    local psql_command=""
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            -h|--help)
+                echo "Usage: export_arena_job_classifier_db_url_and_connect_to_db [-h|--help] [--env <environment>] [-c|--command <psql_command>]"
+                echo ""
+                echo "Fetches job-classifier DB credentials from AWS SSM for the given environment,"
+                echo "exports them as ARENA_JOB_CLASSIFIER_PG* / ARENA_JOB_CLASSIFIER_DATABASE_URL, and connects via psql."
+                echo ""
+                echo "Options:"
+                echo "  -h, --help            Show this help message and return"
+                echo "  --env <environment>   SSM parameter prefix environment (default: catalyst-staging)"
+                echo "  -c, --command <sql>   Run a single psql command instead of an interactive session"
+                return 0
+                ;;
+            --env)
+                environment="$2"
+                shift 2
+                ;;
+            -c|--command)
+                psql_command="$2"
+                shift 2
+                ;;
+            *)
+                echo "Unknown argument: $1"
+                return 1
+                ;;
+        esac
+    done
+    local ssm_prefix="/$environment/job_classifier_api"
+    export ARENA_JOB_CLASSIFIER_PGUSER=$(aws ssm get-parameter --name "$ssm_prefix/PGUSER" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_JOB_CLASSIFIER_PGPASSWORD=$(aws ssm get-parameter --name "$ssm_prefix/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_JOB_CLASSIFIER_PGHOST=$(aws ssm get-parameter --name "$ssm_prefix/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_JOB_CLASSIFIER_PGPORT=$(aws ssm get-parameter --name "$ssm_prefix/PGPORT" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_JOB_CLASSIFIER_PGDATABASE=$(aws ssm get-parameter --name "$ssm_prefix/PGDATABASE" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_JOB_CLASSIFIER_DATABASE_URL="postgresql://$ARENA_JOB_CLASSIFIER_PGUSER:$ARENA_JOB_CLASSIFIER_PGPASSWORD@$ARENA_JOB_CLASSIFIER_PGHOST:$ARENA_JOB_CLASSIFIER_PGPORT/$ARENA_JOB_CLASSIFIER_PGDATABASE?sslmode=require"
+    if [[ -n "$psql_command" ]]; then
+        psql "$ARENA_JOB_CLASSIFIER_DATABASE_URL" -c "$psql_command"
+    else
+        psql "$ARENA_JOB_CLASSIFIER_DATABASE_URL"
+    fi
+}
+
 export_arena_sourcing_db_url_and_connect_to_db() {
     local environment="catalyst-staging"
     local psql_command=""
@@ -119,7 +164,7 @@ export_arena_sourcing_db_url_and_connect_to_db() {
                 echo "Usage: export_arena_sourcing_db_url_and_connect_to_db [-h|--help] [--env <environment>] [-c|--command <psql_command>]"
                 echo ""
                 echo "Fetches sourcing DB credentials from AWS SSM for the given environment,"
-                echo "exports them as SOURCING_DB_* / FLYWAY_* / SOURCING_DATABASE_URL, and connects via psql."
+                echo "exports them as ARENA_SOURCING_PG* / ARENA_SOURCING_DATABASE_URL, and connects via psql."
                 echo ""
                 echo "Options:"
                 echo "  -h, --help            Show this help message and return"
@@ -142,16 +187,16 @@ export_arena_sourcing_db_url_and_connect_to_db() {
         esac
     done
     local ssm_prefix="/$environment/shared"
-    export SOURCING_DB_PORT=5432
-    export FLYWAY_SCHEMA=sourcing
-    export SOURCING_DB_USER=$(aws ssm get-parameter --name "$ssm_prefix/PGUSER" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
-    export FLYWAY_DATABASE=$(aws ssm get-parameter --name "$ssm_prefix/PGDATABASE" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
-    export SOURCING_DB_HOST=$(aws ssm get-parameter --name "$ssm_prefix/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
-    export SOURCING_DB_PASSWORD=$(aws ssm get-parameter --name "$ssm_prefix/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
-    export SOURCING_DATABASE_URL="postgresql://$SOURCING_DB_USER:$SOURCING_DB_PASSWORD@$SOURCING_DB_HOST:$SOURCING_DB_PORT/$FLYWAY_DATABASE"
+    export ARENA_SOURCING_PGPORT=5432
+    export ARENA_SOURCING_SCHEMA=sourcing
+    export ARENA_SOURCING_PGUSER=$(aws ssm get-parameter --name "$ssm_prefix/PGUSER" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_SOURCING_PGDATABASE=$(aws ssm get-parameter --name "$ssm_prefix/PGDATABASE" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_SOURCING_PGHOST=$(aws ssm get-parameter --name "$ssm_prefix/PGHOST" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_SOURCING_PGPASSWORD=$(aws ssm get-parameter --name "$ssm_prefix/PGPASSWORD" --region us-east-1 --with-decryption --query "Parameter.Value" --output text)
+    export ARENA_SOURCING_DATABASE_URL="postgresql://$ARENA_SOURCING_PGUSER:$ARENA_SOURCING_PGPASSWORD@$ARENA_SOURCING_PGHOST:$ARENA_SOURCING_PGPORT/$ARENA_SOURCING_PGDATABASE"
     if [[ -n "$psql_command" ]]; then
-        psql "$SOURCING_DATABASE_URL" -c "$psql_command"
+        psql "$ARENA_SOURCING_DATABASE_URL" -c "$psql_command"
     else
-        psql "$SOURCING_DATABASE_URL"
+        psql "$ARENA_SOURCING_DATABASE_URL"
     fi
 }
