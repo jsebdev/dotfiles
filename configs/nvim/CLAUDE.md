@@ -53,7 +53,7 @@ The configuration uses lazy.nvim as plugin manager with these key additions beyo
 ### Language Support
 Configured for:
 - **TypeScript/JavaScript** - ts_ls, eslint, prettier
-- **Python** - pyright, pylsp with flake8, ruff formatting
+- **Python** - basedpyright, pylsp with flake8, ruff formatting
 - **Lua** - lua_ls, stylua formatting
 - **HTML/CSS** - emmet support, auto-tagging
 - **Haskell** - haskell-tools integration
