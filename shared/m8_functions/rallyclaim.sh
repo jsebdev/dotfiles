@@ -1,4 +1,4 @@
-rallyclaim_login_using_keepass_mfa() {
+login_rallyclaim_using_keepass_mfa() {
     local otp="$1"
     if [[ -z "$otp" ]]; then
         echo "Usage: rallyclaim_login_using_keepass_mfa <one-time-password>"
@@ -120,6 +120,31 @@ rallyclaim_deploy_local_frontend_to_test() {
 #     aws s3 sync react/build/client/ s3://rally-claim-prod-frontend-6wsxt216
 # }
 
-def connect_to_local_rallyclaim_db() {
-    psql postgres://postgres:\$local-password@127.0.0.1:5432/rallyclaim
+connect_to_local_rallyclaim_db() {
+    local connection_string="postgres://postgres:\$local-password@127.0.0.1:5432/rallyclaim"
+    if [[ "$1" == "--help" || "$1" == "-h" ]]; then
+        echo "Usage: connect_to_local_rallyclaim_db [--help] [-c <command>]"
+        echo "  --help, -h    Show this help message"
+        echo "  -c <command>  Run the given SQL command and exit"
+        echo "  (no options)  Open an interactive psql session"
+        return 0
+    fi
+    local custom_command=""
+    while getopts "c:" opt; do
+        case $opt in
+            c)
+                custom_command="$OPTARG"
+                ;;
+            \?)
+                echo "Invalid option: -$OPTARG" >&2
+                return 1
+                ;;
+        esac
+    done
+    OPTIND=1
+    if [[ -n "$custom_command" ]]; then
+        psql "$connection_string" -c "$custom_command"
+    else
+        psql "$connection_string"
+    fi
 }

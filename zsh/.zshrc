@@ -56,3 +56,7 @@ export PATH="$HOME/.local/bin:$PATH"
 
 # avoid special character being part of a word
 export WORDCHARS=""
+
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+
