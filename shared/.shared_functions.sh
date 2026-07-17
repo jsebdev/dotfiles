@@ -110,9 +110,10 @@ rm_lines() {
   sed 's/^[[:space:]]*//' | grep -v '^$' | tr '\n' '\0' | xargs -0 rm
 }
 
-look_comments_in_current_pr() {
+look_at_comments_in_current_pr() {
   local regex=""
   local reviewer=""
+  local all_keys="false"
 
   # --- Parse arguments ---
   while [[ $# -gt 0 ]]; do
@@ -125,8 +126,12 @@ look_comments_in_current_pr() {
         regex="$2"
         shift 2
         ;;
+      --all|-a)
+        all_keys="true"
+        shift
+        ;;
       --help)
-        echo "Usage: look_comments_in_current_pr [--reviewer <username>] [--regex <pattern>]"
+        echo "Usage: look_comments_in_current_pr [--reviewer <username>] [--regex <pattern>] [--all|-a]"
         return 0
         ;;
       *)
@@ -152,7 +157,7 @@ look_comments_in_current_pr() {
 
   # --- Fetch + filter ---
   gh api "repos/${repo}/pulls/${pr_number}/comments" --paginate |
-    jq --arg regex "$regex" --arg reviewer "$reviewer" '
+    jq --arg regex "$regex" --arg reviewer "$reviewer" --arg all_keys "$all_keys" '
     [
       .[]
       | if ($regex == "") then . else select(.body | test($regex; "i")) end
@@ -160,14 +165,17 @@ look_comments_in_current_pr() {
           then .
           else select(.user.login == $reviewer)
         end
-      | {
-        id,
-        body,
-        start_line,
-        line,
-        path,
-        commit_id,
-        user: .user.login
-      }
+      | if ($all_keys == "true")
+          then .
+          else {
+            id,
+            body,
+            start_line,
+            line,
+            path,
+            commit_id,
+            user: .user.login
+          }
+        end
     ]'
 }
