@@ -6,17 +6,24 @@ login_rallyclaim_using_keepass_mfa() {
     fi
     local credentials
     credentials=$(aws sts get-session-token \
-        --profile onerally \
+        --profile onerally-longterm \
         --serial-number arn:aws:iam::102282313732:mfa/keepass \
         --token-code "$otp")
     if [[ $? -ne 0 ]]; then
         echo "Failed to get session token."
         return 1
     fi
-    export AWS_ACCESS_KEY_ID=$(echo "$credentials" | jq -r '.Credentials.AccessKeyId')
-    export AWS_SECRET_ACCESS_KEY=$(echo "$credentials" | jq -r '.Credentials.SecretAccessKey')
-    export AWS_SESSION_TOKEN=$(echo "$credentials" | jq -r '.Credentials.SessionToken')
-    echo "AWS credentials exported successfully."
+    local access_key_id secret_access_key session_token
+    access_key_id=$(echo "$credentials" | jq -r '.Credentials.AccessKeyId')
+    secret_access_key=$(echo "$credentials" | jq -r '.Credentials.SecretAccessKey')
+    session_token=$(echo "$credentials" | jq -r '.Credentials.SessionToken')
+    aws configure set aws_access_key_id "$access_key_id" --profile onerally
+    aws configure set aws_secret_access_key "$secret_access_key" --profile onerally
+    aws configure set aws_session_token "$session_token" --profile onerally
+    export AWS_ACCESS_KEY_ID="$access_key_id"
+    export AWS_SECRET_ACCESS_KEY="$secret_access_key"
+    export AWS_SESSION_TOKEN="$session_token"
+    echo "AWS credentials exported successfully (env vars + onerally profile)."
 }
 
 rallyclaim_run_django_task_terminal() {
