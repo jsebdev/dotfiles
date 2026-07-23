@@ -40,3 +40,7 @@ alias dss='delta --side-by-side'
 
 # Open in google chrome
 alias ogc="open -a 'Google Chrome'"
+
+
+# Colima
+alias colima-start="colima start --memory 8 --cpu 6 --disk 100"
