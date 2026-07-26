@@ -13,6 +13,8 @@ configs/claude/stats-cache.json
 configs/claude/.last-update-result.json
 configs/claude/teams/
 configs/claude/daemon.log
+configs/claude/daemon.lock
+configs/claude/daemon.status.json
 configs/claude/daemon/
 configs/claude/jobs/
 configs/claude/tasks/
