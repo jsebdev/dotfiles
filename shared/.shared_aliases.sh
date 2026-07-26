@@ -14,7 +14,7 @@ fi
 # change directories
 ## personal
 alias cddf="cd ~/coding/dotfiles/"
-alias cdsb="cd ~'/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain_vault_nogit'"
+alias cdsb="cd ~'/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain/second_brain_vault'"
 alias cddbe="cd ~/Library/DBeaverData/workspace6"
 
 ## work
