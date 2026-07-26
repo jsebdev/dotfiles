@@ -17,16 +17,41 @@ local spellcheck_filetypes = {
   "vim", "js", "jsx", "json", "md", "ts", "html", "css", "scss", "py"
 }
 
-local pattern = table.concat(
-  vim.tbl_map(function(ext) return "*." .. ext end, spellcheck_filetypes),
-  ","
-)
+local spellcheck_patterns = vim.tbl_map(function(ext) return "*." .. ext end, spellcheck_filetypes)
 
-vim.cmd("augroup spelunker")
-vim.cmd("autocmd!")
-vim.cmd("autocmd BufWinEnter,BufWritePost " .. pattern .. " call spelunker#check()")
-vim.cmd("autocmd CursorHold " .. pattern .. " call spelunker#check_displayed_words()")
-vim.cmd("augroup END")
+local max_line_length_for_spellcheck = 3000
+
+local function buffer_has_long_line(bufnr)
+  for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+    if #line > max_line_length_for_spellcheck then
+      return true
+    end
+  end
+  return false
+end
+
+local spelunker_group = vim.api.nvim_create_augroup("spelunker", { clear = true })
+
+vim.api.nvim_create_autocmd({ "BufWinEnter", "BufWritePost" }, {
+  group = spelunker_group,
+  pattern = spellcheck_patterns,
+  callback = function(args)
+    vim.b[args.buf].spelunker_skip = buffer_has_long_line(args.buf)
+    if not vim.b[args.buf].spelunker_skip then
+      vim.fn["spelunker#check"]()
+    end
+  end,
+})
+
+vim.api.nvim_create_autocmd("CursorHold", {
+  group = spelunker_group,
+  pattern = spellcheck_patterns,
+  callback = function(args)
+    if not vim.b[args.buf].spelunker_skip then
+      vim.fn["spelunker#check_displayed_words"]()
+    end
+  end,
+})
 
 vim.g.spelunker_spell_bad_group = "SpelunkerSpellBad"
 vim.g.spelunker_complex_or_compound_word_group = "SpelunkerComplexOrCompoundWord"

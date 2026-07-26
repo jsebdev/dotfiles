@@ -48,6 +48,7 @@ The configuration uses lazy.nvim as plugin manager with these key additions beyo
 - **haskell-tools.nvim** - Enhanced Haskell development
 - **go.nvim** - Comprehensive Go development tooling
 - **git-blame.nvim** - Git blame information
+- **bigfile.nvim** - Disables expensive features (treesitter, LSP, syntax) on very large files
 - **Various utilities** - autoclose, emmet, spell checking, file operations
 
 ### Language Support
