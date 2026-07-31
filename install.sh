@@ -107,6 +107,7 @@ INSTALLERS=(
   "install_aws_session_manager.sh"
   "install_fzf.sh"
   "install_ripgrep.sh"
+  "setup_ripgrep_config.sh"
   "install_gnu_grep.sh"
   "install_pyenv.sh"
   "install_uv.sh"

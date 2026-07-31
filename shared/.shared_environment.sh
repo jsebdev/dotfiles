@@ -1,3 +1,5 @@
+export RIPGREP_CONFIG_PATH="$HOME/.config/ripgrep/ripgreprc"
+
 # M8
 # for arena.io
 export GITHUB_PACKAGES_USER=sebastianMacheight

@@ -53,6 +53,7 @@ dotfiles/
 │   └── .m8_aliases.sh          # Work-specific Mach8/RallyClaim shortcuts
 ├── configs/            # Application configurations
 │   ├── nvim/           # Neovim configuration (see configs/nvim/CLAUDE.md)
+│   ├── ripgrep/        # ripgrep config (symlinked to ~/.config/ripgrep/ripgreprc via setup_ripgrep_config.sh)
 │   └── ssh/            # SSH client config (symlinked to ~/.ssh/config via setup_ssh_config.sh)
 ├── package_installers/ # Installation scripts for tools (e.g., install_fzf.sh)
 ├── ignored/            # Git-ignored personal notes
@@ -94,7 +95,7 @@ The repository integrates these version managers and tools:
 - **uv** - Fast Python package and project manager (installed via `package_installers/install_uv.sh`)
 - **nvm** - Node.js version management
 - **fzf** - Fuzzy finder (installed via `package_installers/install_fzf.sh`)
-- **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim)
+- **ripgrep** - Fast recursive grep tool (installed via `package_installers/install_ripgrep.sh`, required for Telescope.nvim); config in `configs/ripgrep/ripgreprc` is symlinked to `~/.config/ripgrep/ripgreprc` via `setup_ripgrep_config.sh` and activated by the `RIPGREP_CONFIG_PATH` export in `shared/.shared_environment.sh`. It enables `--hidden` so dotfiles like `shared/.shared_aliases.sh` are searched, and excludes `.git/`.
 - **Claude Code** - AI-powered CLI assistant (installed via `package_installers/install_claude_code.sh`); config in `configs/claude/` is symlinked to `~/.claude` via `setup_claude_config.sh`; MCP servers (jira-mach8, jira-arena) registered via `setup_claude_mcp.sh`
 - **GitHub CLI** - GitHub's official command-line tool (installed via `package_installers/install_gh_cli.sh`)
 - **SSH config** - Client configuration with host aliases for personal and work GitHub; config in `configs/ssh/` is symlinked to `~/.ssh/config` via `setup_ssh_config.sh`. Requires SSH keys named `~/.ssh/id_rsa` (personal) and `~/.ssh/mach8_key_rsa` (work) to be present on each machine.

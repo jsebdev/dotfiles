@@ -1,0 +1,5 @@
+# Search dotfiles and dot-directories, which ripgrep skips by default.
+--hidden
+
+# Keep --hidden from pulling in git internals.
+--glob=!.git/
