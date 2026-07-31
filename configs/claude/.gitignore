@@ -10,3 +10,4 @@ shell-snapshots/
 telemetry/
 history.jsonl
 policy-limits.json
+remote-settings.json
