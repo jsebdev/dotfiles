@@ -9,6 +9,7 @@
 	logd = log --oneline --graph --decorate
 	logdu = log --oneline --graph --decorate --pretty=format:'%h (%an) %s'
 	logdd = log --oneline --graph --decorate --pretty=format:'%h (%ad) %s' --date=short
+	logadd = log --oneline --graph --decorate --pretty=format:'%h (%ad) %s' --date=short
 
 [filter "lfs"]
 	clean = git-lfs clean -- %f
