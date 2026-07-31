@@ -6,6 +6,16 @@ return {
     -- add any opts here
     provider = "claude",
     providers = {
+      claude = {
+        endpoint = "https://api.anthropic.com",
+        model = "claude-opus-5",
+        timeout = 30000,
+        context_window = 1000000,
+        extra_request_body = {
+          temperature = 1, -- current models reject any non-default temperature
+          max_tokens = 64000,
+        },
+      },
       openai = {
         endpoint = "https://api.openai.com/v1",
         model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
@@ -14,6 +24,24 @@ return {
           temperature = 0,
           max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
           reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+        },
+      },
+    },
+    -- Drives the Claude Code CLI over ACP, which bills your subscription rather
+    -- than ANTHROPIC_API_KEY. Inactive until `provider` above is set to
+    -- "claude-code" (or :AvanteSwitchProvider claude-code). Needs a current
+    -- avante plus `claude-agent-acp` on PATH -- see the notes below.
+    acp_providers = {
+      ["claude-code"] = {
+        command = "claude-agent-acp",
+        args = {},
+        env = {
+          NODE_NO_WARNINGS = "1",
+          -- Deliberately blank, not inherited: avante's default forwards
+          -- ANTHROPIC_API_KEY here, and a populated key makes Claude Code bill
+          -- the API instead of falling back to the subscription login.
+          ANTHROPIC_API_KEY = "",
+          ACP_PATH_TO_CLAUDE_CODE_EXECUTABLE = vim.fn.exepath("claude"),
         },
       },
     },
