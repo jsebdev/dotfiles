@@ -17,12 +17,11 @@ login_rallyclaim_using_keepass_mfa() {
     access_key_id=$(echo "$credentials" | jq -r '.Credentials.AccessKeyId')
     secret_access_key=$(echo "$credentials" | jq -r '.Credentials.SecretAccessKey')
     session_token=$(echo "$credentials" | jq -r '.Credentials.SessionToken')
-    aws configure set aws_access_key_id "$access_key_id" --profile onerally
-    aws configure set aws_secret_access_key "$secret_access_key" --profile onerally
-    aws configure set aws_session_token "$session_token" --profile onerally
-    export AWS_ACCESS_KEY_ID="$access_key_id"
-    export AWS_SECRET_ACCESS_KEY="$secret_access_key"
-    export AWS_SESSION_TOKEN="$session_token"
+    aws_profile="onerally-mfa"
+    aws configure set aws_access_key_id "$access_key_id" --profile $aws_profile
+    aws configure set aws_secret_access_key "$secret_access_key" --profile $aws_profile
+    aws configure set aws_session_token "$session_token" --profile $aws_profile
+    export AWS_PROFILE="$aws_profile"
     echo "AWS credentials exported successfully (env vars + onerally profile)."
 }
 
