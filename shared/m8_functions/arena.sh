@@ -65,6 +65,10 @@ connect_to_local_arena_questionnaire_v2_db() {
     mongosh "mongodb://user:pass@localhost:27050/questionnaire?authSource=admin"
 }
 
+connect_to_staging_arena_person_service_db() {
+    mongosh "mongodb+srv://person-service-pl-0.7wr2s.mongodb.net/person-service?authSource=%24external&authMechanism=MONGODB-AWS"""
+}
+
 export_arena_client_config_db_url_and_connect_to_db() {
     local environment="catalyst-staging"
     local psql_command=""
