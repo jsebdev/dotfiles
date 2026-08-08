@@ -43,6 +43,7 @@ FILES_TO_LINK+=("shared/.m8_aliases.sh")
 FILES_TO_LINK+=("shared/.m8_secrets.sh")
 FILES_TO_LINK+=("shared/.m8_functions.sh")
 FILES_TO_LINK+=("shared/.m8_sources.sh")
+FILES_TO_LINK+=("shared/.m8_environment.sh")
 
 # Directory symlinks (handled separately below)
 DIRS_TO_LINK=("dotfiles_scripts")

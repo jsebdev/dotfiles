@@ -9,7 +9,6 @@ load_if_exists() {
 
 load_all_shared_scripts() {
     # Load all shared scripts that are symlinked in the home directory
-    load_if_exists ~/.dotfiles_shared.sh
     load_if_exists ~/.shared_aliases.sh
     load_if_exists ~/.shared_functions.sh
     load_if_exists ~/.shared_secrets.sh
@@ -18,4 +17,5 @@ load_all_shared_scripts() {
     load_if_exists ~/.m8_functions.sh
     load_if_exists ~/.m8_secrets.sh
     load_if_exists ~/.m8_sources.sh
+    load_if_exists ~/.m8_environment.sh
 }

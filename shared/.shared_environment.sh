@@ -10,3 +10,6 @@ export CLIENT_CONFIG_GIT_ROOT="$HOME/coding/macheight/arena.io/repos/client-conf
 
 # harvest
 export M8_HARVEST_ACCOUNT_ID=360268
+
+# Configure less behavior
+export LESS='-iRX'

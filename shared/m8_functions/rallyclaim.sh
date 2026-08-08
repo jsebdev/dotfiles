@@ -7,7 +7,7 @@ login_rallyclaim_using_keepass_mfa() {
     local credentials
     credentials=$(aws sts get-session-token \
         --profile onerally-longterm \
-        --serial-number arn:aws:iam::102282313732:mfa/keepass_TOTP \
+        --serial-number "$RALLYCLAIM_MFA_SERIAL" \
         --token-code "$otp")
     if [[ $? -ne 0 ]]; then
         echo "Failed to get session token."
