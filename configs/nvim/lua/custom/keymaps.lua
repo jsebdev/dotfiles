@@ -137,6 +137,10 @@ vim.keymap.set('n', '<leader>zgg', function()
   require('custom.utils.smart_print').print_current_line_with_formats('fmt.Printf(">>>>> %s:%d \\"%s\\"\\n")', 'fmt.Printf("%%+v\\n", %s)')
 end, { desc = "Smart print in go" })
 
+vim.keymap.set('n', '<leader>zs', function()
+  require('custom.utils.smart_print').print_current_line_with_formats('echo \'>>>>> %s:%d "%s"\'', 'echo \"\'$%s\'\"')
+end, { desc = "Smart print in shellscript" })
+
 
 -- move tabs
 vim.keymap.set({'n', 'i', 'v'}, '<A-u>', function()
