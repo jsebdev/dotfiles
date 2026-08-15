@@ -18,9 +18,8 @@
 	required = true
 
 [core]
-	editor = nvim
+	editor = vim
 	ignorecase = false
-	pager = delta
 
 [interactive]
 	diffFilter = delta --color-only
