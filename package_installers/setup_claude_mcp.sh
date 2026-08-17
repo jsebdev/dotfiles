@@ -16,8 +16,9 @@ add_mcp_server() {
     fi
 }
 
-add_mcp_server "jira-mach8" "https://mcp.atlassian.com/v1/mcpb"
+add_mcp_server "jira-mach8" "https://mcp.atlassian.com/v1/mcp"
 add_mcp_server "jira-arena" "https://mcp.atlassian.com/v1/mcp"
 add_mcp_server "datadog-mcp" "https://mcp.datadoghq.com/api/unstable/mcp-server/mcp"
+add_mcp_server "kubera" "	https://api.kubera.com/api/v1/mcp"
 
 echo "Claude Code MCP setup complete!"
