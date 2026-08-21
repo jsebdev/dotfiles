@@ -1,0 +1,135 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT_PATH" ]; do
+  LINK_TARGET="$(readlink "$SCRIPT_PATH")"
+  case "$LINK_TARGET" in
+    /*) SCRIPT_PATH="$LINK_TARGET" ;;
+    *) SCRIPT_PATH="$(cd "$(dirname "$SCRIPT_PATH")" && pwd -P)/$LINK_TARGET" ;;
+  esac
+done
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd -P)"
+TEMPLATE="$SCRIPT_DIR/md2pdf_template.html"
+PAPER_SIZE="${MD2PDF_PAPER:-Letter}"
+
+print_usage() {
+  cat <<'USAGE'
+Usage: md2pdf <input.md> [output.pdf]
+
+Renders a markdown file to a print-styled PDF using pandoc and headless Chrome.
+
+Environment:
+  MD2PDF_PAPER    page size passed to the @page rule (default: Letter)
+  MD2PDF_BROWSER  path to a Chrome/Chromium binary (default: autodetected)
+  MD2PDF_KEEP_HTML  set to any value to print the intermediate HTML path and keep it
+USAGE
+}
+
+if [ $# -lt 1 ] || [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
+  print_usage
+  [ $# -lt 1 ] && exit 1
+  exit 0
+fi
+
+INPUT="$1"
+
+if [ ! -f "$INPUT" ]; then
+  echo "❌ No such file: $INPUT" >&2
+  exit 1
+fi
+
+if [ $# -ge 2 ]; then
+  OUTPUT="$2"
+else
+  OUTPUT="${INPUT%.*}.pdf"
+fi
+
+if ! command -v pandoc &> /dev/null; then
+  echo "❌ pandoc not found. Install it with:" >&2
+  echo "   ~/coding/dotfiles/package_installers/install_pandoc.sh" >&2
+  exit 1
+fi
+
+if [ ! -f "$TEMPLATE" ]; then
+  echo "❌ Missing stylesheet template: $TEMPLATE" >&2
+  exit 1
+fi
+
+find_browser() {
+  if [ -n "${MD2PDF_BROWSER:-}" ]; then
+    echo "$MD2PDF_BROWSER"
+    return 0
+  fi
+  local candidates=(
+    "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+    "/Applications/Chromium.app/Contents/MacOS/Chromium"
+    "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser"
+    "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
+  )
+  local candidate
+  for candidate in "${candidates[@]}"; do
+    if [ -x "$candidate" ]; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+  for candidate in google-chrome chromium chromium-browser; do
+    if command -v "$candidate" &> /dev/null; then
+      command -v "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
+if ! BROWSER="$(find_browser)"; then
+  echo "❌ No Chrome/Chromium binary found. Set MD2PDF_BROWSER to one." >&2
+  exit 1
+fi
+
+WORK_DIR="$(mktemp -d)"
+if [ -z "${MD2PDF_KEEP_HTML:-}" ]; then
+  trap 'rm -rf "$WORK_DIR"' EXIT
+fi
+
+HTML="$WORK_DIR/$(basename "${INPUT%.*}").html"
+BROWSER_LOG="$WORK_DIR/browser.log"
+
+echo "📝 Converting markdown to HTML..."
+pandoc \
+  --from=gfm \
+  --to=html5 \
+  --standalone \
+  --template="$TEMPLATE" \
+  --variable=papersize:"$PAPER_SIZE" \
+  --metadata=title:"$(basename "${INPUT%.*}")" \
+  --output="$HTML" \
+  "$INPUT"
+
+echo "🖨️  Rendering PDF with $(basename "$BROWSER")..."
+if ! "$BROWSER" \
+  --headless \
+  --disable-gpu \
+  --hide-scrollbars \
+  --no-pdf-header-footer \
+  --virtual-time-budget=10000 \
+  --print-to-pdf="$OUTPUT" \
+  "file://$HTML" > "$BROWSER_LOG" 2>&1; then
+  echo "❌ Browser failed to render the PDF:" >&2
+  cat "$BROWSER_LOG" >&2
+  exit 1
+fi
+
+if [ ! -s "$OUTPUT" ]; then
+  echo "❌ No PDF was produced:" >&2
+  cat "$BROWSER_LOG" >&2
+  exit 1
+fi
+
+if [ -n "${MD2PDF_KEEP_HTML:-}" ]; then
+  echo "🧾 Intermediate HTML kept at $HTML"
+fi
+
+echo "✅ $OUTPUT ($(du -h "$OUTPUT" | cut -f1 | tr -d ' '))"
