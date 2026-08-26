@@ -121,6 +121,7 @@ INSTALLERS=(
   "install_git_delta.sh"
   "install_gh_cli.sh"
   "install_terminal_notifier.sh"
+  "install_colima.sh"
   "install_pandoc.sh"
   "setup_md2pdf.sh"
   "setup_ssh_config.sh"
