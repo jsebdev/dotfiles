@@ -1,6 +1,7 @@
 ---
 name: my-code-review
-description: Review a pull request against its base branch and return severity-grouped, actionable feedback following my project conventions. Use when the user invokes /my-code-review, asks for a PR review, or asks for feedback on changes they just finished. Covers ticket resolution, target resolution, the review checklist, the output format, and when to post feedback to GitHub.
+argument-hint: [pr-or-branch] [ticket-key] [--only <path>] [--focus <area>] [--post]
+description: Review a pull request against its base branch and return severity-grouped, actionable feedback following my project conventions. Use when the user invokes /my-code-review, asks for a PR review, asks for feedback on changes they just finished, or asks to review only part of a PR such as certain files, directories, or concerns. Covers ticket resolution, target resolution, scoping the review through arguments, the review checklist, the output format, and when to post feedback to GitHub.
 ---
 
 # My Code Review
@@ -12,13 +13,62 @@ every command and every file examined stays visible, so follow-up questions abou
 conducted can be answered. Delegate to the `code-reviewer` agent only when the diff is large enough
 to crowd out the rest of the session (roughly 40+ changed files or several thousand changed lines).
 When delegating, hand the agent the ticket's acceptance criteria and the decisions recorded in its
-comments verbatim, and require the agent to include a "Files examined / commands run" section in its
-report so procedural questions remain answerable.
+comments verbatim, pass on the scope arguments the user gave, and require the agent to include a
+"Files examined / commands run" section in its report so procedural questions remain answerable. A
+scope narrow enough to fit comfortably in the session is reviewed inline even when the full PR is
+large.
 
 ## Arguments
 
-Arguments may contain a PR number, a branch name, a ticket key, and the `--post` flag. All are
-optional.
+**Arguments received:** $ARGUMENTS
+
+That line is what the user typed after the skill name, and it is empty when they passed nothing.
+Every argument is optional and they can be combined in any order. Parse the line into these slots,
+and treat anything that matches none of them as a free-form scope instruction.
+
+| Argument | Form | Effect |
+| --- | --- | --- |
+| PR target | `1234`, `#1234`, a PR URL, or a branch name | Which PR to review. |
+| Ticket key | `ABC-123` | Which ticket to review against, skipping ticket detection. |
+| Path scope | `--only <path>`, repeatable, accepts a file, a directory, or a glob | Review only changed files matching these paths. |
+| Path exclusion | `--skip <path>`, repeatable, same forms | Review every changed file except these. |
+| Focus scope | `--focus <area>`, repeatable, one of `ticket`, `design`, `correctness`, `tests`, `security`, `performance`, `data-layer`, `observability` | Apply only the matching parts of the review checklist. |
+| Post flag | `--post` | Post the review to GitHub as a single comment. |
+| Free-form scope | Plain language, for example `only the migration files` or `just look at error handling` | Interpret as a path scope, a focus scope, or both. |
+
+### Focus areas
+
+Each focus value selects this part of the review checklist:
+
+| Focus | Checklist part |
+| --- | --- |
+| `ticket` | The whole "Ticket context" section. |
+| `design` | The whole "Design and conventions" section. |
+| `correctness` | The whole "Correctness and quality" section. |
+| `tests` | Test coverage, plus the testing skills it names. |
+| `security` | Security vulnerabilities and potential exploits. |
+| `performance` | Performance bottlenecks, inefficient algorithms, and N+1 queries. |
+| `data-layer` | The whole "Data layer" section. |
+| `observability` | The whole "Observability" section. |
+
+A free-form focus that matches none of these is applied as written, narrowed to the checklist items
+that speak to it.
+
+### Scope rules
+
+- With no scope argument, review every changed file against the whole checklist.
+- A path scope narrows which changed files are reviewed. A focus scope narrows which checklist
+  sections are applied. They combine, so `--only api/ --focus security` reviews the API changes for
+  security only.
+- Resolving and reading the ticket is never skipped, whatever the scope. The ticket is what tells you
+  whether the code in scope implements the agreed behavior.
+- The ticket context checks still run under a path scope, but assess only the acceptance criteria the
+  files in scope are responsible for, and say which criteria you did not assess.
+- If a path scope matches no changed file, say so, list the changed files, and stop. Do not silently
+  widen the review.
+- Findings outside the requested scope are not reported, with one exception: a Critical finding, which
+  you report under its normal group with the note that it falls outside the requested scope.
+- State the scope you applied at the top of the review, next to the ticket key.
 
 ## Steps
 
@@ -47,10 +97,14 @@ optional.
      ticket context is how a rejected option ships as if it were the agreed one.
 3. **Fetch the changes** against the base branch with `gh pr diff` and `gh pr view`. Review only what
    this PR introduced, never pre-existing code on the base branch.
-4. **Review every changed file systematically** using the checklist below. Read surrounding context
+4. **Apply the scope.** List the changed files with `gh pr diff <number> --name-only`, then reduce
+   that list to the files a path scope selects. Reduce the checklist to the sections a focus scope
+   selects. Confirm both in one line before reviewing, for example "Reviewing 4 of 23 changed files
+   under `api/`, security checks only."
+5. **Review every file in scope systematically** using the checklist below. Read surrounding context
    in the files themselves when the diff alone is not enough to judge a change.
-5. **Compile the feedback** into the three severity groups below.
-6. **Return the feedback in the conversation.** Post to GitHub only when the arguments include
+6. **Compile the feedback** into the three severity groups below.
+7. **Return the feedback in the conversation.** Post to GitHub only when the arguments include
    `--post` or the user explicitly asks for it, and then as **one single** `gh pr comment` containing
    the whole review. Never post multiple comments, inline comments, or per-file comments.
 
@@ -125,7 +179,9 @@ Minor improvements, style preferences, alternative approaches worth considering.
 
 Rules:
 
-- Name the ticket key you reviewed against at the top of the review.
+- Name the ticket key you reviewed against at the top of the review, and the scope you applied when
+  the arguments narrowed it, for example "Scope: `services/billing/` only, tests and correctness."
+- Under a narrowed scope, list the acceptance criteria you did not assess, so the gap is visible.
 - One or two sentences per item, maximum. The file path, affected lines, and the suggested fix are
   sufficient. No elaboration blocks.
 - Always include the file path and line number or range when applicable.
