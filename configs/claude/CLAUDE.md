@@ -87,7 +87,14 @@ Use the appropriate agent for each task:
 | `devcontainer`                | Find and execute commands inside the VSCode devcontainer for the current project |
 | `docker-compose`              | Execute project commands inside Docker Compose services                          |
 | `general-testing-guidelines`  | Language-agnostic test naming, structure, and organization — use when writing or reviewing any tests |
-| `elaborate`                   | Show, step by step with file:line stops, the code behind a claim Claude made earlier in the session |
+
+## Useful commands
+
+Type these yourself; Claude never invokes them on its own.
+
+| Command      | Purpose                                                                                            |
+| ------------ | -------------------------------------------------------------------------------------------------- |
+| `/elaborate` | Show, step by step with file:line stops, the code behind a claim Claude made earlier in the session |
 
 ## Quick Reference
 

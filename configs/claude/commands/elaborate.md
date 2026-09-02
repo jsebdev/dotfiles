@@ -1,7 +1,7 @@
 ---
-name: elaborate
+description: Walk through the exact code behind a claim Claude made earlier in this session, step by step, in reading order. Declines when the claim was never made here.
 argument-hint: <something Claude stated earlier in this session>
-description: Elaborate on a claim Claude made earlier in this session by walking the user through the exact code that backs it, step by step, in reading order. Use when the user invokes /elaborate, or asks to be shown where in the code a previous statement comes from, or asks how an earlier claim was reached. Refuses when the claim was never made in this session.
+disable-model-invocation: true
 ---
 
 # Elaborate
@@ -13,16 +13,16 @@ proves, so they end up able to re-derive the claim without you.
 This is not a re-explanation and not a fresh investigation. It is the evidence trail behind a
 statement that was already made here.
 
-Run it **inline, in the current session**. The conversation history is the input, so never hand this
-to a subagent: a fresh agent has no access to what was stated, and even a fork would be doing new
+Work **inline, in the current session**. The conversation history is the input, so never hand this to
+a subagent: a fresh agent has no access to what was stated, and even a fork would be doing new
 research rather than showing its sources.
 
 ## Arguments
 
-**Arguments received:** $ARGUMENTS
+**Claim to elaborate on:** $ARGUMENTS
 
-That line is the claim to elaborate on, as the user typed it. It is normally a paraphrase or a
-fragment, not a quote, and it may be empty.
+That line is what the user typed after the command name. It is normally a paraphrase or a fragment,
+not a quote, and it may be empty.
 
 ## Steps
 
@@ -85,8 +85,8 @@ claim as unverified.
 
 ### 4. Build the tour
 
-Read the files again now. Do not tour from memory or from a summary; the point of the skill is that
-every stop is real and current, and line numbers drift.
+Read the files again now. Do not tour from memory or from a summary; the whole point is that every
+stop is real and current, and line numbers drift.
 
 Order the stops so understanding compounds:
 
@@ -135,7 +135,7 @@ Rules:
   Mention a real problem in one clause and move on; the user can ask.
 - Mark inferred steps as inferred. "These two facts imply X" is honest; presenting X as if it were on
   a line in a file is not.
-- No preamble, no restating the skill, no offering to elaborate further.
+- No preamble, no restating these instructions, no offering to elaborate further.
 
 ## Calibration
 
