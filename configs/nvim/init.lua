@@ -896,11 +896,24 @@ require('lazy').setup({
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     config = function()
+      local muted_diagnostic_colors = {
+        Error = '#7a3338',
+        Warn = '#735e44',
+        Info = '#146276',
+        Hint = '#1a635b',
+      }
       ---@diagnostic disable-next-line: missing-fields
       require('tokyonight').setup {
         styles = {
           comments = { italic = false }, -- Disable italics in comments
         },
+        on_highlights = function(highlights)
+          for severity, color in pairs(muted_diagnostic_colors) do
+            highlights['DiagnosticVirtualText' .. severity] = { fg = color, bg = 'NONE' }
+            highlights['DiagnosticSign' .. severity] = { fg = color }
+            highlights['DiagnosticUnderline' .. severity] = { sp = color, undercurl = true }
+          end
+        end,
       }
 
       -- Load the colorscheme here.
