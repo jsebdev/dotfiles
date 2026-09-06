@@ -629,7 +629,16 @@ require('lazy').setup({
         basedpyright = {
           before_init =  function(_, config)
             config.settings.python.pythonPath = require('custom.utils.get_python_path').get_python_path()
-          end
+          end,
+          settings = {
+            basedpyright = {
+              analysis = {
+                diagnosticSeverityOverrides = {
+                  reportUnannotatedClassAttribute = 'none',
+                },
+              },
+            },
+          },
         },
         pylsp = {
           settings = {
