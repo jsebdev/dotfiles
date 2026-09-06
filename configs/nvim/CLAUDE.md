@@ -48,6 +48,7 @@ The configuration uses lazy.nvim as plugin manager with these key additions beyo
 - **haskell-tools.nvim** - Enhanced Haskell development
 - **go.nvim** - Comprehensive Go development tooling
 - **git-blame.nvim** - Git blame information
+- **diffview.nvim** - Multi-file diff review and file history, lazy loaded on `:DiffviewOpen`/`:DiffviewFileHistory` and the `<leader>g*` keys
 - **Various utilities** - autoclose, emmet, spell checking, file operations
 
 ### Language Support
@@ -68,6 +69,7 @@ Configured for:
 - **Smart utilities**: `<leader>z*` for debug printing, `<leader>y*` for copying paths
 - **Formatting**: `=` for LSP formatting
 - **AI assistance**: `<leader>ae` for Avante commands
+- **Git diffs**: `<leader>g*` for diffview (`gd` working tree, `gm` vs main, `gh` file history, `gq` close)
 
 ### Telescope Integration
 Extensive telescope configuration with:
