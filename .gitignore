@@ -23,3 +23,6 @@ configs/claude/tasks/
 configs/claude/.omc/
 configs/claude/CLAUDE.md.backup.*
 
+
+# Python
+**/__pycache__/

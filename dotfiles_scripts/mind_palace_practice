@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -euo pipefail
+
+SCRIPT_PATH="${BASH_SOURCE[0]}"
+while [ -L "$SCRIPT_PATH" ]; do
+  LINK_TARGET="$(readlink "$SCRIPT_PATH")"
+  case "$LINK_TARGET" in
+    /*) SCRIPT_PATH="$LINK_TARGET" ;;
+    *) SCRIPT_PATH="$(cd "$(dirname "$SCRIPT_PATH")" && pwd -P)/$LINK_TARGET" ;;
+  esac
+done
+SCRIPT_DIR="$(cd "$(dirname "$SCRIPT_PATH")" && pwd -P)"
+PROJECT_DIR="$SCRIPT_DIR/../shared/my_tools/mind_palace_ritual"
+
+if ! command -v uv >/dev/null 2>&1; then
+  echo "❌ uv is required. Run package_installers/install_uv.sh"
+  exit 1
+fi
+
+exec uv run --quiet --project "$PROJECT_DIR" mind_palace_practice "$@"

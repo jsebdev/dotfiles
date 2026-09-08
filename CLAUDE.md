@@ -50,7 +50,8 @@ dotfiles/
 │   ├── .dotfiles_shared.sh     # Orchestrator that loads other shared files
 │   ├── .shared_aliases.sh      # Common aliases
 │   ├── .shared_functions.sh    # Common functions
-│   └── .m8_aliases.sh          # Work-specific Mach8/RallyClaim shortcuts
+│   ├── .m8_aliases.sh          # Work-specific Mach8/RallyClaim shortcuts
+│   └── my_tools/               # Standalone personal tools (e.g. mind_palace_ritual)
 ├── configs/            # Application configurations
 │   ├── nvim/           # Neovim configuration (see configs/nvim/CLAUDE.md)
 │   ├── ripgrep/        # ripgrep config (symlinked to ~/.config/ripgrep/ripgreprc via setup_ripgrep_config.sh)
@@ -100,6 +101,7 @@ The repository integrates these version managers and tools:
 - **GitHub CLI** - GitHub's official command-line tool (installed via `package_installers/install_gh_cli.sh`)
 - **colima** - Container runtime for macOS (installed via `package_installers/install_colima.sh`, along with the `docker` client it needs); macOS-only, skipped on Linux where docker runs natively. The `colima-start` alias in `shared/.shared_aliases.sh` starts it with 8GB memory, 6 CPUs and a 100GB disk.
 - **SSH config** - Client configuration with host aliases for personal and work GitHub; `setup_ssh_config.sh` keeps `~/.ssh/config` as a real, untracked file whose only content is `Include <repo>/configs/ssh/config`, instead of symlinking it. This is deliberate: `colima start` appends `Include ~/.colima/ssh_config` to `~/.ssh/config`, which used to write straight into the tracked file through the symlink and leave the repository dirty after every start. The script is idempotent, backs up whatever it replaces to `~/dotfiles_backup/`, and prepends the include to an existing `~/.ssh/config` rather than discarding it. Requires SSH keys named `~/.ssh/id_rsa` (personal) and `~/.ssh/mach8_key_rsa` (work) to be present on each machine.
+- **mind_palace_practice** - Interactive drill for rehearsing mind palaces, living in `shared/my_tools/mind_palace_ritual/`. It is a `uv` project (`pyproject.toml` plus `uv.lock`, dependency: `questionary`), and `dotfiles_scripts/mind_palace_practice` is a thin bash wrapper that `setup_mind_palace_practice.sh` symlinks into `~/.local/bin`. The wrapper calls `uv run --project`, so dependencies sync on every invocation and no environment is activated by hand. Extension points: each palace is one module in `mind_palace_ritual/mind_palaces/` exposing a single `mind_palace` variable, discovered at runtime by `catalog.py`, so adding a palace means adding a file and nothing else; rituals and modes are Protocol implementations returned by `available_rituals()` and `available_modes()`. Object numbers are not stored in the palace data, they are the object's sequential position across the palace, walking rooms in order and starting at 1.
 
 ## Shell-Specific Features
 

@@ -124,6 +124,7 @@ INSTALLERS=(
   "install_colima.sh"
   "install_pandoc.sh"
   "setup_md2pdf.sh"
+  "setup_mind_palace_practice.sh"
   "setup_ssh_config.sh"
 )
 
