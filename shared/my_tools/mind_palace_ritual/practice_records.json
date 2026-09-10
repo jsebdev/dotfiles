@@ -1,0 +1,14 @@
+[
+  {
+    "mind_palace": "Medieval Palace",
+    "objects": 20,
+    "ritual": "Object to number",
+    "best_times": [
+      {
+        "seconds": 100.6,
+        "wrong_attempts": 0,
+        "achieved_on": "2026-09-09"
+      }
+    ]
+  }
+]

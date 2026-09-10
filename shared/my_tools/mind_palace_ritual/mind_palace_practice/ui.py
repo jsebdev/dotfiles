@@ -7,6 +7,7 @@ import questionary
 from mind_palaces.models import MindPalace
 
 from .objects import NumberedObject
+from .records import BoardKey, Placement, TimedRun
 from .rituals import Question
 from .scoreboard import Scoreboard
 
@@ -49,6 +50,13 @@ class TerminalUserInterface:
         print(f"  Wrong attempts:    {scoreboard.wrong_attempts}")
         print(f"  Time practicing:   {readable_duration(elapsed)}")
 
+    def show_placement(self, placement: Placement) -> None:
+        print()
+        print(_placement_headline(placement))
+        print(f"Best times · {_board_title(placement.key)}")
+        for position, run in enumerate(placement.best_times, start=1):
+            print(_best_time_row(position, run, placement.position))
+
 
 def readable_duration(elapsed: timedelta) -> str:
     minutes, seconds = divmod(int(elapsed.total_seconds()), 60)
@@ -58,3 +66,28 @@ def readable_duration(elapsed: timedelta) -> str:
     if minutes:
         return f"{minutes}m {seconds}s"
     return f"{seconds}s"
+
+
+def _placement_headline(placement: Placement) -> str:
+    if placement.position is None:
+        return "No top ten spot this time."
+    if placement.position == 1:
+        return "🥇 New best time!"
+    return f"🏅 {_ordinal(placement.position)} best time."
+
+
+def _board_title(key: BoardKey) -> str:
+    return f"{key.mind_palace_name} · {key.objects_count} objects · {key.ritual_name}"
+
+
+def _best_time_row(position: int, run: TimedRun, achieved: int | None) -> str:
+    row = (
+        f"  {position:2}. {readable_duration(run.elapsed):>9}"
+        f"   {run.wrong_attempts:2} wrong   {run.achieved_on}"
+    )
+    return f"{row}   ← this run" if position == achieved else row
+
+
+def _ordinal(position: int) -> str:
+    suffix = {1: "st", 2: "nd", 3: "rd"}.get(position, "th")
+    return f"{position}{suffix}"

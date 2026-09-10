@@ -8,6 +8,7 @@ from .objects import NumberedObject
 class Mode(Protocol):
     name: str
     description: str
+    records_best_times: bool
 
     def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]: ...
 
@@ -15,6 +16,7 @@ class Mode(Protocol):
 class EndlessMode:
     name = "Endless"
     description = "random objects until you stop"
+    records_best_times = False
 
     def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]:
         while True:
@@ -24,6 +26,7 @@ class EndlessMode:
 class CompleteMode:
     name = "Complete"
     description = "every object once, in random order"
+    records_best_times = True
 
     def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]:
         yield from random.sample(objects, len(objects))
