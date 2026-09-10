@@ -41,7 +41,7 @@ class ObjectToNumberRitual:
 
     def question_for(self, target: NumberedObject) -> Question:
         return Question(
-            prompt=f"Which number is {target.object_name}?",
+            prompt=f"Which number is '{target.object_name}'?",
             expected_answer=str(target.number),
             target=target,
         )

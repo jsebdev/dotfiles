@@ -1,4 +1,5 @@
 from collections.abc import Callable, Sequence
+from datetime import timedelta
 from typing import TypeVar
 
 import questionary
@@ -41,8 +42,19 @@ class TerminalUserInterface:
     def show_mind_palace_completed(self, mind_palace: MindPalace) -> None:
         print(f"🏛️  {mind_palace.name} complete.")
 
-    def show_summary(self, scoreboard: Scoreboard) -> None:
+    def show_summary(self, scoreboard: Scoreboard, elapsed: timedelta) -> None:
         print("Session summary")
         print(f"  Objects practiced: {scoreboard.objects_practiced}")
         print(f"  Correct first try: {scoreboard.correct_on_first_try}")
         print(f"  Wrong attempts:    {scoreboard.wrong_attempts}")
+        print(f"  Time practicing:   {readable_duration(elapsed)}")
+
+
+def readable_duration(elapsed: timedelta) -> str:
+    minutes, seconds = divmod(int(elapsed.total_seconds()), 60)
+    hours, minutes = divmod(minutes, 60)
+    if hours:
+        return f"{hours}h {minutes}m {seconds}s"
+    if minutes:
+        return f"{minutes}m {seconds}s"
+    return f"{seconds}s"
