@@ -22,7 +22,7 @@ This is a Neovim configuration based on kickstart.nvim with extensive personal c
 
 ### Core Structure
 - `init.lua` - Main configuration entry point that loads kickstart.nvim base and custom configurations
-- `lazy-lock.json` - Lock file for plugin versions (should be tracked in version control)
+- `lazy-lock.json` - Lock file for plugin versions (should be tracked in version control). `:Lazy update` rewrites it with whatever that machine just installed, so a machine that updates while another one lags will commit the lock backwards and silently downgrade the other. To sync a second machine, pull and run `:Lazy restore`, which checks out the committed commits, rather than `:Lazy update`.
 
 ### Custom Configuration (`lua/custom/`)
 - `global_state.lua` - Global state management (loaded first)
@@ -50,6 +50,15 @@ The configuration uses lazy.nvim as plugin manager with these key additions beyo
 - **git-blame.nvim** - Git blame information
 - **diffview.nvim** - Multi-file diff review and file history, lazy loaded on `:DiffviewOpen`/`:DiffviewFileHistory` and the `<leader>g*` keys
 - **Various utilities** - autoclose, emmet, spell checking, file operations
+
+### LSP Configuration
+Language servers live in the `servers` table inside the `nvim-lspconfig` spec in `init.lua`. Each entry is registered with `vim.lsp.config(name, config)` and turned on with `vim.lsp.enable`, the Neovim 0.11 native API. Do **not** go back to `require('lspconfig')[name].setup()`: nvim-lspconfig deprecated that framework in September 2025 and prints a startup traceback on every newer version, and it disappears in nvim-lspconfig v3.0.0.
+
+- Shared capabilities (nvim-cmp, lsp-file-operations) are registered once through `vim.lsp.config('*', { capabilities = capabilities })` and merge into every server, so individual entries only declare what they override.
+- Each entry merges on top of the defaults nvim-lspconfig ships in its `lsp/<server>.lua`, so an entry only needs the differences.
+- `mason-lspconfig` is still set up, but without `handlers`. It stays because `mason-tool-installer` uses its name mappings to translate lspconfig server names into Mason package names. Dropping it would break `ensure_installed`.
+- Bypassing lspconfig's `setup()` also bypasses mason-lspconfig's `util.on_setup` hook, which is what used to register the `:PylspInstall` command. Mason prepends its `bin` directory to `PATH`, so server executables are still found.
+- **This requires Neovim 0.11 or newer on every machine that uses this config.**
 
 ### Language Support
 Configured for:
