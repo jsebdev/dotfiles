@@ -17,6 +17,11 @@
     "ritual": "Word to number",
     "best_times": [
       {
+        "seconds": 18.7,
+        "wrong_attempts": 0,
+        "achieved_on": "2026-09-12"
+      },
+      {
         "seconds": 31.1,
         "wrong_attempts": 0,
         "achieved_on": "2026-09-12"
