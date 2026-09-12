@@ -31,7 +31,7 @@ def ask_practice_choice(
     subjects: Sequence[Subject],
 ) -> PracticeChoice:
     subject = _choose_subject(user_interface, subjects)
-    deck = _choose_deck(user_interface, subject)
+    deck = _choose_range(user_interface, _choose_deck(user_interface, subject))
     return PracticeChoice(
         deck=deck,
         ritual=user_interface.choose(
@@ -67,3 +67,17 @@ def _choose_deck(user_interface: SelectionUserInterface, subject: Subject) -> De
         subject.decks,
         lambda deck: deck.name,
     )
+
+
+def _choose_range(user_interface: SelectionUserInterface, deck: Deck) -> Deck:
+    if not deck.ranges:
+        return deck
+    return user_interface.choose(
+        "Which range do you want to practice?",
+        [deck, *(deck.narrowed_to(card_range) for card_range in deck.ranges)],
+        _range_label,
+    )
+
+
+def _range_label(deck: Deck) -> str:
+    return f"{deck.range_label or 'All'} ({len(deck.cards)} {deck.card_noun}s)"

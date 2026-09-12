@@ -26,7 +26,7 @@ major_system = MajorSystem(
         "08": "sofa",
         "09": "soap",
         "10": "dice",
-        "11": "that",
+        "11": "dad",
         "12": "DNA",
         "13": "Adam",
         "14": "Thor",

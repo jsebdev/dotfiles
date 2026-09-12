@@ -10,5 +10,29 @@
         "achieved_on": "2026-09-09"
       }
     ]
+  },
+  {
+    "deck": "Two digit major system 0x",
+    "cards": 10,
+    "ritual": "Word to number",
+    "best_times": [
+      {
+        "seconds": 31.1,
+        "wrong_attempts": 0,
+        "achieved_on": "2026-09-12"
+      }
+    ]
+  },
+  {
+    "deck": "Two digit major system 1x",
+    "cards": 10,
+    "ritual": "Word to number",
+    "best_times": [
+      {
+        "seconds": 27.8,
+        "wrong_attempts": 1,
+        "achieved_on": "2026-09-12"
+      }
+    ]
   }
 ]
