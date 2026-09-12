@@ -48,6 +48,10 @@
       }
     }
   },
+  "voice": {
+    "enabled": true,
+    "mode": "tap"
+  },
   "theme": "dark",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
@@ -77,5 +81,6 @@
       "**Trusted repo**: The git repository the agent started in (/Users/sebastiancaicedo) — no remotes are configured and no files are tracked, so there is no corroborated remote or org to scope trust to beyond the local working directory itself",
       "**Org-specific CLIs**: None configured"
     ]
-  }
+  },
+  "voiceEnabled": true
 }
