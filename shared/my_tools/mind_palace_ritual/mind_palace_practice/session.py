@@ -1,7 +1,7 @@
 from collections.abc import Iterable
 from typing import Protocol
 
-from .objects import NumberedObject
+from .cards import PracticeCard
 from .rituals import Question, Ritual
 from .scoreboard import Scoreboard
 
@@ -9,22 +9,22 @@ from .scoreboard import Scoreboard
 class PracticeUserInterface(Protocol):
     def ask_answer(self, question: Question) -> str: ...
 
-    def show_correct_answer(self, target: NumberedObject) -> None: ...
+    def show_correct_answer(self, card: PracticeCard) -> None: ...
 
     def show_wrong_answer(self) -> None: ...
 
 
 def practice(
-    targets: Iterable[NumberedObject],
+    targets: Iterable[PracticeCard],
     ritual: Ritual,
     user_interface: PracticeUserInterface,
     scoreboard: Scoreboard,
 ) -> None:
-    for target in targets:
-        question = ritual.question_for(target)
+    for card in targets:
+        question = ritual.question_for(card)
         wrong_attempts = _answer_until_correct(question, user_interface)
-        user_interface.show_correct_answer(target)
-        scoreboard.record(target, wrong_attempts)
+        user_interface.show_correct_answer(card)
+        scoreboard.record(card, wrong_attempts)
 
 
 def _answer_until_correct(

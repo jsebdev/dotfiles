@@ -9,8 +9,8 @@ RECORDS_FILE = Path(__file__).resolve().parent.parent / "practice_records.json"
 
 @dataclass(frozen=True)
 class BoardKey:
-    mind_palace_name: str
-    objects_count: int
+    deck_name: str
+    cards_count: int
     ritual_name: str
 
 
@@ -66,8 +66,8 @@ class RecordBook:
             return {}
         return {
             BoardKey(
-                mind_palace_name=board["mind_palace"],
-                objects_count=board["objects"],
+                deck_name=board["deck"],
+                cards_count=board["cards"],
                 ritual_name=board["ritual"],
             ): [TimedRun(**run) for run in board["best_times"]]
             for board in json.loads(self.path.read_text())
@@ -76,8 +76,8 @@ class RecordBook:
     def _save(self, boards: Boards) -> None:
         stored_boards = [
             {
-                "mind_palace": key.mind_palace_name,
-                "objects": key.objects_count,
+                "deck": key.deck_name,
+                "cards": key.cards_count,
                 "ritual": key.ritual_name,
                 "best_times": [asdict(run) for run in best_times],
             }
@@ -93,4 +93,4 @@ def _position_of(run: TimedRun, best_times: list[TimedRun]) -> int:
 
 def _board_order(board: tuple[BoardKey, list[TimedRun]]) -> tuple[str, int, str]:
     key, _ = board
-    return key.mind_palace_name, key.objects_count, key.ritual_name
+    return key.deck_name, key.cards_count, key.ritual_name

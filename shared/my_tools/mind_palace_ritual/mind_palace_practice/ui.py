@@ -4,9 +4,7 @@ from typing import TypeVar
 
 import questionary
 
-from mind_palaces.models import MindPalace
-
-from .objects import NumberedObject
+from .cards import Deck, PracticeCard
 from .records import BoardKey, Placement, TimedRun
 from .rituals import Question
 from .scoreboard import Scoreboard
@@ -29,23 +27,21 @@ class TerminalUserInterface:
     def ask_answer(self, question: Question) -> str:
         return questionary.text(question.prompt).unsafe_ask()
 
-    def show_correct_answer(self, target: NumberedObject) -> None:
-        print(
-            f"  ✅ {target.number}. {target.object_name}, in the {target.room_name}\n"
-        )
+    def show_correct_answer(self, card: PracticeCard) -> None:
+        print(f"  ✅ {card.number}. {card.name}{_place_of(card)}\n")
 
     def show_wrong_answer(self) -> None:
         print("  ❌ Not right, try again.")
 
-    def show_no_mind_palaces(self) -> None:
-        print("No mind palaces found.")
+    def show_nothing_to_practice(self) -> None:
+        print("Nothing to practice yet.")
 
-    def show_mind_palace_completed(self, mind_palace: MindPalace) -> None:
-        print(f"🏛️  {mind_palace.name} complete.")
+    def show_deck_completed(self, deck: Deck) -> None:
+        print(f"{deck.completion_icon}  {deck.name} complete.")
 
     def show_summary(self, scoreboard: Scoreboard, elapsed: timedelta) -> None:
         print("Session summary")
-        print(f"  Objects practiced: {scoreboard.objects_practiced}")
+        print(f"  Cards practiced:   {scoreboard.cards_practiced}")
         print(f"  Correct first try: {scoreboard.correct_on_first_try}")
         print(f"  Wrong attempts:    {scoreboard.wrong_attempts}")
         print(f"  Time practicing:   {readable_duration(elapsed)}")
@@ -68,6 +64,10 @@ def readable_duration(elapsed: timedelta) -> str:
     return f"{seconds}s"
 
 
+def _place_of(card: PracticeCard) -> str:
+    return f", in the {card.place}" if card.place else ""
+
+
 def _placement_headline(placement: Placement) -> str:
     if placement.position is None:
         return "No top ten spot this time."
@@ -77,7 +77,7 @@ def _placement_headline(placement: Placement) -> str:
 
 
 def _board_title(key: BoardKey) -> str:
-    return f"{key.mind_palace_name} · {key.objects_count} objects · {key.ritual_name}"
+    return f"{key.deck_name} · {key.cards_count} cards · {key.ritual_name}"
 
 
 def _best_time_row(position: int, run: TimedRun, achieved: int | None) -> str:

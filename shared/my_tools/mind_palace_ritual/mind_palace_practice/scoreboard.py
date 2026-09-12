@@ -1,11 +1,11 @@
 from dataclasses import dataclass, field
 
-from .objects import NumberedObject
+from .cards import PracticeCard
 
 
 @dataclass(frozen=True)
-class ObjectResult:
-    target: NumberedObject
+class CardResult:
+    card: PracticeCard
     wrong_attempts: int
 
     @property
@@ -15,13 +15,13 @@ class ObjectResult:
 
 @dataclass
 class Scoreboard:
-    results: list[ObjectResult] = field(default_factory=list)
+    results: list[CardResult] = field(default_factory=list)
 
-    def record(self, target: NumberedObject, wrong_attempts: int) -> None:
-        self.results.append(ObjectResult(target=target, wrong_attempts=wrong_attempts))
+    def record(self, card: PracticeCard, wrong_attempts: int) -> None:
+        self.results.append(CardResult(card=card, wrong_attempts=wrong_attempts))
 
     @property
-    def objects_practiced(self) -> int:
+    def cards_practiced(self) -> int:
         return len(self.results)
 
     @property

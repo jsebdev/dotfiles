@@ -1,7 +1,7 @@
 [
   {
-    "mind_palace": "Medieval Palace",
-    "objects": 20,
+    "deck": "Medieval Palace",
+    "cards": 20,
     "ritual": "Object to number",
     "best_times": [
       {

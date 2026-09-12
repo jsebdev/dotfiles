@@ -2,7 +2,7 @@ import random
 from collections.abc import Iterator
 from typing import Protocol
 
-from .objects import NumberedObject
+from .cards import PracticeCard
 
 
 class Mode(Protocol):
@@ -10,26 +10,26 @@ class Mode(Protocol):
     description: str
     records_best_times: bool
 
-    def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]: ...
+    def targets(self, cards: list[PracticeCard]) -> Iterator[PracticeCard]: ...
 
 
 class EndlessMode:
     name = "Endless"
-    description = "random objects until you stop"
+    description = "random cards until you stop"
     records_best_times = False
 
-    def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]:
+    def targets(self, cards: list[PracticeCard]) -> Iterator[PracticeCard]:
         while True:
-            yield random.choice(objects)
+            yield random.choice(cards)
 
 
 class CompleteMode:
     name = "Complete"
-    description = "every object once, in random order"
+    description = "every card once, in random order"
     records_best_times = True
 
-    def targets(self, objects: list[NumberedObject]) -> Iterator[NumberedObject]:
-        yield from random.sample(objects, len(objects))
+    def targets(self, cards: list[PracticeCard]) -> Iterator[PracticeCard]:
+        yield from random.sample(cards, len(cards))
 
 
 def available_modes() -> list[Mode]:

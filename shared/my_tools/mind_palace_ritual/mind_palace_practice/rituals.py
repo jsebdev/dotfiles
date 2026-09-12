@@ -2,14 +2,14 @@ import random
 from dataclasses import dataclass
 from typing import Protocol
 
-from .objects import NumberedObject
+from .cards import Deck, PracticeCard
 
 
 @dataclass(frozen=True)
 class Question:
     prompt: str
     expected_answer: str
-    target: NumberedObject
+    card: PracticeCard
 
     def accepts(self, answer: str) -> bool:
         return _comparable(answer) == _comparable(self.expected_answer)
@@ -20,30 +20,41 @@ def _comparable(answer: str) -> str:
 
 
 class Ritual(Protocol):
-    name: str
+    @property
+    def name(self) -> str: ...
 
-    def question_for(self, target: NumberedObject) -> Question: ...
+    def question_for(self, card: PracticeCard) -> Question: ...
 
 
-class NumberToObjectRitual:
-    name = "Number to object"
+@dataclass(frozen=True)
+class NumberToNameRitual:
+    card_noun: str
 
-    def question_for(self, target: NumberedObject) -> Question:
+    @property
+    def name(self) -> str:
+        return f"Number to {self.card_noun}"
+
+    def question_for(self, card: PracticeCard) -> Question:
         return Question(
-            prompt=f"Which object is number {target.number}?",
-            expected_answer=target.object_name,
-            target=target,
+            prompt=f"Which {self.card_noun} is number {card.number}?",
+            expected_answer=card.name,
+            card=card,
         )
 
 
-class ObjectToNumberRitual:
-    name = "Object to number"
+@dataclass(frozen=True)
+class NameToNumberRitual:
+    card_noun: str
 
-    def question_for(self, target: NumberedObject) -> Question:
+    @property
+    def name(self) -> str:
+        return f"{self.card_noun.capitalize()} to number"
+
+    def question_for(self, card: PracticeCard) -> Question:
         return Question(
-            prompt=f"Which number is '{target.object_name}'?",
-            expected_answer=str(target.number),
-            target=target,
+            prompt=f"Which number is '{card.name}'?",
+            expected_answer=card.number,
+            card=card,
         )
 
 
@@ -52,10 +63,13 @@ class MixedRitual:
     rituals: list[Ritual]
     name = "Mixed"
 
-    def question_for(self, target: NumberedObject) -> Question:
-        return random.choice(self.rituals).question_for(target)
+    def question_for(self, card: PracticeCard) -> Question:
+        return random.choice(self.rituals).question_for(card)
 
 
-def available_rituals() -> list[Ritual]:
-    one_way_rituals: list[Ritual] = [NumberToObjectRitual(), ObjectToNumberRitual()]
+def available_rituals(deck: Deck) -> list[Ritual]:
+    one_way_rituals: list[Ritual] = [
+        NumberToNameRitual(deck.card_noun),
+        NameToNumberRitual(deck.card_noun),
+    ]
     return [*one_way_rituals, MixedRitual(one_way_rituals)]
