@@ -41,6 +41,15 @@ The following branches are protected across all projects: `main`, `master`, `sta
 2. Make changes on the feature branch
 3. Request user approval before any merge or push to protected branches
 
+### Exempt Repositories
+
+These are personal repositories where no branch is protected. Work directly on `main`, commit there, and never create a feature branch unless I ask for one:
+
+- `~/coding/dotfiles`
+- `~/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain`
+
+Still ask before pushing.
+
 ## Development Environment
 
 ### General
@@ -100,7 +109,7 @@ Type these yourself; Claude never invokes them on its own.
 
 ```
 ✓ Ask before choosing between valid approaches
-✓ Use feature branches for all changes
+✓ Use feature branches for all changes, except in exempt repositories
 ✓ Self-documenting code, no comments
 ✓ Virtual environments for packages
 ✓ Run formatters before committing
