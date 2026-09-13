@@ -12,31 +12,14 @@
     ]
   },
   {
-    "deck": "Two digit major system 0x",
+    "deck": "Two digit major system 01-10",
     "cards": 10,
-    "ritual": "Word to number",
+    "ritual": "Number to word",
     "best_times": [
       {
-        "seconds": 18.7,
+        "seconds": 46.2,
         "wrong_attempts": 0,
-        "achieved_on": "2026-09-12"
-      },
-      {
-        "seconds": 31.1,
-        "wrong_attempts": 0,
-        "achieved_on": "2026-09-12"
-      }
-    ]
-  },
-  {
-    "deck": "Two digit major system 1x",
-    "cards": 10,
-    "ritual": "Word to number",
-    "best_times": [
-      {
-        "seconds": 27.8,
-        "wrong_attempts": 1,
-        "achieved_on": "2026-09-12"
+        "achieved_on": "2026-09-13"
       }
     ]
   }

@@ -1,4 +1,4 @@
-from major_system.models import MajorSystem
+from .models import MajorSystem
 
 # Major system, map digits to consonant sounds
 # 0 - s, z
@@ -15,7 +15,6 @@ from major_system.models import MajorSystem
 major_system = MajorSystem(
     name="Two digit major system",
     words={
-        "00": "Zeus",
         "01": "seed",
         "02": "sun",
         "03": "sumo",
@@ -37,7 +36,7 @@ major_system = MajorSystem(
         "19": "tuba",
         "20": "nose",
         "21": "net",
-        "22": "none",
+        "22": "nun",
         "23": "Nemo",
         "24": "winner",
         "25": "nail",
@@ -115,5 +114,6 @@ major_system = MajorSystem(
         "97": "pig",
         "98": "beef",
         "99": "baby",
+        "00": "Zeus",
     },
 )

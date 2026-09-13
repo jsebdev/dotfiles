@@ -33,4 +33,4 @@ class CompleteMode:
 
 
 def available_modes() -> list[Mode]:
-    return [EndlessMode(), CompleteMode()]
+    return [CompleteMode(), EndlessMode()]

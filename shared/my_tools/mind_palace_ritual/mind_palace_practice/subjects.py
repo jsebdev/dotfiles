@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from major_system.models import MajorSystem
-from mind_palaces.models import MindPalace
+from resources.major_system.models import MajorSystem
+from resources.mind_palaces.models import MindPalace
 
 from .cards import CardRange, Deck, PracticeCard
 from .catalog import available_major_systems, available_mind_palaces
@@ -48,30 +48,32 @@ def _mind_palace_deck(mind_palace: MindPalace) -> Deck:
 
 
 def _major_system_deck(major_system: MajorSystem) -> Deck:
-    cards = [
-        PracticeCard(number=number, name=word)
-        for number, word in sorted(major_system.words.items())
-    ]
+    cards = sorted(
+        (
+            PracticeCard(number=number, name=word)
+            for number, word in major_system.words.items()
+        ),
+        key=_position_with_zero_last,
+    )
     return Deck(
         name=major_system.name,
         card_noun="word",
         completion_icon="🔢",
         cards=cards,
-        ranges=_leading_digit_ranges(cards),
+        ranges=_cumulative_ranges(cards),
     )
 
 
-def _leading_digit_ranges(cards: list[PracticeCard]) -> list[CardRange]:
-    leading_digits = sorted({card.number[0] for card in cards})
+def _position_with_zero_last(card: PracticeCard) -> int:
+    return int(card.number) or 10 ** len(card.number)
+
+
+def _cumulative_ranges(cards: list[PracticeCard]) -> list[CardRange]:
+    block_size = 10 ** (len(cards[0].number) - 1)
     return [
         CardRange(
-            label=_range_label(leading_digit, cards),
-            cards=[card for card in cards if card.number.startswith(leading_digit)],
+            label=f"{cards[0].number}-{cards[last_index].number}",
+            cards=cards[: last_index + 1],
         )
-        for leading_digit in leading_digits
+        for last_index in range(block_size - 1, len(cards) - 1, block_size)
     ]
-
-
-def _range_label(leading_digit: str, cards: list[PracticeCard]) -> str:
-    hidden_digits = len(cards[0].number) - 1
-    return f"{leading_digit}{'x' * hidden_digits}"

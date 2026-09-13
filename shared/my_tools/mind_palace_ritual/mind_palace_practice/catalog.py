@@ -3,10 +3,9 @@ import pkgutil
 from types import ModuleType
 from typing import Any
 
-import major_system
-import mind_palaces
-from major_system.models import MajorSystem
-from mind_palaces.models import MindPalace
+from resources import major_system, mind_palaces
+from resources.major_system.models import MajorSystem
+from resources.mind_palaces.models import MindPalace
 
 MIND_PALACE_ATTRIBUTE = "mind_palace"
 MAJOR_SYSTEM_ATTRIBUTE = "major_system"
