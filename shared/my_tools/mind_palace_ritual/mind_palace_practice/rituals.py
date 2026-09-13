@@ -1,8 +1,16 @@
 import random
 from dataclasses import dataclass
+from enum import Enum, auto
 from typing import Protocol
 
 from .cards import Deck, PracticeCard
+from .spelling import is_spelling_slip
+
+
+class AnswerVerdict(Enum):
+    CORRECT = auto()
+    MISSPELLED = auto()
+    WRONG = auto()
 
 
 @dataclass(frozen=True)
@@ -10,9 +18,16 @@ class Question:
     prompt: str
     expected_answer: str
     card: PracticeCard
+    tolerates_spelling_slips: bool = False
 
-    def accepts(self, answer: str) -> bool:
-        return _comparable(answer) == _comparable(self.expected_answer)
+    def judge(self, answer: str) -> AnswerVerdict:
+        given = _comparable(answer)
+        expected = _comparable(self.expected_answer)
+        if given == expected:
+            return AnswerVerdict.CORRECT
+        if self.tolerates_spelling_slips and is_spelling_slip(given, expected):
+            return AnswerVerdict.MISSPELLED
+        return AnswerVerdict.WRONG
 
 
 def _comparable(answer: str) -> str:
@@ -39,6 +54,7 @@ class NumberToNameRitual:
             prompt=f"Which {self.card_noun} is number {card.number}?",
             expected_answer=card.name,
             card=card,
+            tolerates_spelling_slips=True,
         )
 
 

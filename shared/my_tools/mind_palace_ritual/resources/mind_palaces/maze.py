@@ -58,5 +58,50 @@ mind_palace = MindPalace(
                 "leather boots"
             ],
         ),
+        Room(
+            room_name="Garden",
+            objects=[
+                "sundial",
+                "lavender wheelbarrow",
+                "stone bench",
+                "hand fan",
+                "satyr statue",
+                "birdhouse",
+                "garden workbench",
+                "garden clippers",
+                "watering can",
+                "tree pot",
+            ]
+        ),
+        Room(
+            room_name="Dragon's treasury",
+            objects=[
+                "scalebreaker sword",
+                "dragon shield",
+                "haunting horn",
+                "goblet",
+                "crown",
+                "treasure chest",
+                "silversteel armor",
+                "arkenstone",
+                "amphora",
+                "zen guardian",
+            ],
+        ),
+        Room(
+            room_name="Gingerbread house",
+            objects=[
+                "broom",
+                "witch hat",
+                "poison",
+                "cake",
+                "cage",
+                "recipe book",
+                "iron pan",
+                "bread basket",
+                "oven",
+                "gingerbread man",
+            ],
+        )
     ],
 )

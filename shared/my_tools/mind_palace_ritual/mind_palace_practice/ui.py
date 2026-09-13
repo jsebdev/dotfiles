@@ -33,6 +33,9 @@ class TerminalUserInterface:
     def show_wrong_answer(self) -> None:
         print("  ❌ Not right, try again.")
 
+    def show_misspelled_answer(self, expected_answer: str) -> None:
+        print(f"  📝 Close enough, but it is spelled '{expected_answer}'.")
+
     def show_nothing_to_practice(self) -> None:
         print("Nothing to practice yet.")
 
