@@ -11,6 +11,10 @@ from .scoreboard import Scoreboard
 
 Option = TypeVar("Option")
 
+BLUE = "\033[38;5;75m"
+GREEN = "\033[38;5;114m"
+RESET_COLOR = "\033[0m"
+
 
 class TerminalUserInterface:
     def choose(
@@ -28,16 +32,19 @@ class TerminalUserInterface:
         return questionary.text(question.prompt).unsafe_ask()
 
     def show_correct_answer(self, card: PracticeCard) -> None:
-        print(f"  ✅ {card.number}. {card.name}{_place_of(card)}\n")
+        print(f"  ✅ {card.number}. {_in_green(card.name)}{_place_of(card)}\n")
 
     def show_revealed_answer(self, card: PracticeCard) -> None:
-        print(f"  🙈 The answer was {card.number}. {card.name}{_place_of(card)}\n")
+        print(
+            f"  🙈 The answer was {card.number}. "
+            f"{_in_green(card.name)}{_place_of(card)}\n"
+        )
 
     def show_wrong_answer(self) -> None:
         print("  ❌ Not right, try again.")
 
     def show_misspelled_answer(self, expected_answer: str) -> None:
-        print(f"  📝 Close enough, but it is spelled '{expected_answer}'.")
+        print(f"  📝 Close enough, but it is spelled '{_in_green(expected_answer)}'.")
 
     def show_nothing_to_practice(self) -> None:
         print("Nothing to practice yet.")
@@ -71,7 +78,19 @@ def readable_duration(elapsed: timedelta) -> str:
 
 
 def _place_of(card: PracticeCard) -> str:
-    return f", in the {card.place}" if card.place else ""
+    return f", in the {_in_blue(card.place)}" if card.place else ""
+
+
+def _in_blue(text: str) -> str:
+    return _in_color(text, BLUE)
+
+
+def _in_green(text: str) -> str:
+    return _in_color(text, GREEN)
+
+
+def _in_color(text: str, color: str) -> str:
+    return f"{color}{text}{RESET_COLOR}"
 
 
 def _placement_headline(placement: Placement) -> str:
