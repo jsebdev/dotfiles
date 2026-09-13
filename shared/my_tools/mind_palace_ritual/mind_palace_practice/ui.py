@@ -30,6 +30,9 @@ class TerminalUserInterface:
     def show_correct_answer(self, card: PracticeCard) -> None:
         print(f"  ✅ {card.number}. {card.name}{_place_of(card)}\n")
 
+    def show_revealed_answer(self, card: PracticeCard) -> None:
+        print(f"  🙈 The answer was {card.number}. {card.name}{_place_of(card)}\n")
+
     def show_wrong_answer(self) -> None:
         print("  ❌ Not right, try again.")
 
