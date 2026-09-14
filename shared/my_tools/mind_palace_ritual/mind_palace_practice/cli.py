@@ -1,5 +1,6 @@
 from .clock import SessionClock
-from .records import BoardKey, RecordBook, completed_run
+from .record_book import RecordBook
+from .records import BoardKey, completed_run
 from .scoreboard import Scoreboard
 from .selection import PracticeChoice, ask_practice_choice
 from .session import practice
