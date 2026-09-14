@@ -5,6 +5,7 @@ from dataclasses import dataclass
 class Room:
     room_name: str
     objects: list[str]
+    description: str = ""
 
 
 @dataclass
