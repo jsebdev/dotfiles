@@ -36,7 +36,7 @@ class Placement:
 
 def completed_run(elapsed: timedelta, wrong_attempts: int) -> TimedRun:
     return TimedRun(
-        seconds=round(elapsed.total_seconds(), 1),
+        seconds=round(elapsed.total_seconds(), 3),
         wrong_attempts=wrong_attempts,
         achieved_at=datetime.now(),
     )

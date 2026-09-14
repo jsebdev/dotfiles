@@ -68,13 +68,15 @@ class TerminalUserInterface:
 
 
 def readable_duration(elapsed: timedelta) -> str:
-    minutes, seconds = divmod(int(elapsed.total_seconds()), 60)
+    seconds, milliseconds = divmod(round(elapsed.total_seconds() * 1000), 1000)
+    minutes, seconds = divmod(seconds, 60)
     hours, minutes = divmod(minutes, 60)
+    precise_seconds = f"{seconds}.{milliseconds:03d}s"
     if hours:
-        return f"{hours}h {minutes}m {seconds}s"
+        return f"{hours}h {minutes}m {precise_seconds}"
     if minutes:
-        return f"{minutes}m {seconds}s"
-    return f"{seconds}s"
+        return f"{minutes}m {precise_seconds}"
+    return precise_seconds
 
 
 def _place_of(card: PracticeCard) -> str:
@@ -107,7 +109,7 @@ def _board_title(key: BoardKey) -> str:
 
 def _best_time_row(position: int, run: TimedRun, achieved: int | None) -> str:
     row = (
-        f"  {position:2}. {readable_duration(run.elapsed):>9}"
+        f"  {position:2}. {readable_duration(run.elapsed):>11}"
         f"   {run.wrong_attempts:2} wrong   {run.achieved_on}"
     )
     return f"{row}   ← this run" if position == achieved else row
