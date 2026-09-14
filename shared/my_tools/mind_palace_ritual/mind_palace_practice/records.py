@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 BEST_TIMES_KEPT = 10
+BEST_TIMES_PREVIEWED = 3
 
 
 @dataclass(frozen=True)
@@ -25,6 +26,12 @@ class TimedRun:
     @property
     def achieved_on(self) -> str:
         return self.achieved_at.date().isoformat()
+
+
+@dataclass(frozen=True)
+class Board:
+    key: BoardKey
+    best_times: list[TimedRun]
 
 
 @dataclass(frozen=True)

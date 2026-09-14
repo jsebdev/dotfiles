@@ -5,7 +5,14 @@ from typing import TypeVar
 import questionary
 
 from .cards import Deck, PracticeCard
-from .records import BoardKey, Placement, TimedRun
+from .records import (
+    BEST_TIMES_KEPT,
+    BEST_TIMES_PREVIEWED,
+    Board,
+    BoardKey,
+    Placement,
+    TimedRun,
+)
 from .rituals import Question
 from .scoreboard import Scoreboard
 
@@ -46,6 +53,19 @@ class TerminalUserInterface:
     def show_misspelled_answer(self, expected_answer: str) -> None:
         print(f"  📝 Close enough, but it is spelled '{_in_green(expected_answer)}'.")
 
+    def show_no_best_times(self) -> None:
+        print("No best times recorded yet.")
+
+    def show_boards(self, boards: Sequence[Board]) -> None:
+        shown_per_board = _best_times_shown_for(boards)
+        print()
+        print("Best times")
+        for board in boards:
+            print()
+            print(_board_title(board.key))
+            for position, run in enumerate(board.best_times[:shown_per_board], start=1):
+                print(_best_time_row(position, run, None))
+
     def show_nothing_to_practice(self) -> None:
         print("Nothing to practice yet.")
 
@@ -65,6 +85,10 @@ class TerminalUserInterface:
         print(f"Best times · {_board_title(placement.key)}")
         for position, run in enumerate(placement.best_times, start=1):
             print(_best_time_row(position, run, placement.position))
+
+
+def _best_times_shown_for(boards: Sequence[Board]) -> int:
+    return BEST_TIMES_KEPT if len(boards) == 1 else BEST_TIMES_PREVIEWED
 
 
 def readable_duration(elapsed: timedelta) -> str:

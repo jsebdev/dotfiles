@@ -21,9 +21,13 @@ class RecordFile:
 class RecordFiles:
     directory: Path = RECORDS_DIRECTORY
 
+    def every_record(self) -> list[RecordFile]:
+        return [_read_record(path) for path in sorted(self.directory.glob("*.json"))]
+
     def of_board(self, board_key: BoardKey) -> list[RecordFile]:
-        records = (_read_record(path) for path in sorted(self.directory.glob("*.json")))
-        return [record for record in records if record.board_key == board_key]
+        return [
+            record for record in self.every_record() if record.board_key == board_key
+        ]
 
     def add(self, board_key: BoardKey, run: TimedRun) -> None:
         self.directory.mkdir(parents=True, exist_ok=True)

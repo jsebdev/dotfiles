@@ -1,3 +1,6 @@
+import argparse
+
+from .board_selection import ask_boards_to_show
 from .clock import SessionClock
 from .record_book import RecordBook
 from .records import BoardKey, completed_run
@@ -10,6 +13,38 @@ from .ui import TerminalUserInterface
 
 def main() -> None:
     user_interface = TerminalUserInterface()
+    if _command_line_arguments().best_times:
+        _show_best_times(user_interface)
+        return
+    _practice_session(user_interface)
+
+
+def _command_line_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Practice your mind palaces and your major system."
+    )
+    parser.add_argument(
+        "--best-times",
+        action="store_true",
+        help="show recorded best times instead of practicing",
+    )
+    return parser.parse_args()
+
+
+def _show_best_times(user_interface: TerminalUserInterface) -> None:
+    boards = RecordBook().boards()
+    if not boards:
+        user_interface.show_no_best_times()
+        return
+    try:
+        chosen_boards = ask_boards_to_show(user_interface, boards)
+    except KeyboardInterrupt:
+        print()
+        return
+    user_interface.show_boards(chosen_boards)
+
+
+def _practice_session(user_interface: TerminalUserInterface) -> None:
     subjects = available_subjects()
     if not subjects:
         user_interface.show_nothing_to_practice()

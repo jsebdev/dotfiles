@@ -53,7 +53,7 @@ def _choose_subject(
     if len(subjects) == 1:
         return subjects[0]
     return user_interface.choose(
-        "What do you want to practice?",
+        "Which technique do you want to practice?",
         subjects,
         lambda subject: subject.name,
     )
