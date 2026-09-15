@@ -21,7 +21,7 @@ mind_palace = MindPalace(
                 "sir",
                 "soul",
                 "sushi",
-                "sky",
+                "sock",
                 "sofa",
                 "soap",
                 "dice",
