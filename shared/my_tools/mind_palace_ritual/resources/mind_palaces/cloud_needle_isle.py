@@ -10,7 +10,7 @@ mind_palace = MindPalace(
         Room(
             room_name="Dawn Pier",
             description=(
-                "The cloud landing where you arrive at noon. A seed the size of your "
+                "The cloud landing where you arrive at dawn. A seed the size of your "
                 "fist is planted in the middle of the decking and a sumo stands "
                 "guarding it. At the edge there is a sofa facing out into the void."
             ),
@@ -30,7 +30,7 @@ mind_palace = MindPalace(
         Room(
             room_name="Hall of the Ancestors",
             description=(
-                "A corridor of portraits climbing up from the pier. The first one is "
+                "A corridor of portraits climbing down from the pier. The first one is "
                 "your dad, wired into a tall ladder of DNA. The last frame holds "
                 "nothing but an enormous nose."
             ),
