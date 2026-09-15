@@ -18,6 +18,7 @@ configs/claude/daemon.status.json
 configs/claude/daemon/
 configs/claude/jobs/
 configs/claude/tasks/
+configs/claude/policy-limits.json.stamp.json
 
 
 # OMC runtime state
