@@ -7,6 +7,7 @@
 - Ask clarifying questions when multiple valid approaches exist before proceeding
 - Explain trade-offs between approaches when relevant
 - Confirm understanding of requirements for non-trivial changes
+- Reference files by a path that identifies them uniquely. A bare filename is only acceptable when no other file in the repo shares that name; otherwise give the path (`rally_core/models/check.py`, not `check.py`)
 
 ### Code Quality
 
