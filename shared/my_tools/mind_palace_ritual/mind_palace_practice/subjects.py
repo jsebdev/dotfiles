@@ -94,19 +94,19 @@ def _room_groups(rooms: list[Room], cards: list[PracticeCard]) -> list[RangeGrou
     spans = _room_spans(rooms)
     return [
         RangeGroup(
-            name="Up to room",
-            question="Up to which room?",
-            ranges=[
-                CardRange(label=f"up to {room.room_name}", cards=cards[:end])
-                for room, _, end in spans[:-1]
-            ],
-        ),
-        RangeGroup(
             name="Room",
             question="Which room?",
             ranges=[
                 CardRange(label=f"{room.room_name} only", cards=cards[start:end])
                 for room, start, end in spans
+            ],
+        ),
+        RangeGroup(
+            name="Up to room",
+            question="Up to which room?",
+            ranges=[
+                CardRange(label=f"up to {room.room_name}", cards=cards[:end])
+                for room, _, end in spans[:-1]
             ],
         ),
     ]
