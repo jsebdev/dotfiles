@@ -79,7 +79,7 @@ mind_palace = MindPalace(
                 "moon",
                 "mommy",
                 "Mario",
-                "mall",
+                "mule",
                 "match",
                 "Mickey",
                 "mafia",
