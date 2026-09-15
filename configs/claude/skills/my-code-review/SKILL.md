@@ -12,11 +12,24 @@ Run this review **inline, in the current session** by default. The point of doin
 every command and every file examined stays visible, so follow-up questions about how the review was
 conducted can be answered. Delegate to the `code-reviewer` agent only when the diff is large enough
 to crowd out the rest of the session (roughly 40+ changed files or several thousand changed lines).
-When delegating, hand the agent the ticket's acceptance criteria and the decisions recorded in its
-comments verbatim, pass on the scope arguments the user gave, and require the agent to include a
-"Files examined / commands run" section in its report so procedural questions remain answerable. A
-scope narrow enough to fit comfortably in the session is reviewed inline even when the full PR is
+A scope narrow enough to fit comfortably in the session is reviewed inline even when the full PR is
 large.
+
+Inline and delegated are exclusive. When delegating, do not run a second review pass yourself;
+verify the agent's findings after its report is complete, and do it silently.
+
+### Delegating
+
+Hand the agent the ticket's acceptance criteria and the decisions recorded in its comments verbatim,
+pass on the scope arguments the user gave, and require a "Files examined / commands run" section so
+procedural questions remain answerable.
+
+Require the agent to write its complete review to `<scratchpad>/review-<pr>.md` and return only that
+path and a one-line status. Read the file and publish from it. A subagent result payload is
+size-capped and truncates silently mid-item, so it must never carry the review itself.
+
+If a report arrives truncated anyway, do not relay it and do not request it piecemeal. Re-request it
+as a file. If that truncates too, abandon delegation and review the remaining scope inline.
 
 ## Arguments
 
@@ -103,10 +116,14 @@ that speak to it.
    under `api/`, security checks only."
 5. **Review every file in scope systematically** using the checklist below. Read surrounding context
    in the files themselves when the diff alone is not enough to judge a change.
-6. **Compile the feedback** into the three severity groups below.
-7. **Return the feedback in the conversation.** Post to GitHub only when the arguments include
-   `--post` or the user explicitly asks for it, and then as **one single** `gh pr comment` containing
-   the whole review. Never post multiple comments, inline comments, or per-file comments.
+6. **Compile the feedback** into the three severity groups below, written to
+   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from, and
+   what `--post` reads.
+7. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
+   partial review: when findings arrive in pieces, accumulate them silently and publish when
+   complete. Post to GitHub only when the arguments include `--post` or the user explicitly asks,
+   and then as **one single** `gh pr comment` containing the whole review. Never post multiple
+   comments, inline comments, or per-file comments.
 
 ## Review Checklist
 
@@ -198,3 +215,6 @@ Rules:
 
 Direct and practical. No praise, no filler. The job is to surface problems and suggest improvements.
 Explain why something matters when it is not obvious, but do it in the same one-liner.
+
+Do not narrate the review in progress. The first thing the user sees about the review should be the
+review.
