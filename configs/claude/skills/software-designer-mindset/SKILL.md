@@ -63,6 +63,21 @@ getOrders(shopId, customerId);
 
 The overhead is 2–5 lines per type. The benefit is compiler-enforced correctness, self-documenting signatures, and safe refactoring across the codebase.
 
+### Optionality is a claim about the domain
+
+`T | undefined` asserts that there are real situations where the value does not exist — so name
+one. If the only way to reach `undefined` is a caller that forgot to ask for the data, the type is
+wrong: make it required, so the caller that forgets fails at the boundary where the mistake was
+made. An unjustified optional type is the cheapest way to turn a wiring bug into a silently empty
+screen.
+
+- Bad: `clientId: number | undefined`, then `company?.id` and an empty contact list when it is
+  missing.
+- Good: `clientId: number` — the row that fails to supply it does not compile.
+- When the type genuinely cannot be tightened (a shared API model where the field really is
+  conditional), the consumer that requires it throws with the reason. It never renders a degraded
+  result.
+
 ## 3. High Cohesion
 
 High cohesion means that a module, class, or function should have a single, well-defined responsibility — all its parts should be closely related and working toward the same purpose. A cohesive unit does one thing and does it well, making code easier to understand, test, and maintain.

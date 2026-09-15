@@ -156,6 +156,11 @@ that speak to it.
 - Performance bottlenecks and inefficient algorithms.
 - Code duplication and refactoring opportunities.
 - Error handling and edge case coverage.
+- Unjustified optionality. For every optional prop, parameter, or field the PR adds or widens, and
+  every `?.`, `??`, `if (!x) return`, or default that covers a missing value, ask what real
+  situation produces the missing case. If the answer is only "a caller might not pass it", it is
+  **Critical**, not a style note: the type is licensing a wiring bug to render as empty state. Say
+  in the finding whether the type should be required or the consumer should throw.
 - Test coverage for new functionality. Use `general-testing-guidelines`, plus `python-testing` or
   `go-testing` for the relevant language.
 - Type safety and proper type annotations.
