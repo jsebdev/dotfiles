@@ -30,7 +30,7 @@ mind_palace = MindPalace(
         Room(
             room_name="Hall of the Ancestors",
             description=(
-                "A corridor of portraits climbing down from the pier. The first one is "
+                "A corridor of portraits climbing up from the pier. The first one is "
                 "your dad, wired into a tall ladder of DNA. The last frame holds "
                 "nothing but an enormous nose."
             ),
@@ -77,10 +77,10 @@ mind_palace = MindPalace(
             objects=[
                 "mat",
                 "moon",
-                "mommy",
+                "mummy",
                 "Mario",
                 "mule",
-                "match",
+                "mochi",
                 "Mickey",
                 "mafia",
                 "map",
