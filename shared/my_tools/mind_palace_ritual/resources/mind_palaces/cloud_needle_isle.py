@@ -141,7 +141,7 @@ mind_palace = MindPalace(
                 "jam",
                 "cherry",
                 "chili",
-                "yo-yo",
+                "yo yo",
                 "check",
                 "chef",
                 "chip",

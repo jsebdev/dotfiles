@@ -1,41 +1,28 @@
 import importlib
 import pkgutil
-from types import ModuleType
-from typing import Any
 
-from resources import major_system, mind_palaces
-from resources.major_system.models import MajorSystem
+from resources import mind_palaces
 from resources.mind_palaces.models import MindPalace
 
 MIND_PALACE_ATTRIBUTE = "mind_palace"
-MAJOR_SYSTEM_ATTRIBUTE = "major_system"
 
 
 def available_mind_palaces() -> list[MindPalace]:
-    palaces = _attribute_of_every_module(mind_palaces, MIND_PALACE_ATTRIBUTE)
+    palaces = [
+        palace
+        for module_name in _module_names()
+        if (palace := _mind_palace_in(module_name)) is not None
+    ]
     return sorted(palaces, key=lambda palace: palace.name)
 
 
-def available_major_systems() -> list[MajorSystem]:
-    systems = _attribute_of_every_module(major_system, MAJOR_SYSTEM_ATTRIBUTE)
-    return sorted(systems, key=lambda system: system.name)
-
-
-def _attribute_of_every_module(package: ModuleType, attribute_name: str) -> list[Any]:
+def _module_names() -> list[str]:
     return [
-        value
-        for module_name in _module_names(package)
-        if (value := _attribute_in(module_name, attribute_name)) is not None
+        f"{mind_palaces.__name__}.{module.name}"
+        for module in pkgutil.iter_modules(mind_palaces.__path__)
     ]
 
 
-def _module_names(package: ModuleType) -> list[str]:
-    return [
-        f"{package.__name__}.{module.name}"
-        for module in pkgutil.iter_modules(package.__path__)
-    ]
-
-
-def _attribute_in(module_name: str, attribute_name: str) -> Any:
+def _mind_palace_in(module_name: str) -> MindPalace | None:
     module = importlib.import_module(module_name)
-    return getattr(module, attribute_name, None)
+    return getattr(module, MIND_PALACE_ATTRIBUTE, None)

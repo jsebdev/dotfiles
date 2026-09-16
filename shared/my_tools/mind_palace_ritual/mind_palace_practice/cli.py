@@ -2,12 +2,12 @@ import argparse
 
 from .board_selection import ask_boards_to_show
 from .clock import SessionClock
+from .mind_palace_decks import available_decks
 from .record_book import RecordBook
 from .records import BoardKey, completed_run
 from .scoreboard import Scoreboard
 from .selection import PracticeChoice, ask_practice_choice
 from .session import practice
-from .subjects import available_subjects
 from .ui import TerminalUserInterface
 
 
@@ -20,9 +20,7 @@ def main() -> None:
 
 
 def _command_line_arguments() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(
-        description="Practice your mind palaces and your major system."
-    )
+    parser = argparse.ArgumentParser(description="Practice your mind palaces.")
     parser.add_argument(
         "--best-times",
         action="store_true",
@@ -45,12 +43,12 @@ def _show_best_times(user_interface: TerminalUserInterface) -> None:
 
 
 def _practice_session(user_interface: TerminalUserInterface) -> None:
-    subjects = available_subjects()
-    if not subjects:
+    decks = available_decks()
+    if not decks:
         user_interface.show_nothing_to_practice()
         return
     try:
-        choice = ask_practice_choice(user_interface, subjects)
+        choice = ask_practice_choice(user_interface, decks)
     except KeyboardInterrupt:
         print()
         return

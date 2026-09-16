@@ -5,7 +5,6 @@ from typing import Protocol, TypeVar
 from .cards import Deck, RangeGroup
 from .modes import Mode, available_modes
 from .rituals import Ritual, available_rituals
-from .subjects import Subject
 
 Option = TypeVar("Option")
 
@@ -28,10 +27,9 @@ class PracticeChoice:
 
 def ask_practice_choice(
     user_interface: SelectionUserInterface,
-    subjects: Sequence[Subject],
+    decks: Sequence[Deck],
 ) -> PracticeChoice:
-    subject = _choose_subject(user_interface, subjects)
-    deck = _choose_range(user_interface, _choose_deck(user_interface, subject))
+    deck = _choose_range(user_interface, _choose_deck(user_interface, decks))
     return PracticeChoice(
         deck=deck,
         ritual=user_interface.choose(
@@ -47,24 +45,12 @@ def ask_practice_choice(
     )
 
 
-def _choose_subject(
-    user_interface: SelectionUserInterface, subjects: Sequence[Subject]
-) -> Subject:
-    if len(subjects) == 1:
-        return subjects[0]
+def _choose_deck(user_interface: SelectionUserInterface, decks: Sequence[Deck]) -> Deck:
+    if len(decks) == 1:
+        return decks[0]
     return user_interface.choose(
-        "Which technique do you want to practice?",
-        subjects,
-        lambda subject: subject.name,
-    )
-
-
-def _choose_deck(user_interface: SelectionUserInterface, subject: Subject) -> Deck:
-    if len(subject.decks) == 1:
-        return subject.decks[0]
-    return user_interface.choose(
-        f"Which {subject.deck_noun} do you want to practice?",
-        subject.decks,
+        "Which mind palace do you want to practice?",
+        decks,
         lambda deck: deck.name,
     )
 
