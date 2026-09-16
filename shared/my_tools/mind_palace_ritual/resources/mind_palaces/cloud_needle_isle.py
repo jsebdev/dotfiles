@@ -91,7 +91,7 @@ mind_palace = MindPalace(
             room_name="Storm Roof",
             description=(
                 "The top of the arcade, where the island meets the weather. A radio "
-                "crackles on the parapet and a stone arm reaches out over the void. A "
+                "crackles on the parapet and a stone arm points out to the sky. A "
                 "lasso hangs tied to the chimney."
             ),
             objects=[
@@ -121,7 +121,7 @@ mind_palace = MindPalace(
                 "lawyer",
                 "lolly",
                 "leach",
-                "lake",
+                "lock",
                 "lava",
                 "lip",
                 "cheese",
