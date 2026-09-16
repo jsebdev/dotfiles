@@ -4,6 +4,7 @@ from typing import Protocol, TypeVar
 
 from .cards import Deck, RangeGroup
 from .modes import Mode, available_modes
+from .number_question import NumberQuestion
 from .rituals import Ritual, available_rituals
 
 Option = TypeVar("Option")
@@ -16,6 +17,8 @@ class SelectionUserInterface(Protocol):
         options: Sequence[Option],
         label: Callable[[Option], str],
     ) -> Option: ...
+
+    def ask_number(self, question: NumberQuestion) -> int: ...
 
 
 @dataclass(frozen=True)
@@ -55,38 +58,69 @@ def _choose_deck(user_interface: SelectionUserInterface, decks: Sequence[Deck]) 
     )
 
 
+@dataclass(frozen=True)
+class _RangeOption:
+    name: str
+    narrow: Callable[[SelectionUserInterface, Deck], Deck]
+
+
 def _choose_range(user_interface: SelectionUserInterface, deck: Deck) -> Deck:
-    if not deck.range_groups:
-        return deck
-    if len(deck.range_groups) == 1:
-        group = deck.range_groups[0]
-        return _choose_narrowed_deck(
-            user_interface, group.question, [deck, *_narrowed_decks(deck, group)]
-        )
-    group = _choose_range_group(user_interface, deck)
-    if not group.ranges:
-        return deck
-    return _choose_narrowed_deck(
-        user_interface, group.question, _narrowed_decks(deck, group)
-    )
-
-
-def _choose_range_group(
-    user_interface: SelectionUserInterface, deck: Deck
-) -> RangeGroup:
-    return user_interface.choose(
+    option = user_interface.choose(
         "How much do you want to practice?",
-        [_whole_deck_group(deck), *deck.range_groups],
-        lambda group: group.name,
+        _range_options(deck),
+        lambda range_option: range_option.name,
     )
+    return option.narrow(user_interface, deck)
 
 
-def _whole_deck_group(deck: Deck) -> RangeGroup:
-    return RangeGroup(
+def _range_options(deck: Deck) -> list[_RangeOption]:
+    return [
+        _whole_deck_option(deck),
+        *[_range_group_option(group) for group in deck.range_groups],
+        _chosen_span_option(deck),
+    ]
+
+
+def _whole_deck_option(deck: Deck) -> _RangeOption:
+    return _RangeOption(
         name=f"All ({len(deck.cards)} {deck.card_noun}s)",
-        question="",
-        ranges=[],
+        narrow=lambda user_interface, chosen_deck: chosen_deck,
     )
+
+
+def _range_group_option(group: RangeGroup) -> _RangeOption:
+    return _RangeOption(
+        name=group.name,
+        narrow=lambda user_interface, chosen_deck: _choose_narrowed_deck(
+            user_interface, group.question, _narrowed_decks(chosen_deck, group)
+        ),
+    )
+
+
+def _chosen_span_option(deck: Deck) -> _RangeOption:
+    return _RangeOption(
+        name=f"Range of {deck.card_noun}s",
+        narrow=_ask_span,
+    )
+
+
+def _ask_span(user_interface: SelectionUserInterface, deck: Deck) -> Deck:
+    last_number = len(deck.cards)
+    first_chosen = user_interface.ask_number(
+        NumberQuestion(
+            prompt=f"Which is the first {deck.card_noun}?",
+            lowest=1,
+            highest=last_number,
+        )
+    )
+    last_chosen = user_interface.ask_number(
+        NumberQuestion(
+            prompt=f"Which is the last {deck.card_noun}?",
+            lowest=first_chosen,
+            highest=last_number,
+        )
+    )
+    return deck.narrowed_to(deck.span_between(first_chosen, last_chosen))
 
 
 def _narrowed_decks(deck: Deck, group: RangeGroup) -> list[Deck]:

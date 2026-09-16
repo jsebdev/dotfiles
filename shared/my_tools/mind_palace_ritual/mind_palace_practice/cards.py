@@ -30,6 +30,13 @@ class Deck:
     range_groups: list[RangeGroup] = field(default_factory=list)
     range_label: str = ""
 
+    def span_between(self, first_number: int, last_number: int) -> CardRange:
+        first_index = first_number - 1
+        return CardRange(
+            label=f"{self.card_noun}s {first_number} to {last_number}",
+            cards=self.cards[first_index:last_number],
+        )
+
     def narrowed_to(self, card_range: CardRange) -> "Deck":
         return replace(
             self,

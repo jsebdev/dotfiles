@@ -95,18 +95,42 @@ def _boards_of(choices: Sequence[BoardChoice], boards: Sequence[Board]) -> list[
 
 
 def _choices_for(boards: Sequence[Board]) -> list[BoardChoice]:
-    catalog = _catalog_choices()
-    return [catalog.get(board.key) or _unknown_choice(board.key) for board in boards]
+    decks = available_decks()
+    catalog = _catalog_choices(decks)
+    return [
+        catalog.get(board.key) or _spanning_choice(board.key, decks) for board in boards
+    ]
 
 
-def _catalog_choices() -> dict[BoardKey, BoardChoice]:
+def _catalog_choices(decks: Sequence[Deck]) -> dict[BoardKey, BoardChoice]:
     choices = (
         _catalog_choice(deck, variant, ritual)
-        for deck in available_decks()
+        for deck in decks
         for variant in _deck_variants(deck)
         for ritual in available_rituals(deck)
     )
     return {choice.key: choice for choice in choices}
+
+
+def _spanning_choice(board_key: BoardKey, decks: Sequence[Deck]) -> BoardChoice:
+    deck = _deck_the_board_belongs_to(board_key, decks)
+    if deck is None:
+        return _unknown_choice(board_key)
+    return BoardChoice(
+        key=board_key,
+        base_deck_name=deck.name,
+        card_noun=deck.card_noun,
+        range_label=board_key.deck_name.removeprefix(f"{deck.name} "),
+    )
+
+
+def _deck_the_board_belongs_to(
+    board_key: BoardKey, decks: Sequence[Deck]
+) -> Deck | None:
+    return next(
+        (deck for deck in decks if board_key.deck_name.startswith(f"{deck.name} ")),
+        None,
+    )
 
 
 def _deck_variants(deck: Deck) -> list[Deck]:

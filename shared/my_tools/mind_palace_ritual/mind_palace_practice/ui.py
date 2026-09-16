@@ -5,6 +5,7 @@ from typing import TypeVar
 import questionary
 
 from .cards import Deck, PracticeCard
+from .number_question import NumberQuestion
 from .records import (
     BEST_TIMES_KEPT,
     BEST_TIMES_PREVIEWED,
@@ -34,6 +35,14 @@ class TerminalUserInterface:
             questionary.Choice(title=label(option), value=option) for option in options
         ]
         return questionary.select(message, choices=choices).unsafe_ask()
+
+    def ask_number(self, question: NumberQuestion) -> int:
+        while True:
+            answer = questionary.text(question.prompt).unsafe_ask()
+            error = question.error_for(answer)
+            if not error:
+                return int(answer)
+            print(f"  ❌ {error}")
 
     def ask_answer(self, question: Question) -> str:
         return questionary.text(question.prompt).unsafe_ask()

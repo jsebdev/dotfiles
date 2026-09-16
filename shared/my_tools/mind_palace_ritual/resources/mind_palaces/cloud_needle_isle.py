@@ -96,7 +96,7 @@ mind_palace = MindPalace(
             ),
             objects=[
                 "radio",
-                "rain",
+                "iron",
                 "arm",
                 "error",
                 "Ariel",
