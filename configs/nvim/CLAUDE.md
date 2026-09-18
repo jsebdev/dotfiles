@@ -83,6 +83,7 @@ Configured for:
 ### Telescope Integration
 Extensive telescope configuration with:
 - Hidden file search enabled
+- File search respects `.gitignore`; `<leader>si` searches including gitignored files. Telescope appends `--hidden`/`--no-ignore` to the picker's `find_command` whenever it starts with `rg` or `fd`, so those flags are controlled by the `hidden` and `no_ignore` picker keys, not by the command list
 - Custom grep patterns for different file types
 - Vertical layout optimized for large screens
 - Custom searches for Python/TypeScript files specifically

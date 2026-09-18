@@ -51,7 +51,7 @@ function M.setup()
     },
     pickers = {
       find_files = {
-        no_ignore = true,
+        no_ignore = false,
         hidden = true,
         find_command = {
           'rg', '--files', '--hidden',
@@ -154,8 +154,12 @@ function M.setup()
   end, { desc = '[S]earch TypeScript files' })
 
   vim.keymap.set('n', '<leader>si', function()
-    builtin.find_files { no_ignore = false, hidden = false }
-  end, { desc = '[S]earch files respecting git [I]gnore' })
+    builtin.find_files {
+      prompt_title = 'Find Files including files ignored by gitignore',
+      no_ignore = true,
+      hidden = true,
+    }
+  end, { desc = '[S]earch files [I]ncluding gitignored' })
 end
 
 return M

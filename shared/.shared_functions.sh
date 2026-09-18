@@ -60,6 +60,7 @@ backup_claude_config() {
 
 ecs_connect() {
     echo "Fetching ECS clusters..."
+    echo "Using aws profile: ${AWS_PROFILE:-default}"
     local clusters_raw
     clusters_raw=$(aws ecs list-clusters --query 'clusterArns[]' --output text 2>&1)
     if echo "$clusters_raw" | grep -q "AccessDeniedException"; then
