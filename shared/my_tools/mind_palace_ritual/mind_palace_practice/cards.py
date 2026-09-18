@@ -3,7 +3,7 @@ from dataclasses import dataclass, field, replace
 
 @dataclass(frozen=True)
 class PracticeCard:
-    number: str
+    index: str
     name: str
     place: str = ""
 
@@ -30,11 +30,20 @@ class Deck:
     range_groups: list[RangeGroup] = field(default_factory=list)
     range_label: str = ""
 
-    def span_between(self, first_number: int, last_number: int) -> CardRange:
-        first_index = first_number - 1
+    @property
+    def first_card_index(self) -> int:
+        return int(self.cards[0].index)
+
+    @property
+    def last_card_index(self) -> int:
+        return int(self.cards[-1].index)
+
+    def span_between(self, first_index: int, last_index: int) -> CardRange:
+        first_position = first_index - self.first_card_index
+        after_last_position = last_index - self.first_card_index + 1
         return CardRange(
-            label=f"{self.card_noun}s {first_number} to {last_number}",
-            cards=self.cards[first_index:last_number],
+            label=f"{self.card_noun}s {first_index} to {last_index}",
+            cards=self.cards[first_position:after_last_position],
         )
 
     def narrowed_to(self, card_range: CardRange) -> "Deck":

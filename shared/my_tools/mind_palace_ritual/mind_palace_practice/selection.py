@@ -4,7 +4,7 @@ from typing import Protocol, TypeVar
 
 from .cards import Deck, RangeGroup
 from .modes import Mode, available_modes
-from .number_question import NumberQuestion
+from .index_question import IndexQuestion
 from .rituals import Ritual, available_rituals
 
 Option = TypeVar("Option")
@@ -18,7 +18,7 @@ class SelectionUserInterface(Protocol):
         label: Callable[[Option], str],
     ) -> Option: ...
 
-    def ask_number(self, question: NumberQuestion) -> int: ...
+    def ask_index(self, question: IndexQuestion) -> int: ...
 
 
 @dataclass(frozen=True)
@@ -105,19 +105,19 @@ def _chosen_span_option(deck: Deck) -> _RangeOption:
 
 
 def _ask_span(user_interface: SelectionUserInterface, deck: Deck) -> Deck:
-    last_number = len(deck.cards)
-    first_chosen = user_interface.ask_number(
-        NumberQuestion(
+    last_index = deck.last_card_index
+    first_chosen = user_interface.ask_index(
+        IndexQuestion(
             prompt=f"Which is the first {deck.card_noun}?",
-            lowest=1,
-            highest=last_number,
+            lowest=deck.first_card_index,
+            highest=last_index,
         )
     )
-    last_chosen = user_interface.ask_number(
-        NumberQuestion(
+    last_chosen = user_interface.ask_index(
+        IndexQuestion(
             prompt=f"Which is the last {deck.card_noun}?",
             lowest=first_chosen,
-            highest=last_number,
+            highest=last_index,
         )
     )
     return deck.narrowed_to(deck.span_between(first_chosen, last_chosen))

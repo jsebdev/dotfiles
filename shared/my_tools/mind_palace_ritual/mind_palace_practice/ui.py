@@ -5,7 +5,7 @@ from typing import TypeVar
 import questionary
 
 from .cards import Deck, PracticeCard
-from .number_question import NumberQuestion
+from .index_question import IndexQuestion
 from .records import (
     BEST_TIMES_KEPT,
     BEST_TIMES_PREVIEWED,
@@ -36,7 +36,7 @@ class TerminalUserInterface:
         ]
         return questionary.select(message, choices=choices).unsafe_ask()
 
-    def ask_number(self, question: NumberQuestion) -> int:
+    def ask_index(self, question: IndexQuestion) -> int:
         while True:
             answer = questionary.text(question.prompt).unsafe_ask()
             error = question.error_for(answer)
@@ -48,11 +48,11 @@ class TerminalUserInterface:
         return questionary.text(question.prompt).unsafe_ask()
 
     def show_correct_answer(self, card: PracticeCard) -> None:
-        print(f"  ✅ {card.number}. {_in_green(card.name)}{_place_of(card)}\n")
+        print(f"  ✅ {card.index}. {_in_green(card.name)}{_place_of(card)}\n")
 
     def show_revealed_answer(self, card: PracticeCard) -> None:
         print(
-            f"  🙈 The answer was {card.number}. "
+            f"  🙈 The answer was {card.index}. "
             f"{_in_green(card.name)}{_place_of(card)}\n"
         )
 

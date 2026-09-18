@@ -42,16 +42,16 @@ class Ritual(Protocol):
 
 
 @dataclass(frozen=True)
-class NumberToNameRitual:
+class IndexToNameRitual:
     card_noun: str
 
     @property
     def name(self) -> str:
-        return f"Number to {self.card_noun}"
+        return f"Index to {self.card_noun}"
 
     def question_for(self, card: PracticeCard) -> Question:
         return Question(
-            prompt=f"Which {self.card_noun} is number {card.number}?",
+            prompt=f"Which {self.card_noun} is index {card.index}?",
             expected_answer=card.name,
             card=card,
             tolerates_spelling_slips=True,
@@ -59,17 +59,17 @@ class NumberToNameRitual:
 
 
 @dataclass(frozen=True)
-class NameToNumberRitual:
+class NameToIndexRitual:
     card_noun: str
 
     @property
     def name(self) -> str:
-        return f"{self.card_noun.capitalize()} to number"
+        return f"{self.card_noun.capitalize()} to index"
 
     def question_for(self, card: PracticeCard) -> Question:
         return Question(
-            prompt=f"Which number is '{card.name}'?",
-            expected_answer=card.number,
+            prompt=f"Which index is '{card.name}'?",
+            expected_answer=card.index,
             card=card,
         )
 
@@ -85,7 +85,7 @@ class MixedRitual:
 
 def available_rituals(deck: Deck) -> list[Ritual]:
     one_way_rituals: list[Ritual] = [
-        NumberToNameRitual(deck.card_noun),
-        NameToNumberRitual(deck.card_noun),
+        IndexToNameRitual(deck.card_noun),
+        NameToIndexRitual(deck.card_noun),
     ]
     return [*one_way_rituals, MixedRitual(one_way_rituals)]

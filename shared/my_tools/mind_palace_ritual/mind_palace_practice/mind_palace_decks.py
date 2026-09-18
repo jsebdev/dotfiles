@@ -17,8 +17,8 @@ def _mind_palace_deck(mind_palace: MindPalace) -> Deck:
         for object_name in room.objects
     )
     cards = [
-        PracticeCard(number=str(number), name=object_name, place=room.room_name)
-        for number, (room, object_name) in enumerate(rooms_and_objects, start=1)
+        PracticeCard(index=str(index), name=object_name, place=room.room_name)
+        for index, (room, object_name) in enumerate(rooms_and_objects)
     ]
     return Deck(
         name=mind_palace.name,
