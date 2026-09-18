@@ -12,9 +12,9 @@ mind_palace = MindPalace(
             description=(
                 "The cloud landing where you arrive at dawn. Zeus stands at the top "
                 "of the gangway to welcome you, throwing thunder over the water. A "
-                "seed the size of your fist is planted in the middle of the decking "
-                "and a sumo stands guarding it. At the edge there is a sofa facing "
-                "out into the void."
+                "seed the size of your table is planted next to him"
+                "and a sumo stands guarding the decking. At the edge there is a sofa falling"
+                "into the void."
             ),
             objects=[
                 "Zeus",
@@ -53,10 +53,10 @@ mind_palace = MindPalace(
         Room(
             room_name="Wharf of the Nets",
             description=(
-                "A plank wharf hanging off the edge of the island. An enormous nose "
-                "sniffs the air over the rail where the corridor comes out. A net is "
+                "A plank wharf hanging off the edge of the island. An enormous nose in a portrait "
+                "is laying in the ground. A net is "
                 "spread across the floor and a nun kneels sewing in the middle of "
-                "it. A knife is driven into the post."
+                "it."
             ),
             objects=[
                 "nose",
