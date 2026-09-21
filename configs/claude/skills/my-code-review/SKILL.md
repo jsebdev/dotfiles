@@ -1,7 +1,6 @@
 ---
 name: my-code-review
-argument-hint: [pr-or-branch] [ticket-key] [--only <path>] [--focus <area>] [--post]
-description: Review a pull request against its base branch and return severity-grouped, actionable feedback following my project conventions. Use when the user invokes /my-code-review, asks for a PR review, asks for feedback on changes they just finished, or asks to review only part of a PR such as certain files, directories, or concerns. Covers ticket resolution, target resolution, scoping the review through arguments, the review checklist, the output format, and when to post feedback to GitHub.
+description: Review a pull request against its base branch and return severity-grouped, actionable feedback following my project conventions. Use when the user invokes /my-code-review, asks for a PR review, asks for feedback on changes they just finished, or asks to review only part of a PR such as certain files, directories, or concerns. Covers ticket resolution, target resolution, scoping the review, the review checklist, the output format, and staging the feedback as comments on the PR.
 ---
 
 # My Code Review
@@ -21,7 +20,7 @@ verify the agent's findings after its report is complete, and do it silently.
 ### Delegating
 
 Hand the agent the ticket's acceptance criteria and the decisions recorded in its comments verbatim,
-pass on the scope arguments the user gave, and require a "Files examined / commands run" section so
+pass on any scope the user asked for, and require a "Files examined / commands run" section so
 procedural questions remain answerable.
 
 Require the agent to write its complete review to `<scratchpad>/review-<pr>.md` and return only that
@@ -31,48 +30,24 @@ size-capped and truncates silently mid-item, so it must never carry the review i
 If a report arrives truncated anyway, do not relay it and do not request it piecemeal. Re-request it
 as a file. If that truncates too, abandon delegation and review the remaining scope inline.
 
-## Arguments
+## Scope
 
-**Arguments received:** $ARGUMENTS
+The user asks for the review in plain language. Read what they asked for and take from it whichever
+of these apply:
 
-That line is what the user typed after the skill name, and it is empty when they passed nothing.
-Every argument is optional and they can be combined in any order. Parse the line into these slots,
-and treat anything that matches none of them as a free-form scope instruction.
-
-| Argument | Form | Effect |
-| --- | --- | --- |
-| PR target | `1234`, `#1234`, a PR URL, or a branch name | Which PR to review. |
-| Ticket key | `ABC-123` | Which ticket to review against, skipping ticket detection. |
-| Path scope | `--only <path>`, repeatable, accepts a file, a directory, or a glob | Review only changed files matching these paths. |
-| Path exclusion | `--skip <path>`, repeatable, same forms | Review every changed file except these. |
-| Focus scope | `--focus <area>`, repeatable, one of `ticket`, `design`, `correctness`, `tests`, `security`, `performance`, `data-layer`, `observability` | Apply only the matching parts of the review checklist. |
-| Post flag | `--post` | Post the review to GitHub as a single comment. |
-| Free-form scope | Plain language, for example `only the migration files` or `just look at error handling` | Interpret as a path scope, a focus scope, or both. |
-
-### Focus areas
-
-Each focus value selects this part of the review checklist:
-
-| Focus | Checklist part |
-| --- | --- |
-| `ticket` | The whole "Ticket context" section. |
-| `design` | The whole "Design and conventions" section. |
-| `correctness` | The whole "Correctness and quality" section. |
-| `tests` | Test coverage, plus the testing skills it names. |
-| `security` | Security vulnerabilities and potential exploits. |
-| `performance` | Performance bottlenecks, inefficient algorithms, and N+1 queries. |
-| `data-layer` | The whole "Data layer" section. |
-| `observability` | The whole "Observability" section. |
-
-A free-form focus that matches none of these is applied as written, narrowed to the checklist items
-that speak to it.
+- **Which PR**, given as a number, a URL, or a branch name.
+- **Which ticket**, given as a ticket key, which skips ticket detection.
+- **A path scope**, for example "only the migration files" or "just the API directory": review only
+  the changed files matching it.
+- **A focus scope**, for example "just look at error handling" or "security only": apply only the
+  parts of the review checklist that speak to it.
 
 ### Scope rules
 
-- With no scope argument, review every changed file against the whole checklist.
+- With nothing narrowing the review, review every changed file against the whole checklist.
 - A path scope narrows which changed files are reviewed. A focus scope narrows which checklist
-  sections are applied. They combine, so `--only api/ --focus security` reviews the API changes for
-  security only.
+  sections are applied. They combine, so "the API changes, security only" reviews the files under
+  the API path for security alone.
 - Resolving and reading the ticket is never skipped, whatever the scope. The ticket is what tells you
   whether the code in scope implements the agreed behavior.
 - The ticket context checks still run under a path scope, but assess only the acceptance criteria the
@@ -86,12 +61,12 @@ that speak to it.
 ## Steps
 
 1. **Resolve the target PR**
-   - A PR number in the arguments wins.
-   - A branch name in the arguments resolves with `gh pr view <branch> --json number,title,baseRefName`.
+   - A PR number the user named wins.
+   - A branch name they named resolves with `gh pr view <branch> --json number,title,baseRefName`.
    - Otherwise resolve the PR for the current branch with `gh pr view --json number,title,baseRefName`.
    - If no PR is found, ask the user for the PR number and stop.
 2. **Resolve and read the ticket, before reading a single line of the diff.**
-   - A ticket key in the arguments wins. Otherwise extract it from the branch name, the PR title,
+   - A ticket key the user gave wins. Otherwise extract it from the branch name, the PR title,
      the PR body, or the commits on the branch: `gh pr view <number> --json title,body,headRefName`
      and `git log --oneline <base>..HEAD`.
    - Read the ticket **together with its comments** through the Jira MCP server for this
@@ -117,13 +92,15 @@ that speak to it.
 5. **Review every file in scope systematically** using the checklist below. Read surrounding context
    in the files themselves when the diff alone is not enough to judge a change.
 6. **Compile the feedback** into the three severity groups below, written to
-   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from, and
-   what `--post` reads.
+   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from.
 7. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
-   complete. Post to GitHub only when the arguments include `--post` or the user explicitly asks,
-   and then as **one single** `gh pr comment` containing the whole review. Never post multiple
-   comments, inline comments, or per-file comments.
+   complete.
+8. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
+   written and posted. Do this on every review, not only when asked. Drop the `[file:line]` prefix
+   on the way across: the comment is anchored to that line already, and a line number written into
+   a comment body rots on the next commit. A finding that names no file and line stays in the
+   session review only, and you say which ones those were.
 
 ## Review Checklist
 
@@ -202,7 +179,7 @@ Minor improvements, style preferences, alternative approaches worth considering.
 Rules:
 
 - Name the ticket key you reviewed against at the top of the review, and the scope you applied when
-  the arguments narrowed it, for example "Scope: `services/billing/` only, tests and correctness."
+  the user narrowed it, for example "Scope: `services/billing/` only, tests and correctness."
 - Under a narrowed scope, list the acceptance criteria you did not assess, so the gap is visible.
 - One or two sentences per item, maximum. The file path, affected lines, and the suggested fix are
   sufficient. No elaboration blocks.
