@@ -127,7 +127,7 @@ mind_palace = MindPalace(
                 "llama",
                 "lawyer",
                 "lolly",
-                "leach",
+                "leech",
                 "lock",
                 "lava",
                 "lip",
