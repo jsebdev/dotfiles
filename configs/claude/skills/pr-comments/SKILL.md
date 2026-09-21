@@ -29,6 +29,29 @@ asking for, so decide first, then write it.
 An `issue:` or a `suggestion:` carries its fix in the same comment. Naming a problem without a way
 out makes the author do the work twice.
 
+### nitpick or suggestion
+
+**`nitpick:` is for a fix that changes nothing about how the code reads** — a typo, a stray import,
+a formatting slip. The moment a change would let the next reader understand the code faster it is a
+`suggestion:`, however small the edit, because the reader pays that cost on every visit while the
+author pays for the fix once. Anything about a **name** is a `suggestion:`, and test code gets no
+discount: it is read more often than the code it covers.
+
+```
+Bad   nitpick: The `client_and_vendor` fixture returns nothing, so the name promises a value it
+      never hands back.
+
+Good  suggestion: The `client_and_vendor` fixture returns nothing, so the name promises a value it
+      never hands back. Return the vendor the tests re-query, or rename it to say it seeds records.
+```
+
+### Tag follows severity
+
+When the comment comes from a review that already sorted its findings, the severity picks the tag,
+so the two cannot disagree once they are apart on GitHub: Critical and Important become `issue:`,
+Suggestions become `suggestion:`, and a finding flagged for discussion becomes `question:`. Reach
+for `nitpick:` or `thought:` only for something that was never a finding.
+
 ## Length and language
 
 70 words is a hard ceiling, not a target. The comment is anchored to the line, so it does not
