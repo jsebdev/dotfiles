@@ -22,6 +22,7 @@ configs/claude/policy-limits.json.stamp.json
 configs/claude/debug/
 configs/claude/skills/synced
 configs/claude/skills/synced/
+configs/claude/state/
 
 
 # OMC runtime state
