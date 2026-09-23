@@ -42,7 +42,9 @@ Bad   nitpick: The `client_and_vendor` fixture returns nothing, so the name prom
       never hands back.
 
 Good  suggestion: The `client_and_vendor` fixture returns nothing, so the name promises a value it
-      never hands back. Return the vendor the tests re-query, or rename it to say it seeds records.
+      never hands back.
+
+      Please return the vendor the tests re-query, or rename it to say it seeds records.
 ```
 
 ### Tag follows severity
@@ -66,7 +68,9 @@ Bad   issue: This violates Liskov substitution: the subtype narrows the precondi
       call site's invariant no longer holds under polymorphic dispatch.
 
 Good  issue: `PartialRefund` rejects amounts that `Refund` accepts, so anything holding a
-      `Refund` breaks when it gets this one. Accept the same range, or don't subclass it.
+      `Refund` breaks when it gets this one.
+
+      Please accept the same range, or don't subclass it.
 ```
 
 ```
@@ -74,8 +78,29 @@ Bad   suggestion: Consider refactoring this for better maintainability and separ
       concerns.
 
 Good  suggestion: This parses the date the same way as the due-date helper in
-      `billing/api/invoices.py`. Pull both into one helper so a format change only has to be
-      made once.
+      `billing/api/invoices.py`.
+
+      Please pull both into one helper so a format change only has to be made once.
+```
+
+### Diagnosis, then the ask
+
+A comment that names a problem and then asks for a change is **two paragraphs**, separated by a
+blank line: what is wrong, then what to do about it. Run together, the ask hides inside the
+diagnosis, and the ask is the part the author acts on.
+
+Start the ask with **Please**. The code belongs to the author and the decision is theirs, so the
+comment asks rather than orders. A comment with nothing to ask for stays one paragraph.
+
+```
+Bad   issue: This file is only deferred work and recommendations, which the documentation rule
+      prohibits. Nothing here can ever be closed, so it will go stale. Turn each item into a
+      ticket and delete the file.
+
+Good  issue: This file is only deferred work and recommendations, which the documentation rule
+      prohibits. Nothing here can ever be closed, so it will go stale.
+
+      Please turn each item into a ticket and delete the file.
 ```
 
 ### Pointing at other code
@@ -92,7 +117,8 @@ Bad   issue: Same off-by-one as `serializers.py:212`.
 
 Good  issue: The window here ends one day early, the same way the date range in
       `reporting/exports/serializers.py` does, in the serializer that builds the monthly CSV.
-      Make the end date inclusive in both.
+
+      Please make the end date inclusive in both.
 ```
 
 The line the comment is anchored to is the exception: it needs no reference at all, because GitHub
@@ -123,6 +149,7 @@ gh api repos/<owner>/<repo>/pulls/<pr>/reviews --input <scratchpad>/review-comme
 ```
 
 - **Omit `event`.** Including it submits the review immediately and there is no draft left to edit.
+- A paragraph break inside a body is `\n\n`, which the JSON file carries literally.
 - `line` must be a line this PR's diff actually touches. Use `"side": "LEFT"` to comment on a
   deleted line, and `start_line` with `line` for a range.
 - A point about the file as a whole is anchored to the nearest line the PR changed in that file.
@@ -132,6 +159,22 @@ gh api repos/<owner>/<repo>/pulls/<pr>/reviews --input <scratchpad>/review-comme
   it, and ask before deleting it. Never delete a pending review on your own.
 - Finish by telling the user how many comments were staged and that they are waiting in the Files
   changed tab of the PR.
+
+### Revising a staged review
+
+**A staged review is the user's draft from the moment it exists, including one you staged minutes
+ago.** Between your write and your next one they may have reworded a comment, replied in a thread,
+or added comments of their own, and none of that is in the payload you posted.
+
+- Revise **in place, one comment at a time**. Never delete the review and repost it, and never
+  rebuild it from a snapshot of its comments — a rebuild drops comment ranges and reply threads,
+  and loses anything edited since you fetched. Refetching first does not make it safe.
+- `PATCH /repos/<owner>/<repo>/pulls/comments/<id>` returns 404 for a comment inside a pending
+  review, so in-place editing is usually unavailable. When it is, **give the user the replacement
+  text and let them paste it.** One comment they retype costs less than one change of theirs you
+  overwrite.
+- The same holds for anything else the user can write to while you hold a copy: an issue body, a
+  shared document, a branch they may have pushed to.
 
 ## Out of scope
 
