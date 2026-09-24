@@ -219,7 +219,9 @@ decision recorded on the ticket.
 
 ### 🟡 Important (should fix)
 
-Performance, maintainability, code quality, deviations from project conventions.
+Performance, maintainability, and code quality problems that cost something real if left alone:
+duplicated logic that must be kept in sync, a test that can pass without exercising its behavior, a
+document that misstates shipped behavior.
 
 - **[file:line]** — the issue and what to do instead
 
