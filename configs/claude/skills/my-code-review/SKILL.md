@@ -58,6 +58,22 @@ of these apply:
   you report under its normal group with the note that it falls outside the requested scope.
 - State the scope you applied at the top of the review, next to the ticket key.
 
+### Planning artifacts are inputs, not review targets
+
+Spec, design, user-story and plan files committed in the PR, such as `specs/<ticket>/design.md`
+or `.branch-plans/`, are read for intent and never reviewed. Report no finding on them and stage
+no comment on them, even when they have drifted from the code. They record intent at the moment
+the work was planned, so drift in them misleads no one who is reading the code. A comment on one
+is noise the author has to dismiss.
+
+This covers planning artifacts only. Documentation that describes shipped behavior to its next
+reader, such as a README, `docs/` or a CLAUDE.md, is still reviewed.
+
+```
+Bad   design.md still passes `open` to the modal, but the prop was removed. Drop it.
+Good  (no finding: the spec is only an input, and the code is what gets reviewed)
+```
+
 ## Steps
 
 1. **Resolve the target PR**
@@ -136,7 +152,7 @@ of these apply:
 - Behavior the PR description, a ticket comment, or an author reply on the PR claims that the code
   does not actually do.
   Documentation misstating shipped behavior is a finding in its own right, because it is what the
-  next reader will trust.
+  next reader will trust. Planning artifacts are excluded (see above).
 - Scope: work the ticket never asked for, and acceptance criteria deferred without saying so.
 
 ### Design and conventions
@@ -147,8 +163,9 @@ of these apply:
 - Self-documenting code: meaningful names over comments and docstrings, complex logic extracted into
   well-named functions rather than explained in a comment.
 - No abbreviations or acronyms in names.
-- If a plan or spec file is available, do a functionality gap assessment against it. Where it
-  conflicts with the ticket, the ticket wins and the stale plan is itself a finding.
+- If a plan or spec file is available, do a functionality gap assessment against it, and anchor
+  any gap it reveals to the code. Where the plan conflicts with the ticket, the ticket wins, and the
+  plan itself is still not a finding.
 
 ### Correctness and quality
 
