@@ -133,6 +133,9 @@ of these apply:
 - Performance bottlenecks and inefficient algorithms.
 - Code duplication and refactoring opportunities.
 - Error handling and edge case coverage.
+- Reachable states only. Before asking for a new test case, permission combination, or input,
+  confirm the code allows that state: check the model's `clean`, its `CheckConstraint`s, and its
+  field choices. Never request coverage for a state the model rejects.
 - Unjustified optionality. For every optional prop, parameter, or field the PR adds or widens, and
   every `?.`, `??`, `if (!x) return`, or default that covers a missing value, ask what real
   situation produces the missing case. If the answer is only "a caller might not pass it", it is
