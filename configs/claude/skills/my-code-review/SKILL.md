@@ -20,7 +20,7 @@ verify the agent's findings after its report is complete, and do it silently.
 ### Delegating
 
 Hand the agent the ticket's acceptance criteria and the decisions recorded in its comments verbatim,
-pass on any scope the user asked for, and require a "Files examined / commands run" section so
+along with the PR threads sorted by step 3. Pass on any scope the user asked for, and require a "Files examined / commands run" section so
 procedural questions remain answerable.
 
 Require the agent to write its complete review to `<scratchpad>/review-<pr>.md` and return only that
@@ -83,24 +83,46 @@ of these apply:
      fetch. Warn the user, say what you tried and how it failed, and ask them for the ticket key or
      for a paste of the ticket with its comments. Resume only once you have it. Reviewing without
      ticket context is how a rejected option ships as if it were the agreed one.
-3. **Fetch the changes** against the base branch with `gh pr diff` and `gh pr view`. Review only what
+3. **Read the PR's existing discussion, also before the diff.** A PR that has already been reviewed
+   carries agreements the diff cannot show you. Fetch all three sources, with `--paginate`:
+   - inline review threads: `gh api repos/<owner>/<repo>/pulls/<pr>/comments`
+   - review summaries: `gh api repos/<owner>/<repo>/pulls/<pr>/reviews`
+   - the conversation tab: `gh api repos/<owner>/<repo>/issues/<pr>/comments`
+
+   Group the inline comments into threads by `in_reply_to_id`. Read every thread oldest to newest
+   and sort each one into one of these:
+   - **Unanswered.** Still open. Do not stage it again. If it still applies, the review points to
+     that thread instead of raising a new finding.
+   - **Author says it is done.** Check the claim against the current code. A claim the code does
+     not back up is a finding, and the finding quotes the reply.
+   - **Author declined or pushed back.** This includes "kept on purpose", "won't do", "out of
+     scope", or doing something other than what was asked. It goes in the **Author pushback**
+     section of the review, never back in as a new finding. The reviewer decides whether to accept
+     it, and they decide that from the ticket.
+
+   Apply the same checks to the author's summary comment on the conversation tab: every claim it
+   makes about the code must hold in the current diff. If the discussion cannot be fetched, stop,
+   say why, and ask the user how to proceed. A review that ignores the earlier rounds repeats
+   settled points and misses the ones the author declined.
+4. **Fetch the changes** against the base branch with `gh pr diff` and `gh pr view`. Review only what
    this PR introduced, never pre-existing code on the base branch.
-4. **Apply the scope.** List the changed files with `gh pr diff <number> --name-only`, then reduce
+5. **Apply the scope.** List the changed files with `gh pr diff <number> --name-only`, then reduce
    that list to the files a path scope selects. Reduce the checklist to the sections a focus scope
    selects. Confirm both in one line before reviewing, for example "Reviewing 4 of 23 changed files
    under `api/`, security checks only."
-5. **Review every file in scope systematically** using the checklist below. Read surrounding context
+6. **Review every file in scope systematically** using the checklist below. Read surrounding context
    in the files themselves when the diff alone is not enough to judge a change.
-6. **Compile the feedback** into the three severity groups below, written to
+7. **Compile the feedback** into the three severity groups below, written to
    `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from.
-7. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
+8. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
-8. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
+9. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
    written and posted. Do this on every review, not only when asked. Drop the `[file:line]` prefix
    on the way across: the comment is anchored to that line already, and a line number written into
    a comment body rots on the next commit. A finding that names no file and line stays in the
-   session review only, and you say which ones those were.
+   session review only, and you say which ones those were. Never stage a finding an existing thread
+   already raises, answered or not. Point to that thread in the session review instead.
 
 ## Review Checklist
 
@@ -111,7 +133,8 @@ of these apply:
 - Every decision recorded in the ticket comments, especially the answer to a question the team asked
   there. Code implementing the option that was rejected is a **Critical** finding, and the comment
   that settles it goes in the item, quoted.
-- Behavior the PR description or a ticket comment claims that the code does not actually do.
+- Behavior the PR description, a ticket comment, or an author reply on the PR claims that the code
+  does not actually do.
   Documentation misstating shipped behavior is a finding in its own right, because it is what the
   next reader will trust.
 - Scope: work the ticket never asked for, and acceptance criteria deferred without saying so.
@@ -158,7 +181,17 @@ of these apply:
 
 ## Output Format
 
-Organize all feedback as a flat list under exactly these three groups:
+When the author declined or pushed back on any earlier comment, open the review with this section,
+above the three groups. Leave it out when nobody pushed back.
+
+### ↩️ Author pushback (your call)
+
+- **[file:line]** — what you asked · the author's reply, quoted briefly · whether the ticket backs
+  you or them, citing the criterion or comment. End with **Accept** or **Push back**.
+
+Nothing in this section is staged on the PR. The reply is the reviewer's to write.
+
+Organize the rest of the feedback as a flat list under exactly these three groups:
 
 ### 🔴 Critical (must fix)
 
