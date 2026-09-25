@@ -44,7 +44,7 @@ Bad   nitpick: The `client_and_vendor` fixture returns nothing, so the name prom
 Good  suggestion: The `client_and_vendor` fixture returns nothing, so the name promises a value it
       never hands back.
 
-      Please return the vendor the tests re-query, or rename it to say it seeds records.
+      Return the vendor the tests re-query, or rename it to say it seeds records.
 ```
 
 ### Tag follows severity
@@ -80,7 +80,7 @@ Bad   suggestion: Consider refactoring this for better maintainability and separ
 Good  suggestion: This parses the date the same way as the due-date helper in
       `billing/api/invoices.py`.
 
-      Please pull both into one helper so a format change only has to be made once.
+      You can pull both into one helper so a format change only has to be made once.
 ```
 
 ### Diagnosis, then the ask
