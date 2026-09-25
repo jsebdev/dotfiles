@@ -126,14 +126,24 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    that list to the files a path scope selects. Reduce the checklist to the sections a focus scope
    selects. Confirm both in one line before reviewing, for example "Reviewing 4 of 23 changed files
    under `api/`, security checks only."
-6. **Review every file in scope systematically** using the checklist below. Read surrounding context
-   in the files themselves when the diff alone is not enough to judge a change.
-7. **Compile the feedback** into the three severity groups below, written to
-   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from.
-8. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
+6. **Load the rules before reading the code.** For the files in scope, load every skill the
+   checklist names (for test files, the testing skills and any project test-placement skill), and
+   read every `CLAUDE.md` on the path from the repository root to each changed file. A checklist
+   item that names a skill counts as not applied until that skill is loaded in this session, and
+   the review says so under "Files examined". Reading a rule from memory is how a whole category of
+   findings goes missing without anyone noticing.
+7. **Review every file in scope systematically** using the checklist below. Read surrounding context
+   in the files themselves when the diff alone is not enough to judge a change. Test files are
+   reviewed in their own right, one test at a time. Reading them only to see what they cover is not
+   a review of them.
+8. **Compile the feedback** into the three severity groups below, written to
+   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
+   ends with a "Files examined / commands run" section listing the skills loaded and the `CLAUDE.md`
+   files read, inline reviews included.
+9. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
-9. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
+10. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
    written and posted. Do this on every review, not only when asked. Drop the `[file:line]` prefix
    on the way across: the comment is anchored to that line already, and a line number written into
    a comment body rots on the next commit. A finding that names no file and line stays in the
@@ -183,6 +193,17 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
   in the finding whether the type should be required or the consumer should throw.
 - Test coverage for new functionality. Use `general-testing-guidelines`, plus `python-testing` or
   `go-testing` for the relevant language.
+  - For every branch, guard, or early return the PR adds, name the test that fails when it is
+    deleted. If no test fails, that is an **Important** finding, even when a test with the right
+    name exists: its setup may never reach the branch.
+  - For every input the PR rejects, check which inputs the tests actually send. An error message
+    built from the input is checked against its worst input, such as an empty string.
+
+    ```
+    Bad   (no finding) a blank-number test exists, so the `if number:` guard is covered
+    Good  the only portfolio in the database is the one being imported, so deleting the guard
+          leaves the test green. Add a second portfolio that already has a blank number.
+    ```
 - Type safety and proper type annotations.
 - Memory leaks and resource management.
 - API design and contract consistency.
