@@ -6,22 +6,18 @@ import questionary
 
 from .cards import Deck, PracticeCard
 from .index_question import IndexQuestion
-from .records import (
-    BEST_TIMES_KEPT,
-    BEST_TIMES_PREVIEWED,
-    Board,
-    BoardKey,
-    Placement,
-    TimedRun,
-)
+from .records import Board, BoardKey, Placement, TimedRun
 from .rituals import Question
 from .scoreboard import Scoreboard
+from .terminal_text import (
+    best_times_shown_for,
+    in_blue,
+    in_green,
+    ordinal,
+    readable_duration,
+)
 
 Option = TypeVar("Option")
-
-BLUE = "\033[38;5;75m"
-GREEN = "\033[38;5;114m"
-RESET_COLOR = "\033[0m"
 
 
 class TerminalUserInterface:
@@ -48,25 +44,25 @@ class TerminalUserInterface:
         return questionary.text(question.prompt).unsafe_ask()
 
     def show_correct_answer(self, card: PracticeCard) -> None:
-        print(f"  ✅ {card.index}. {_in_green(card.name)}{_place_of(card)}\n")
+        print(f"  ✅ {card.index}. {in_green(card.name)}{_place_of(card)}\n")
 
     def show_revealed_answer(self, card: PracticeCard) -> None:
         print(
             f"  🙈 The answer was {card.index}. "
-            f"{_in_green(card.name)}{_place_of(card)}\n"
+            f"{in_green(card.name)}{_place_of(card)}\n"
         )
 
     def show_wrong_answer(self) -> None:
         print("  ❌ Not right, try again.")
 
     def show_misspelled_answer(self, expected_answer: str) -> None:
-        print(f"  📝 Close enough, but it is spelled '{_in_green(expected_answer)}'.")
+        print(f"  📝 Close enough, but it is spelled '{in_green(expected_answer)}'.")
 
     def show_no_best_times(self) -> None:
         print("No best times recorded yet.")
 
     def show_boards(self, boards: Sequence[Board]) -> None:
-        shown_per_board = _best_times_shown_for(boards)
+        shown_per_board = best_times_shown_for(len(boards))
         print()
         print("Best times")
         for board in boards:
@@ -96,36 +92,8 @@ class TerminalUserInterface:
             print(_best_time_row(position, run, placement.position))
 
 
-def _best_times_shown_for(boards: Sequence[Board]) -> int:
-    return BEST_TIMES_KEPT if len(boards) == 1 else BEST_TIMES_PREVIEWED
-
-
-def readable_duration(elapsed: timedelta) -> str:
-    seconds, milliseconds = divmod(round(elapsed.total_seconds() * 1000), 1000)
-    minutes, seconds = divmod(seconds, 60)
-    hours, minutes = divmod(minutes, 60)
-    precise_seconds = f"{seconds}.{milliseconds:03d}s"
-    if hours:
-        return f"{hours}h {minutes}m {precise_seconds}"
-    if minutes:
-        return f"{minutes}m {precise_seconds}"
-    return precise_seconds
-
-
 def _place_of(card: PracticeCard) -> str:
-    return f", in the {_in_blue(card.place)}" if card.place else ""
-
-
-def _in_blue(text: str) -> str:
-    return _in_color(text, BLUE)
-
-
-def _in_green(text: str) -> str:
-    return _in_color(text, GREEN)
-
-
-def _in_color(text: str, color: str) -> str:
-    return f"{color}{text}{RESET_COLOR}"
+    return f", in the {in_blue(card.place)}" if card.place else ""
 
 
 def _placement_headline(placement: Placement) -> str:
@@ -133,7 +101,7 @@ def _placement_headline(placement: Placement) -> str:
         return "No top ten spot this time."
     if placement.position == 1:
         return "🥇 New best time!"
-    return f"🏅 {_ordinal(placement.position)} best time."
+    return f"🏅 {ordinal(placement.position)} best time."
 
 
 def _board_title(key: BoardKey) -> str:
@@ -146,8 +114,3 @@ def _best_time_row(position: int, run: TimedRun, achieved: int | None) -> str:
         f"   {run.wrong_attempts:2} wrong   {run.achieved_on}"
     )
     return f"{row}   ← this run" if position == achieved else row
-
-
-def _ordinal(position: int) -> str:
-    suffix = {1: "st", 2: "nd", 3: "rd"}.get(position, "th")
-    return f"{position}{suffix}"

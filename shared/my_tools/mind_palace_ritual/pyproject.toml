@@ -7,6 +7,9 @@ dependencies = ["questionary>=2.0"]
 [project.scripts]
 mind_palace_practice = "mind_palace_practice.cli:main"
 
+[dependency-groups]
+dev = ["pytest>=8"]
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"

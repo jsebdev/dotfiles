@@ -69,13 +69,13 @@ def _stored(board_key: BoardKey, run: TimedRun) -> dict:
 
 def _file_name(board_key: BoardKey, run: TimedRun) -> str:
     name_parts = [
-        _sanitized(board_key.deck_name),
+        sanitized(board_key.deck_name),
         f"{board_key.cards_count}-cards",
-        _sanitized(board_key.ritual_name),
+        sanitized(board_key.ritual_name),
         run.achieved_at.strftime("%Y%m%d-%H%M%S-%f"),
     ]
     return f"{'__'.join(name_parts)}.json"
 
 
-def _sanitized(text: str) -> str:
+def sanitized(text: str) -> str:
     return re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
