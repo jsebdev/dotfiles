@@ -23,10 +23,6 @@ class TimedRun:
     def elapsed(self) -> timedelta:
         return timedelta(seconds=self.seconds)
 
-    @property
-    def achieved_on(self) -> str:
-        return self.achieved_at.date().isoformat()
-
 
 @dataclass(frozen=True)
 class Board:

@@ -72,9 +72,13 @@ def _file_name(board_key: BoardKey, run: TimedRun) -> str:
         sanitized(board_key.deck_name),
         f"{board_key.cards_count}-cards",
         sanitized(board_key.ritual_name),
-        run.achieved_at.strftime("%Y%m%d-%H%M%S-%f"),
+        file_timestamp(run.achieved_at),
     ]
     return f"{'__'.join(name_parts)}.json"
+
+
+def file_timestamp(moment: datetime) -> str:
+    return moment.strftime("%Y%m%d-%H%M%S-%f")
 
 
 def sanitized(text: str) -> str:

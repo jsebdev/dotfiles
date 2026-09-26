@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
-from ..record_files import RECORDS_DIRECTORY, sanitized
+from ..record_files import RECORDS_DIRECTORY, file_timestamp, sanitized
 from .records import SprintEnding, SprintRun
 
 SPRINT_RECORDS_DIRECTORY = RECORDS_DIRECTORY / "sprints"
@@ -75,6 +75,6 @@ def _file_name(run: SprintRun) -> str:
     name_parts = [
         sanitized(run.sequence_name),
         f"{run.distance}-digits",
-        run.achieved_at.strftime("%Y%m%d-%H%M%S-%f"),
+        file_timestamp(run.achieved_at),
     ]
     return f"{'__'.join(name_parts)}.json"

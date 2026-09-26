@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from .records import BEST_TIMES_KEPT, BEST_TIMES_PREVIEWED
 
@@ -34,6 +34,10 @@ def readable_duration(elapsed: timedelta) -> str:
     if minutes:
         return f"{minutes}m {precise_seconds}"
     return precise_seconds
+
+
+def readable_moment(moment: datetime) -> str:
+    return moment.strftime("%Y-%m-%d %H:%M:%S")
 
 
 def ordinal(position: int) -> str:

@@ -1,0 +1,11 @@
+{
+  "sequence": "Euler's number",
+  "distance": 36,
+  "seconds": 29.629,
+  "splits": {
+    "10": 3.795957416999954,
+    "20": 12.164578999999776
+  },
+  "ending": "MISTAKE",
+  "achieved_at": "2026-09-26T16:56:46.674238"
+}

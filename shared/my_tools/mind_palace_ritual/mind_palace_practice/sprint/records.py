@@ -25,10 +25,6 @@ class SprintRun:
         return timedelta(seconds=self.seconds)
 
     @property
-    def achieved_on(self) -> str:
-        return self.achieved_at.date().isoformat()
-
-    @property
     def milestones_reached(self) -> list[int]:
         return [milestone for milestone, _ in self.splits]
 

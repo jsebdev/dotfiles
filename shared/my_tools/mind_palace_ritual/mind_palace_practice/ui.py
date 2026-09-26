@@ -15,6 +15,7 @@ from .terminal_text import (
     in_green,
     ordinal,
     readable_duration,
+    readable_moment,
 )
 
 Option = TypeVar("Option")
@@ -111,6 +112,6 @@ def _board_title(key: BoardKey) -> str:
 def _best_time_row(position: int, run: TimedRun, achieved: int | None) -> str:
     row = (
         f"  {position:2}. {readable_duration(run.elapsed):>11}"
-        f"   {run.wrong_attempts:2} wrong   {run.achieved_on}"
+        f"   {run.wrong_attempts:2} wrong   {readable_moment(run.achieved_at)}"
     )
     return f"{row}   ← this run" if position == achieved else row

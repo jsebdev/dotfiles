@@ -11,6 +11,7 @@ from ..terminal_text import (
     in_red,
     ordinal,
     readable_duration,
+    readable_moment,
 )
 from ..ui import TerminalUserInterface
 from .race import Sprint
@@ -126,7 +127,10 @@ def _board_title(key: SprintBoardKey) -> str:
 
 def _best_time_row(position: int, run: SprintRun, board_key: SprintBoardKey) -> str:
     value = _row_value(run, board_key.milestone)
-    return f"  {position:2}. {value:>11}   {run.distance:5} digits   {run.achieved_on}"
+    return (
+        f"  {position:2}. {value:>11}   {run.distance:5} digits"
+        f"   {readable_moment(run.achieved_at)}"
+    )
 
 
 def _row_value(run: SprintRun, milestone: int | None) -> str:
