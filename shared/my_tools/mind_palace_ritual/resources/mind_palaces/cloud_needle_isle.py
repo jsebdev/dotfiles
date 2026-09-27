@@ -102,7 +102,7 @@ mind_palace = MindPalace(
             objects=[
                 "rose",
                 "radio",
-                "iron",
+                "rana",
                 "arm",
                 "error",
                 "Ariel",
