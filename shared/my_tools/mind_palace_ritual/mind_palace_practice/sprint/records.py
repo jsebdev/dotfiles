@@ -19,6 +19,7 @@ class SprintRun:
     splits: tuple[tuple[int, float], ...]
     ending: SprintEnding
     achieved_at: datetime
+    misses: int = 0
 
     @property
     def elapsed(self) -> timedelta:

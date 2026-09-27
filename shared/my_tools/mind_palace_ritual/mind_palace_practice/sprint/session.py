@@ -14,6 +14,8 @@ class SprintDisplay(Protocol):
 
     def show_correct_digit(self, sprint: Sprint) -> None: ...
 
+    def show_miss(self, sprint: Sprint) -> None: ...
+
     def show_mistake(self, sprint: Sprint) -> None: ...
 
 
@@ -31,6 +33,9 @@ def run_sprint(
         if not digit.isdigit():
             continue
         verdict = sprint.press(digit, at)
+        if verdict is KeyVerdict.MISSED:
+            display.show_miss(sprint)
+            continue
         if verdict is KeyVerdict.WRONG:
             display.show_mistake(sprint)
             return _finished_run(sprint, SprintEnding.MISTAKE)

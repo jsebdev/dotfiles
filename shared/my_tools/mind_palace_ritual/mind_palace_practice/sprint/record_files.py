@@ -56,6 +56,7 @@ def _read_record(path: Path) -> SprintRecordFile:
             ),
             ending=SprintEnding[stored["ending"]],
             achieved_at=datetime.fromisoformat(stored["achieved_at"]),
+            misses=stored.get("misses", 0),
         ),
     )
 
@@ -66,6 +67,7 @@ def _stored(run: SprintRun) -> dict:
         "distance": run.distance,
         "seconds": run.seconds,
         "splits": {str(milestone): seconds for milestone, seconds in run.splits},
+        "misses": run.misses,
         "ending": run.ending.name,
         "achieved_at": run.achieved_at.isoformat(),
     }

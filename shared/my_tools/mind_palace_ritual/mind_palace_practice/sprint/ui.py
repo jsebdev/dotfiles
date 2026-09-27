@@ -28,6 +28,12 @@ Option = TypeVar("Option")
 
 DIGITS_PER_GROUP = 10
 DIGITS_PER_LINE = 50
+MISS_MESSAGE = "✗ Wrong digit, one try left"
+BACKSPACE = "\b"
+SAVE_CURSOR = "\x1b7"
+RESTORE_CURSOR = "\x1b8"
+RESERVE_LINE_BELOW = "\x1bD\x1bM"
+CLEAR_LINE_BELOW = "\x1b[B\x1b[2K\x1b[A"
 
 
 @dataclass(frozen=True)
@@ -45,20 +51,31 @@ class SprintTerminalDisplay:
     def show_intro(self, sequence: NumberSequence) -> None:
         print(f"{sequence.name}: {sequence.whole_part}.")
         print("Clock starts on your first digit.")
+        print("Each digit gets two tries.")
         print("Ctrl-C quits without recording.")
         print()
 
     def show_correct_digit(self, sprint: Sprint) -> None:
         position = sprint.distance
         digit = sprint.expected[position - 1]
-        print(_leading_separator(position) + digit, end="", flush=True)
+        print(_lead_in(sprint, position) + digit, end="", flush=True)
+
+    def show_miss(self, sprint: Sprint) -> None:
+        mistake = sprint.mistake
+        print(
+            _leading_separator(mistake.position)
+            + in_red(mistake.typed)
+            + _message_below(in_red(MISS_MESSAGE)),
+            end="",
+            flush=True,
+        )
 
     def show_mistake(self, sprint: Sprint) -> None:
         mistake = sprint.mistake
         digits = f"{in_red(mistake.typed)}/{in_green(mistake.expected)}"
-        print(_leading_separator(mistake.position) + digits)
+        print(_lead_in(sprint, mistake.position) + digits)
         print(
-            f"\n✗ Stopped at digit {mistake.position} "
+            f"\n✗ Stopped at digit {mistake.position} after two tries "
             f"(typed {mistake.typed}, expected {mistake.expected})"
         )
 
@@ -70,6 +87,7 @@ class SprintTerminalDisplay:
             f"Distance: {run.distance} digits in {readable_duration(run.elapsed)}"
             f"   {_badge(placements.distance_placement)}"
         )
+        print(f"Misses:   {_misses_text(run.misses)}")
         if run.splits:
             print(f"Splits:   {_splits_line(run, placements)}")
 
@@ -82,6 +100,17 @@ class SprintTerminalDisplay:
             print(_board_title(board.key))
             for position, run in enumerate(board.best_times[:shown_per_board], start=1):
                 print(_best_time_row(position, run, board.key))
+
+
+def _lead_in(sprint: Sprint, position: int) -> str:
+    if sprint.was_missed(position):
+        return CLEAR_LINE_BELOW + BACKSPACE
+    return _leading_separator(position)
+
+
+def _message_below(message: str) -> str:
+    indent = " " * len(_line_prefix(1))
+    return RESERVE_LINE_BELOW + SAVE_CURSOR + "\n" + indent + message + RESTORE_CURSOR
 
 
 def _leading_separator(position: int) -> str:
@@ -129,8 +158,16 @@ def _best_time_row(position: int, run: SprintRun, board_key: SprintBoardKey) -> 
     value = _row_value(run, board_key.milestone)
     return (
         f"  {position:2}. {value:>11}   {run.distance:5} digits"
-        f"   {readable_moment(run.achieved_at)}"
+        f"   {_misses_text(run.misses):>9}   {readable_moment(run.achieved_at)}"
     )
+
+
+def _misses_text(misses: int) -> str:
+    if misses == 0:
+        return "no misses"
+    if misses == 1:
+        return "1 miss"
+    return f"{misses} misses"
 
 
 def _row_value(run: SprintRun, milestone: int | None) -> str:
