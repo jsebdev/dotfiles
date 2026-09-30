@@ -23,6 +23,7 @@ configs/claude/debug/
 configs/claude/skills/synced
 configs/claude/skills/synced/
 configs/claude/state/
+configs/claude/feedback/
 
 
 # OMC runtime state
