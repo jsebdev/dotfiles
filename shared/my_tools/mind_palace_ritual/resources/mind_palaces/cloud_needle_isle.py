@@ -8,16 +8,8 @@ mind_palace = MindPalace(
     name="Cloud Needle Isle",
     rooms=[
         Room(
-            room_name="Thunder Pier",
-            description=(
-                "The cloud landing where you arrive at dawn. Zeus stands at the top "
-                "of the gangway to welcome you, throwing thunder over the water. A "
-                "seed the size of your table is planted next to him"
-                "and a sumo stands guarding the decking. At the edge there is a sofa falling"
-                "into the void."
-            ),
+            room_name="Welcoming Pier",
             objects=[
-                "Zeus",
                 "seed",
                 "sun",
                 "sumo",
@@ -27,18 +19,12 @@ mind_palace = MindPalace(
                 "ski",
                 "sofa",
                 "soap",
+                "dice",
             ],
         ),
         Room(
             room_name="Hall of the Ancestors",
-            description=(
-                "A corridor of portraits climbing up from the pier. A pair of giant "
-                "dice sits at the entrance, blocking half the way in. The first "
-                "portrait is your dad, wired into a tall ladder of DNA. At the far "
-                "end a tuba leans against the last frame."
-            ),
             objects=[
-                "dice",
                 "dad",
                 "DNA",
                 "Adam",
@@ -48,18 +34,12 @@ mind_palace = MindPalace(
                 "dog",
                 "TV",
                 "tuba",
+                "nose",
             ],
         ),
         Room(
             room_name="Wharf of the Nets",
-            description=(
-                "A plank wharf hanging off the edge of the island. An enormous nose in a portrait "
-                "is laying in the ground. A net is "
-                "spread across the floor and a nun kneels sewing in the middle of "
-                "it."
-            ),
             objects=[
-                "nose",
                 "net",
                 "nun",
                 "Nemo",
@@ -69,17 +49,12 @@ mind_palace = MindPalace(
                 "ink",
                 "knife",
                 "NBA",
+                "mouse",
             ],
         ),
         Room(
             room_name="Moon Arcade",
-            description=(
-                "A mouse waits on the mat at the door of a vaulted arcade, with the "
-                "moon caught in the glass ceiling above it. On the table at the back "
-                "there is a map of the island lying open."
-            ),
             objects=[
-                "mouse",
                 "mat",
                 "moon",
                 "mummy",
@@ -89,18 +64,12 @@ mind_palace = MindPalace(
                 "Mickey",
                 "mafia",
                 "map",
+                "rose",
             ],
         ),
         Room(
             room_name="Storm Roof",
-            description=(
-                "The top of the arcade, where the island meets the weather. A single "
-                "rose grows out of a crack in the parapet, with a radio crackling "
-                "beside it. Further along a stone arm points out to the sky, and a "
-                "harp is lashed to the chimney."
-            ),
             objects=[
-                "rose",
                 "radio",
                 "rana",
                 "arm",
@@ -110,18 +79,12 @@ mind_palace = MindPalace(
                 "rocky",
                 "roof",
                 "harp",
+                "lasso",
             ],
         ),
         Room(
             room_name="Boiling Lagoon",
-            description=(
-                "You land beside a steaming lagoon. A lasso hangs coiled on the post "
-                "at the water's edge. A lady in a robe stands at the front of the "
-                "queue with a lion sitting behind her. Half the water is clear and "
-                "the other half is red lava."
-            ),
             objects=[
-                "lasso",
                 "lady",
                 "lion",
                 "llama",
@@ -131,18 +94,12 @@ mind_palace = MindPalace(
                 "lock",
                 "lava",
                 "lip",
+                "cheese",
             ],
         ),
         Room(
             room_name="Bubbling Kitchen",
-            description=(
-                "The kitchen that feeds the island, dug into the rock behind the "
-                "lagoon. A wheel of cheese blocks the doorway and a cheetah carries "
-                "the plates out over it. A genie pours out of the pot on the stove. "
-                "At the pass stands the chef, red from shouting."
-            ),
             objects=[
-                "cheese",
                 "cheetah",
                 "genie",
                 "jam",
@@ -152,18 +109,12 @@ mind_palace = MindPalace(
                 "check",
                 "chef",
                 "chip",
+                "goose",
             ],
         ),
         Room(
             room_name="Getaway Garage",
-            description=(
-                "Behind the kitchen, the garage that keeps the island's getaway "
-                "vehicle. A goose stands guard in the doorway. A cat sleeps on the "
-                "workbench next to a gun. The car is up on blocks in the middle of "
-                "the floor."
-            ),
             objects=[
-                "goose",
                 "cat",
                 "gun",
                 "gum",
@@ -173,18 +124,12 @@ mind_palace = MindPalace(
                 "cake",
                 "coffee",
                 "cube",
+                "face",
             ],
         ),
         Room(
             room_name="Foam Beach",
-            description=(
-                "The garage ramp runs down to a beach of white cloud. A huge stone "
-                "face is carved into the rock at the bottom of the ramp. The food "
-                "table is the closest thing to you, with a big fan at one end of it "
-                "blowing the foam about."
-            ),
             objects=[
-                "face",
                 "food",
                 "fan",
                 "foam",
@@ -194,18 +139,12 @@ mind_palace = MindPalace(
                 "foca",
                 "FIFA",
                 "Phoebe",
+                "bass",
             ],
         ),
         Room(
-            room_name="Summit Orchard",
-            description=(
-                "The orchard at the summit, above every cloud. A bass guitar leans "
-                "against the trunk of the first tree and a bat hangs from the branch "
-                "above it. An open piano stands underneath them. A baby sleeps on "
-                "the wall at the far end."
-            ),
+            room_name="Cloud Needle",
             objects=[
-                "bass",
                 "bat",
                 "piano",
                 "beam",
@@ -215,6 +154,7 @@ mind_palace = MindPalace(
                 "pig",
                 "beef",
                 "baby",
+                "Zeus",
             ],
         ),
     ],
