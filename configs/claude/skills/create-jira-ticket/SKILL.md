@@ -1,6 +1,6 @@
 ---
 name: create-jira-ticket
-description: Write and create one or more NEW Jira tickets with a structured user story format. Use ONLY when the user wants to CREATE or WRITE new Jira tickets, user stories, or requirements. Do NOT use for reading, fetching, viewing, or looking up existing Jira tickets.
+description: Write and create one or more NEW Jira tickets with a structured user story format, or a bug report format for bugs. Use ONLY when the user wants to CREATE or WRITE new Jira tickets, user stories, bug reports, or requirements. Do NOT use for reading, fetching, viewing, or looking up existing Jira tickets.
 ---
 
 # Write Jira Tickets
@@ -18,7 +18,7 @@ This applies to all tickets in the session. Do not re-ask per ticket unless the 
 
 ### 2. Draft Tickets
 
-For each ticket the user wants to create, draft a title and description using exactly this format:
+For each ticket the user wants to create, draft a title and description. Use exactly this format, unless the ticket is a bug:
 
 **Title**: A short, active-voice summary (e.g. "Allow users to export reports as CSV")
 
@@ -35,6 +35,27 @@ Notes:
 - [additional note or context]
 ```
 
+When the ticket reports a bug, use this format instead. It must stay as concise as a user story ticket:
+
+**Title**: A short summary of the broken behavior (e.g. "CSV export drops rows with empty dates")
+
+**Description**:
+```
+Actual Behavior:
+[What happens now]
+
+Expected Behavior:
+[What should happen]
+
+Steps to Reproduce:
+1. [First step]
+2. [Second step]
+...
+
+Environment:
+- [Where it happens, e.g. production, staging, browser, app version]
+```
+
 If the user provides multiple ideas at once, draft all of them before asking for review. Present them numbered so they are easy to reference.
 
 ### 3. Iterate
@@ -49,6 +70,7 @@ For each approved ticket, use the Atlassian MCP to create it with:
 - The approved title as the summary
 - The formatted description
 - The correct project and epic
+- The Bug issue type for bug tickets
 
 Confirm the created ticket key and URL for each one. If creating multiple, create them in the order they were approved and list all keys at the end.
 
@@ -56,6 +78,7 @@ Confirm the created ticket key and URL for each one. If creating multiple, creat
 
 See @~/.claude/skills/shared/jira-guidelines.md for shared standards.
 
+- Bug tickets have no user story sentence and no acceptance criteria. Keep each section to the facts needed to reproduce and verify the fix. If the environment is unknown, ask rather than guess.
 - The user story sentence must follow "As a / I want / so that" exactly — no variations.
 - Notes are optional. Only include them if there is genuinely useful context that does not fit in the acceptance criteria. Avoid adding notes as much as possible, they should be the exception, not the norm.
 - If the user's idea is too broad for a single ticket, flag it and suggest splitting before drafting.
