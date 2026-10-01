@@ -120,6 +120,7 @@ INSTALLERS=(
   "setup_claude_mcp.sh"
   "install_git_delta.sh"
   "install_gh_cli.sh"
+  "setup_gh_config.sh"
   "install_terminal_notifier.sh"
   "install_colima.sh"
   "install_pandoc.sh"

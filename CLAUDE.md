@@ -2,15 +2,9 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## CRITICAL: Maintaining This Documentation
+## Maintaining This Documentation
 
-**When making ANY changes to this repository, you MUST update this CLAUDE.md file if the changes affect its content.** This includes:
-- Modifying shell configurations (.bashrc, .zshrc, or any shared files)
-- Changing the installation process or directory structure
-- Adding/removing package installers
-- Modifying work-specific tooling
-
-**This is not optional.** The documentation must stay synchronized with the code. But documentation must be concise.
+Edit this file only when a change makes something in it wrong. Do not add entries, rationale, or detail for new files or tools; the code is the reference. Prefer deleting stale text over adding new text.
 
 ## Repository Overview
 
@@ -53,6 +47,7 @@ dotfiles/
 │   ├── .m8_aliases.sh          # Work-specific Mach8/RallyClaim shortcuts
 │   └── my_tools/               # Standalone personal tools (e.g. mind_palace_ritual)
 ├── configs/            # Application configurations
+│   ├── gh/             # GitHub CLI config.yml (symlinked to ~/.config/gh/config.yml via setup_gh_config.sh)
 │   ├── nvim/           # Neovim configuration (see configs/nvim/CLAUDE.md)
 │   ├── ripgrep/        # ripgrep config (symlinked to ~/.config/ripgrep/ripgreprc via setup_ripgrep_config.sh)
 │   └── ssh/            # SSH client config (symlinked to ~/.ssh/config via setup_ssh_config.sh)
