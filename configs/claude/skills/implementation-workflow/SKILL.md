@@ -17,6 +17,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 - Invoke the **plan agent** to create an implementation plan
 - Save plan to `.branch-plans/<branch-name>.md`
+- Estimate the files the plan touches and apply the size rule in the `create-pr` skill before implementing
 - **Always ask clarifying questions** when multiple valid approaches exist:
   - Architecture decisions
   - Technology choices
@@ -48,6 +49,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 ## 6. Pull Request Creation
 
+- Load the `create-pr` skill first: a PR over 40 changed files is stopped and split
 - Create PR using: `gh pr create --draft`
 - **Naming convention**: `Andres/feature/<descriptive-name>` or `Andres/bugfix/<descriptive-name>`
 - **PR Description format**:
