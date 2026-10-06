@@ -136,11 +136,13 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    in the files themselves when the diff alone is not enough to judge a change. Test files are
    reviewed in their own right, one test at a time. Reading them only to see what they cover is not
    a review of them.
-8. **Compile the feedback** into the three severity groups below, written to
+8. **Compile the feedback**, opening with the "What the PR does" summary and then the three
+   severity groups below, written to
    `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
    ends with a "Files examined / commands run" section listing the skills loaded and the `CLAUDE.md`
    files read, inline reviews included.
-9. **Publish the review exactly once**, as a single message carrying all three groups. Never relay a
+9. **Publish the review exactly once**, as a single message carrying the summary and all three
+   groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
 10. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
@@ -219,6 +221,36 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
 
 ## Output Format
 
+Below the ticket key and scope, and above every other section, open with what the PR does.
+
+### 🧭 What the PR does
+
+Two or three short paragraphs on **how** the developer built it, written from the code. The reviewer has
+already read the ticket, so never restate what the user sees or what the acceptance criteria ask
+for. Every sentence should tell the reader something the ticket could not. Answer these at a high
+level, skipping any that do not apply:
+
+- **Flow, before and after.** Which client called which endpoint, and what it calls now.
+- **Who decides.** Which layer and module owns each new rule (frontend or backend, and where), and
+  how the other layers learn the result: a flag in a response, a template variable, a status.
+- **Why the new pieces exist.** For each new file, endpoint or module, why the author added it
+  instead of extending the existing one.
+- **What stays untouched.** Existing paths the change reuses or leaves as they were.
+
+Do not judge here. Findings and caveats belong in the groups below.
+
+```
+Bad   Non-IH vendors now accept a job with one confirmed click, and RMs get a plain "Manually
+      Confirm" button on the card. IH vendors keep the scheduling flow.
+      (restates the acceptance criteria)
+Good  The backend owns the IH/non-IH split. `requires_an_appointment` in
+      vendor_assignment_helpers.py sends an `appointment_required` flag to the email template, 
+      and to the vendor assignment serializer. The frontend never checks the
+      vendor type, it only branches on that flag. Before, every accept went through the one legacy
+      `vendor-response/` endpoint, whose PATCH branched on the body to tell decline from booking.
+      Now a non-IH accept calls a new `PATCH vendor-response/acceptance/` instead.
+```
+
 When the author declined or pushed back on any earlier comment, open the review with this section,
 above the three groups. Leave it out when nobody pushed back.
 
@@ -265,7 +297,9 @@ Rules:
   it, with its author and date, so the author can check the source.
 - Write "None" under a group that has no items.
 - Prefix an uncertain recommendation with **[Question]** to flag it for discussion.
-- No positives, praise, congratulations, or personal messages. Surface only what needs fixing.
+- No positives, praise, congratulations, or personal messages. Surface only what needs fixing. The
+  "What the PR does" summary is description, not praise, and is the one section that is not a
+  finding.
 - End with a one or two sentence status summary, for example "3 critical issues to address before
   merge, mostly around input validation and error handling." Never recap every finding.
 
