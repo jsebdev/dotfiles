@@ -15,20 +15,8 @@ A scope narrow enough to fit comfortably in the session is reviewed inline even 
 large.
 
 Inline and delegated are exclusive. When delegating, do not run a second review pass yourself;
-verify the agent's findings after its report is complete, and do it silently.
-
-### Delegating
-
-Hand the agent the ticket's acceptance criteria and the decisions recorded in its comments verbatim,
-along with the PR threads sorted by step 3. Pass on any scope the user asked for, and require a "Files examined / commands run" section so
-procedural questions remain answerable.
-
-Require the agent to write its complete review to `<scratchpad>/review-<pr>.md` and return only that
-path and a one-line status. Read the file and publish from it. A subagent result payload is
-size-capped and truncates silently mid-item, so it must never carry the review itself.
-
-If a report arrives truncated anyway, do not relay it and do not request it piecemeal. Re-request it
-as a file. If that truncates too, abandon delegation and review the remaining scope inline.
+verify the agent's findings after its report is complete, and do it silently. Read
+`delegating.md`, next to this file, before delegating.
 
 ## Scope
 
@@ -154,6 +142,9 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
 
 ## Review Checklist
 
+Never report what GitHub or CI already shows the author, such as a merge conflict or a failing
+check. They have to fix it to merge anyway, so a comment on it only adds noise.
+
 ### Ticket context
 
 - Every acceptance criterion, marked covered, partially covered, or missing, naming the file that
@@ -169,22 +160,15 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
 
 ### Design and conventions
 
-- Best practices for the language and framework in use.
-- Reusability and extensibility problems the change is setting up for later. Use the
-  `software-designer-mindset` skill for this.
-- Self-documenting code: meaningful names over comments and docstrings, complex logic extracted into
-  well-named functions rather than explained in a comment.
-- No abbreviations or acronyms in names.
+- The rules loaded in step 6 and the `software-designer-mindset` skill are this checklist. Hold every
+  identifier and every file the PR adds or changes against them, tests included. Skimming the rules
+  once and then reading the diff for bugs is how a misleading name gets through.
 - If a plan or spec file is available, do a functionality gap assessment against it, and anchor
   any gap it reveals to the code. Where the plan conflicts with the ticket, the ticket wins, and the
   plan itself is still not a finding.
 
 ### Correctness and quality
 
-- Security vulnerabilities and potential exploits.
-- Performance bottlenecks and inefficient algorithms.
-- Code duplication and refactoring opportunities.
-- Error handling and edge case coverage.
 - Reachable states only. Before asking for a new test case, permission combination, or input,
   confirm the code allows that state: check the model's `clean`, its `CheckConstraint`s, and its
   field choices. Never request coverage for a state the model rejects.
@@ -206,9 +190,6 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
     Good  the only portfolio in the database is the one being imported, so deleting the guard
           leaves the test green. Add a second portfolio that already has a blank number.
     ```
-- Type safety and proper type annotations.
-- Memory leaks and resource management.
-- API design and contract consistency.
 
 ### Data layer
 
@@ -274,7 +255,9 @@ decision recorded on the ticket.
 
 Performance, maintainability, and code quality problems that cost something real if left alone:
 duplicated logic that must be kept in sync, a test that can pass without exercising its behavior, a
-document that misstates shipped behavior.
+document that misstates shipped behavior. Readability problems belong here too, never under
+Suggestions: a name that misstates what it holds, a name this PR made stale, or code with no clear
+place to live.
 
 - **[file:line]** — the issue and what to do instead
 
