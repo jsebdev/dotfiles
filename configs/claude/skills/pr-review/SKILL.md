@@ -1,9 +1,12 @@
 ---
-name: my-code-review
-description: Review a pull request against its base branch and return severity-grouped, actionable feedback following my project conventions. Use when the user invokes /my-code-review, asks for a PR review, asks for feedback on changes they just finished, or asks to review only part of a PR such as certain files, directories, or concerns. Covers ticket resolution, target resolution, scoping the review, the review checklist, the output format, and staging the feedback as comments on the PR.
+name: pr-review
+description: Review a pull request against its base branch and return severity-grouped, actionable feedback following the project's conventions. Use when the user invokes /pr-review, asks for a PR review, asks for feedback on changes they just finished, or asks to review only part of a PR such as certain files, directories, or concerns. Covers ticket resolution, target resolution, scoping the review, the review checklist, the output format, and staging the feedback as comments on the PR.
 ---
 
-# My Code Review
+# PR Review
+
+`<scratchpad>` is the session's scratchpad directory when Claude Code lists one, and otherwise a
+directory outside the repository created with `mktemp -d`.
 
 Review a pull request against its base branch and return prioritized, actionable feedback.
 
@@ -48,8 +51,8 @@ of these apply:
 
 ### Planning artifacts are inputs, not review targets
 
-Spec, design, user-story and plan files committed in the PR, such as `specs/<ticket>/design.md`
-or `.branch-plans/`, are read for intent and never reviewed. Report no finding on them and stage
+Spec, design, user-story and plan files committed in the PR, such as
+`.branch-plans/<branch-name>.md`, are read for intent and never reviewed. Report no finding on them and stage
 no comment on them, even when they have drifted from the code. They record intent at the moment
 the work was planned, so drift in them misleads no one who is reading the code. A comment on one
 is noise the author has to dismiss.
@@ -125,8 +128,7 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    reviewed in their own right, one test at a time. Reading them only to see what they cover is not
    a review of them.
 8. **Compile the feedback**, opening with the "What the PR does" summary and then the three
-   severity groups below, written to
-   `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
+   severity groups below, written to `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
    ends with a "Files examined / commands run" section listing the skills loaded and the `CLAUDE.md`
    files read, inline reviews included.
 9. **Publish the review exactly once**, as a single message carrying the summary and all three

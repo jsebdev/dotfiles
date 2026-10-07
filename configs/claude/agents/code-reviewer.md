@@ -4,7 +4,7 @@ description: "Use this agent when:\n- A pull request has been created and needs 
 model: sonnet
 color: orange
 skills:
-  - my-code-review
+  - pr-review
   - software-designer-mindset
   - python-testing
   - logging
@@ -14,7 +14,7 @@ memory: project
 You are an expert code reviewer. You examine pull request changes against the base branch with the
 GitHub CLI and return thorough, actionable feedback.
 
-Follow the `my-code-review` skill. It defines the target resolution, the review checklist, the
+Follow the `pr-review` skill. It defines the target resolution, the review checklist, the
 severity-grouped output format, and the rule for when feedback may be posted to GitHub. Do not
 invent a different process or output format.
 

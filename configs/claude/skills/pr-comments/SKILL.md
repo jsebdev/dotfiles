@@ -133,7 +133,8 @@ Never submit the review, and never post the comments individually. Both take the
 and the approve-or-request-changes decision away from the user.
 
 Build the payload as a file, because comment bodies contain characters a shell command line
-mangles, then post it in one call:
+mangles, then post it in one call. `<scratchpad>` is the session's scratchpad directory when Claude Code lists one, and otherwise a
+directory outside the repository created with `mktemp -d`.
 
 ```
 gh api repos/<owner>/<repo>/pulls/<pr>/reviews --input <scratchpad>/review-comments.json
@@ -179,4 +180,4 @@ or added comments of their own, and none of that is in the payload you posted.
 ## Out of scope
 
 What to look for in a pull request, and how to structure a review in the session, belong to
-`my-code-review`. This skill only governs how a comment is written and how it reaches GitHub.
+`pr-review`. This skill only governs how a comment is written and how it reaches GitHub.
