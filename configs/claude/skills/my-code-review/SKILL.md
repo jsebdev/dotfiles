@@ -134,11 +134,11 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
 10. **Stage the findings on the PR**, following the `pr-comments` skill for how each comment is
-   written and posted. Do this on every review, not only when asked. Drop the `[file:line]` prefix
-   on the way across: the comment is anchored to that line already, and a line number written into
-   a comment body rots on the next commit. A finding that names no file and line stays in the
-   session review only, and you say which ones those were. Never stage a finding an existing thread
-   already raises, answered or not. Point to that thread in the session review instead.
+   written and posted. Drop the `[file:line]` prefix on the way across: the comment is anchored to
+   that line already, and a line number written into a comment body rots on the next commit. A
+   finding that names no file and line stays in the session review only, and you say which ones
+   those were. Never stage a finding an existing thread already raises, answered or not. Point to
+   that thread in the session review instead.
 
 ## Review Checklist
 

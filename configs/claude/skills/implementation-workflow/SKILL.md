@@ -5,17 +5,22 @@ description: Professional feature and bug fix implementation workflow for git re
 
 # Implementation Workflow
 
-Follow this systematic approach to implement features or bug fixes professionally:
+Follow this systematic approach to implement features or bug fixes professionally.
+
+## Prerequisites
+
+- The GitHub CLI, authenticated with `gh auth login`
+- A Jira MCP server connected for the project's Jira site, and a Jira ticket for the change: the reviews in steps 7 and 9 read the ticket and stop without it
 
 ## 1. Branch Creation
 
-- Create a new branch: `feature/<descriptive-name>` or `bugfix/<descriptive-name>`
-- **Critical**: Never modify code directly on `staging`, `main`, or `master` branches
-- Use kebab-case for branch names (e.g., `feature/add-user-authentication`)
+- Name the branch by the project's branch naming rule if the project has one
+- Otherwise create `feature/<descriptive-name>` or `bugfix/<descriptive-name>` in kebab-case (e.g., `feature/add-user-authentication`)
+- **Critical**: Never modify code directly on `test`, `stage`, `staging`, `main`, or `master` branches
 
 ## 2. Planning Phase
 
-- Invoke the **plan agent** to create an implementation plan
+- Invoke the built-in **`Plan` agent** to create an implementation plan
 - Save plan to `.branch-plans/<branch-name>.md`
 - Estimate the files the plan touches and apply the size rule in the `create-pr` skill before implementing
 - **Always ask clarifying questions** when multiple valid approaches exist:
@@ -26,7 +31,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 ## 3. Implementation
 
-- Invoke the **code-writer agent** with the plan file path
+- Invoke the **`code-writer` agent** with the plan file path
 - Ensure implementation follows the approved plan
 - Maintain consistency with existing codebase patterns and conventions
 
@@ -51,8 +56,10 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 - Load the `create-pr` skill first: a PR over 40 changed files is stopped and split
 - Create PR using: `gh pr create --draft`
-- **Naming convention**: `Andres/feature/<descriptive-name>` or `Andres/bugfix/<descriptive-name>`
-- **PR Description format**:
+- Use the project branch naming convention for the PR title if the project has one
+- Otherwise, use the convention: `<user>/<branch-name>`
+- Use the project's PR template if it has one
+- Otherwise, use the following template for the PR description:
 
 ```
   ## Summary
@@ -63,12 +70,12 @@ Follow this systematic approach to implement features or bug fixes professionall
 ```
 
 - Keep descriptions concise and actionable
-- **Strictly forbidden**: `git push` to `staging`, `main`, or `master` branches
+- **Strictly forbidden**: `git push` to `test`, `stage`, `staging`, `main`, or `master` branches
 
 ## 7. Initial Code Review (Internal)
 
-- Invoke the **code-reviewer agent** for initial feedback
-- **Do not push comments to GitHub yet**
+- Invoke the **`code-reviewer` agent** for initial feedback
+- Tell the agent not to stage its findings on the PR: they stay in the session
 - Review suggestions with focus on:
   - Code quality and maintainability
   - Adherence to project conventions
@@ -78,7 +85,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 ## 8. Address Review Feedback
 
-- Invoke the **code-writer agent** to implement review suggestions
+- Invoke the **`code-writer` agent** to implement review suggestions
 - Commit fixes with clear messages referencing review feedback
 - Push changes to the branch
 - Ensure all feedback is addressed
@@ -86,7 +93,7 @@ Follow this systematic approach to implement features or bug fixes professionall
 
 ## 9. Final Code Review (GitHub)
 
-- Invoke the **code-reviewer agent** for final review
+- Invoke the **`code-reviewer` agent** for final review
 - **Push review comments to the GitHub PR**
 - Comments should be constructive and specific
 - **Do not auto-address these comments** - they are for user visibility
