@@ -83,20 +83,19 @@ Never run project commands on the host machine. Use the `devcontainer` skill whe
 
 Use the appropriate agent for each task:
 
-| Agent           | Purpose                |
-| --------------- | ---------------------- |
-| `code-writer`   | Implementing new code  |
-| `code-reviewer` | Reviewing code changes |
+| Agent                       | Purpose                |
+| --------------------------- | ---------------------- |
+| `sc-workflow:code-writer`   | Implementing new code  |
+| `sc-workflow:code-reviewer` | Reviewing code changes |
 
 ## Useful skills
 
 | Skill                         | Purpose                                                                          |
 | ----------------------------- | -------------------------------------------------------------------------------- |
-| `implementation-workflow`     | Non-trivial code changes requiring planning                                      |
-| `software-designer-mindset`   | write/review code to use modern principles of software design                    |
+| `sc-workflow:software-designer-mindset` | write/review code to use modern principles of software design                    |
 | `devcontainer`                | Find and execute commands inside the VSCode devcontainer for the current project |
 | `docker-compose`              | Execute project commands inside Docker Compose services                          |
-| `general-testing-guidelines`  | Language-agnostic test naming, structure, and organization — use when writing or reviewing any tests |
+| `sc-workflow:general-testing-guidelines` | Language-agnostic test naming, structure, and organization — use when writing or reviewing any tests |
 
 ## Useful commands
 
@@ -105,6 +104,7 @@ Type these yourself; Claude never invokes them on its own.
 | Command      | Purpose                                                                                            |
 | ------------ | -------------------------------------------------------------------------------------------------- |
 | `/elaborate` | Show, step by step with file:line stops, the code behind a claim Claude made earlier in the session |
+| `/sc-workflow:implement` | Non-trivial code changes requiring planning                                                        |
 
 ## Quick Reference
 

@@ -50,4 +50,4 @@ Answer in chat. Keep it short enough to read in one go.
 ## Out of scope
 
 - Suggesting simpler alternatives: `point-me-in-the-right-direction`.
-- Reviewing a whole change: `pr-review` or `code-review`.
+- Reviewing a whole change: `sc-workflow:pr-review` or `code-review`.
