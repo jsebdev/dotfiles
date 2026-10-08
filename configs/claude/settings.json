@@ -32,7 +32,8 @@
     "command": "node ${CLAUDE_CONFIG_DIR:-$HOME/.claude}/hud/omc-hud.mjs"
   },
   "enabledPlugins": {
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "sc-workflow@jsebdev": true
   },
   "extraKnownMarketplaces": {
     "omc": {
@@ -46,6 +47,12 @@
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
       }
+    },
+    "jsebdev": {
+      "source": {
+        "source": "github",
+        "repo": "jsebdev/dotfiles"
+      }
     }
   },
   "voice": {
@@ -54,6 +61,7 @@
   },
   "theme": "dark",
   "editorMode": "vim",
+  "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true,
   "autoMode": {
     "environment": [
@@ -82,6 +90,5 @@
       "**Org-specific CLIs**: None configured"
     ]
   },
-  "voiceEnabled": true,
-  "agentPushNotifEnabled": true
+  "voiceEnabled": true
 }
