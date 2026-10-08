@@ -9,7 +9,7 @@
     {
       "name": "sc-workflow",
       "description": "Sebastian Caicedo's implementation workflow: plan, implement, test, open a pull request, and review it, with its own agents and skills",
-      "source": "./.claude-plugins/sc-workflow",
+      "source": "./.claude-plugin/sc-workflow",
       "category": "development"
     }
   ]
