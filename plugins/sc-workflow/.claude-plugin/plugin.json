@@ -1,0 +1,10 @@
+{
+  "name": "sc-workflow",
+  "version": "1.0.0",
+  "description": "Sebastian Caicedo's implementation workflow: plan, implement, test, open a pull request, and review it, with its own agents and skills",
+  "author": {
+    "name": "Sebastian Caicedo",
+    "email": "sebastian@macheight.com"
+  },
+  "repository": "https://github.com/jsebdev/dotfiles"
+}

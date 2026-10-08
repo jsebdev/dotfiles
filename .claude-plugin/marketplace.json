@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "jsebdev",
+  "description": "Sebastian Caicedo's personal Claude Code plugins",
+  "owner": {
+    "name": "Sebastian Caicedo"
+  },
+  "plugins": [
+    {
+      "name": "sc-workflow",
+      "description": "Sebastian Caicedo's implementation workflow: plan, implement, test, open a pull request, and review it, with its own agents and skills",
+      "source": "./plugins/sc-workflow",
+      "category": "development"
+    }
+  ]
+}
