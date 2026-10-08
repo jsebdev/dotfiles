@@ -1,6 +1,6 @@
 {
   "name": "sc-workflow",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Sebastian Caicedo's implementation workflow: plan, implement, test, open a pull request, and review it, with its own agents and skills",
   "author": {
     "name": "Sebastian Caicedo",

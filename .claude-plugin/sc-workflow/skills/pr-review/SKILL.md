@@ -151,6 +151,21 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
 
 - Every acceptance criterion, marked covered, partially covered, or missing, naming the file that
   covers it.
+- Judge each criterion against the ticket's own sentence, never a restatement of it. A spec, plan
+  or PR description that rewords a criterion often settles something the ticket left open. Put the
+  two side by side. Every claim the restatement adds is an interpretation, so test it against the
+  criterion's stated reason (its "because" or "so that") and the story's goal. If the reason
+  contradicts the interpretation, that is an **Important** finding. If the ticket supports an
+  alternative reading just as well, raise a **[Question]** that names both readings. An answer
+  recorded in a ticket comment is a decision, not an interpretation.
+
+  ```
+  Bad   AC 4 covered: the audit signal fills the four columns from the allocation account.
+        (judged against the spec, which added "filled from the allocation account")
+  Good  AC 4 keeps the audit columns "because they are historical snapshots rather than live
+        values". The spec adds that new audits fill them from the account, which writes live
+        values into new snapshots. [Question] Should new audits leave them null?
+  ```
 - Every decision recorded in the ticket comments, especially the answer to a question the team asked
   there. Code implementing the option that was rejected is a **Critical** finding, and the comment
   that settles it goes in the item, quoted.
