@@ -25,6 +25,7 @@ class Sprint:
     sequence_name: str
     expected: str
     ladder: MilestoneLadder
+    starting_digit: int = 1
     distance: int = 0
     splits: dict[int, float] = field(default_factory=dict)
     mistake: Mistake | None = None
@@ -35,8 +36,8 @@ class Sprint:
     def press(self, digit: str, at: float) -> KeyVerdict:
         if self.started_at is None:
             self.started_at = at
-        position = self.distance + 1
-        expected_digit = self.expected[self.distance]
+        position = self.last_position + 1
+        expected_digit = self.expected[position - 1]
         if digit != expected_digit:
             self.mistake = Mistake(
                 position=position, typed=digit, expected=expected_digit
@@ -49,9 +50,17 @@ class Sprint:
         self.last_correct_at = at
         if self.ladder.is_milestone(self.distance):
             self.splits[self.distance] = at - self.started_at
-        if self.distance == len(self.expected):
+        if self.last_position == len(self.expected):
             return KeyVerdict.COMPLETED
         return KeyVerdict.CORRECT
+
+    @property
+    def last_position(self) -> int:
+        return self.starting_digit - 1 + self.distance
+
+    @property
+    def is_scored(self) -> bool:
+        return self.starting_digit == 1
 
     def was_missed(self, position: int) -> bool:
         return self.missed_positions[-1:] == [position]

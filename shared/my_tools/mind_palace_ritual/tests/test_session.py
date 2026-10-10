@@ -18,7 +18,7 @@ class RecordingDisplay:
         self.misses = []
         self.mistakes = []
 
-    def show_intro(self, sequence):
+    def show_intro(self, sequence, sprint):
         pass
 
     def show_correct_digit(self, sprint):
@@ -35,7 +35,7 @@ def test_run_sprint_ignores_non_digit_keys_including_enter():
     sequence = NumberSequence(name="Test", whole_part="1", decimals="12")
     keys = FakeKeys([("\r", 0.0), ("1", 1.0), ("x", 1.5), ("2", 2.0)])
 
-    run = run_sprint(sequence, keys, RecordingDisplay())
+    run = run_sprint(sequence, 1, keys, RecordingDisplay())
 
     assert run.distance == 2
     assert run.ending is SprintEnding.COMPLETED
@@ -46,7 +46,7 @@ def test_run_sprint_continues_after_a_single_miss_on_a_digit():
     keys = FakeKeys([("1", 0.0), ("9", 1.0), ("2", 2.0)])
     display = RecordingDisplay()
 
-    run = run_sprint(sequence, keys, display)
+    run = run_sprint(sequence, 1, keys, display)
 
     assert run.distance == 2
     assert run.ending is SprintEnding.COMPLETED
@@ -60,7 +60,7 @@ def test_run_sprint_ends_on_second_miss_of_the_same_digit():
     keys = FakeKeys([("1", 0.0), ("2", 1.0), ("9", 2.0), ("8", 3.0)])
     display = RecordingDisplay()
 
-    run = run_sprint(sequence, keys, display)
+    run = run_sprint(sequence, 1, keys, display)
 
     assert run.distance == 2
     assert run.ending is SprintEnding.MISTAKE
@@ -72,6 +72,16 @@ def test_run_sprint_returns_none_when_both_tries_of_the_first_digit_are_wrong():
     sequence = NumberSequence(name="Test", whole_part="1", decimals="123")
     keys = FakeKeys([("9", 0.0), ("8", 1.0)])
 
-    run = run_sprint(sequence, keys, RecordingDisplay())
+    run = run_sprint(sequence, 1, keys, RecordingDisplay())
 
     assert run is None
+
+
+def test_run_sprint_counts_distance_from_the_chosen_starting_digit():
+    sequence = NumberSequence(name="Test", whole_part="1", decimals="123456")
+    keys = FakeKeys([("4", 0.0), ("5", 1.0), ("6", 2.0)])
+
+    run = run_sprint(sequence, 4, keys, RecordingDisplay())
+
+    assert run.distance == 3
+    assert run.ending is SprintEnding.COMPLETED

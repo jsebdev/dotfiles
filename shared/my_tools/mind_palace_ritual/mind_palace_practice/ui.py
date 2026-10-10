@@ -38,7 +38,7 @@ class TerminalUserInterface:
             answer = questionary.text(question.prompt).unsafe_ask()
             error = question.error_for(answer)
             if not error:
-                return int(answer)
+                return question.index_for(answer)
             print(f"  ❌ {error}")
 
     def ask_answer(self, question: Question) -> str:

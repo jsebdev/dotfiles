@@ -5,6 +5,7 @@ from typing import TypeVar
 
 from resources.number_sequences.models import NumberSequence
 
+from ..index_question import IndexQuestion
 from ..terminal_text import (
     best_times_shown_for,
     in_green,
@@ -48,22 +49,28 @@ class SprintTerminalDisplay:
     ) -> Option:
         return self.chooser.choose(message, options, label)
 
-    def show_intro(self, sequence: NumberSequence) -> None:
-        print(f"{sequence.name}: {sequence.whole_part}.")
+    def ask_index(self, question: IndexQuestion) -> int:
+        return self.chooser.ask_index(question)
+
+    def show_intro(self, sequence: NumberSequence, sprint: Sprint) -> None:
+        skipped_digits = sequence.decimals[: sprint.starting_digit - 1]
+        print(f"{sequence.name}: {sequence.whole_part}.{skipped_digits}")
+        if not sprint.is_scored:
+            print(f"Starting from digit {sprint.starting_digit}, not scored.")
         print("Clock starts on your first digit.")
         print("Each digit gets two tries.")
         print("Ctrl-C quits without recording.")
         print()
 
     def show_correct_digit(self, sprint: Sprint) -> None:
-        position = sprint.distance
+        position = sprint.last_position
         digit = sprint.expected[position - 1]
         print(_lead_in(sprint, position) + digit, end="", flush=True)
 
     def show_miss(self, sprint: Sprint) -> None:
         mistake = sprint.mistake
         print(
-            _leading_separator(mistake.position)
+            _leading_separator(sprint, mistake.position)
             + in_red(mistake.typed)
             + _message_below(in_red(MISS_MESSAGE)),
             end="",
@@ -91,6 +98,17 @@ class SprintTerminalDisplay:
         if run.splits:
             print(f"Splits:   {_splits_line(run, placements)}")
 
+    def show_unscored_summary(self, run: SprintRun, starting_digit: int) -> None:
+        last_digit = starting_digit - 1 + run.distance
+        if run.ending is SprintEnding.COMPLETED:
+            print(f"✓ Completed digits {starting_digit} to {last_digit}")
+        print(
+            f"Distance: {run.distance} digits ({starting_digit} to {last_digit}) "
+            f"in {readable_duration(run.elapsed)}"
+        )
+        print(f"Misses:   {_misses_text(run.misses)}")
+        print("Not scored, only runs from digit 1 count.")
+
     def show_boards(self, boards: Sequence[SprintBoard]) -> None:
         shown_per_board = best_times_shown_for(len(boards))
         print()
@@ -105,7 +123,7 @@ class SprintTerminalDisplay:
 def _lead_in(sprint: Sprint, position: int) -> str:
     if sprint.was_missed(position):
         return CLEAR_LINE_BELOW + BACKSPACE
-    return _leading_separator(position)
+    return _leading_separator(sprint, position)
 
 
 def _message_below(message: str) -> str:
@@ -113,8 +131,8 @@ def _message_below(message: str) -> str:
     return RESERVE_LINE_BELOW + SAVE_CURSOR + "\n" + indent + message + RESTORE_CURSOR
 
 
-def _leading_separator(position: int) -> str:
-    if position == 1:
+def _leading_separator(sprint: Sprint, position: int) -> str:
+    if position == sprint.starting_digit:
         return _line_prefix(position)
     if (position - 1) % DIGITS_PER_LINE == 0:
         return "\n" + _line_prefix(position)

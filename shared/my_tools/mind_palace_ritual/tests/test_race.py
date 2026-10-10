@@ -133,3 +133,53 @@ def test_finished_run_uses_last_correct_digit_time_not_the_mistake_time():
     run = sprint.finished_run(SprintEnding.MISTAKE, achieved_at=datetime(2026, 1, 1))
 
     assert run.seconds == pytest.approx(1.0)
+
+
+def test_press_expects_the_starting_digit_first_when_starting_mid_sequence():
+    sprint = Sprint(
+        sequence_name="Test",
+        expected="12345",
+        ladder=MilestoneLadder(opening=(10,), step=100),
+        starting_digit=3,
+    )
+
+    verdict = sprint.press("3", at=0.0)
+
+    assert verdict is KeyVerdict.CORRECT
+    assert sprint.last_position == 3
+    assert sprint.distance == 1
+
+
+def test_press_reports_absolute_position_of_a_miss_when_starting_mid_sequence():
+    sprint = Sprint(
+        sequence_name="Test",
+        expected="12345",
+        ladder=MilestoneLadder(opening=(10,), step=100),
+        starting_digit=3,
+    )
+
+    sprint.press("9", at=0.0)
+
+    assert sprint.mistake.position == 3
+    assert sprint.mistake.expected == "3"
+
+
+def test_press_returns_completed_on_the_last_digit_when_starting_mid_sequence():
+    sprint = Sprint(
+        sequence_name="Test",
+        expected="12345",
+        ladder=MilestoneLadder(opening=(10,), step=100),
+        starting_digit=4,
+    )
+    sprint.press("4", at=0.0)
+
+    assert sprint.press("5", at=1.0) is KeyVerdict.COMPLETED
+
+
+def test_is_scored_only_when_starting_from_the_first_digit():
+    ladder = MilestoneLadder(opening=(10,), step=100)
+
+    assert Sprint(sequence_name="Test", expected="12", ladder=ladder).is_scored
+    assert not Sprint(
+        sequence_name="Test", expected="12", ladder=ladder, starting_digit=2
+    ).is_scored

@@ -10,7 +10,7 @@ from .records import SprintEnding, SprintRun
 
 
 class SprintDisplay(Protocol):
-    def show_intro(self, sequence: NumberSequence) -> None: ...
+    def show_intro(self, sequence: NumberSequence, sprint: Sprint) -> None: ...
 
     def show_correct_digit(self, sprint: Sprint) -> None: ...
 
@@ -20,14 +20,18 @@ class SprintDisplay(Protocol):
 
 
 def run_sprint(
-    sequence: NumberSequence, keys: KeySource, display: SprintDisplay
+    sequence: NumberSequence,
+    starting_digit: int,
+    keys: KeySource,
+    display: SprintDisplay,
 ) -> SprintRun | None:
-    display.show_intro(sequence)
     sprint = Sprint(
         sequence_name=sequence.name,
         expected=sequence.decimals,
         ladder=DIGIT_MILESTONES,
+        starting_digit=starting_digit,
     )
+    display.show_intro(sequence, sprint)
     while True:
         digit, at = keys.read_key()
         if not digit.isdigit():

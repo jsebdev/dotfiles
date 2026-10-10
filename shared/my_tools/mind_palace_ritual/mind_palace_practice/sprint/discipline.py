@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from resources.number_sequences.models import NumberSequence
 
 from ..catalog import available_number_sequences
+from ..index_question import IndexQuestion
 from .board_selection import ask_boards_to_show
 from .keyboard import TerminalKeys
 from .record_book import SprintRecordBook
@@ -21,12 +22,16 @@ class DigitSprintDiscipline:
     def practice(self) -> None:
         try:
             sequence = self._chosen_sequence()
+            starting_digit = self._chosen_starting_digit(sequence)
             with TerminalKeys() as keys:
-                run = run_sprint(sequence, keys, self.display)
+                run = run_sprint(sequence, starting_digit, keys, self.display)
         except KeyboardInterrupt:
             print()
             return
         if run is None:
+            return
+        if starting_digit != 1:
+            self.display.show_unscored_summary(run, starting_digit)
             return
         placements = SprintRecordBook().place(run)
         self.display.show_summary(placements)
@@ -50,3 +55,12 @@ class DigitSprintDiscipline:
         return self.display.choose(
             "Which sequence?", sequences, lambda sequence: sequence.name
         )
+
+    def _chosen_starting_digit(self, sequence: NumberSequence) -> int:
+        question = IndexQuestion(
+            prompt="Start from which digit? (Enter for 1, the only scored start)",
+            lowest=1,
+            highest=len(sequence.decimals),
+            default=1,
+        )
+        return self.display.ask_index(question)
