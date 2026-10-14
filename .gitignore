@@ -25,6 +25,7 @@ configs/claude/skills/synced/
 configs/claude/skills/.trash/
 configs/claude/state/
 configs/claude/feedback/
+configs/claude/remote-settings.json.*
 
 
 # OMC runtime state
