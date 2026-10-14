@@ -23,9 +23,9 @@ return {
     workspaces = {
       {
         name = "personal",
-        path = "~/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain/second_brain_vault",
+        path = "~/Library/CloudStorage/GoogleDrive-sebas93cay@gmail.com/My Drive/second_brain",
         overrides = {
-          notes_subdir = "fleeting_notes",
+          notes_subdir = "second_brain_vault/fleeting_notes",
         },
       },
     },
@@ -37,19 +37,19 @@ return {
 
     daily_notes = {
       -- Optional, if you keep daily notes in a separate directory.
-      folder = "ARCHIVE/journal",
+      folder = "second_brain_vault/ARCHIVE/journal",
       -- Optional, if you want to automatically insert a template from your template directory like 'daily.md'
       template = "daily note template",
     },
 
     templates = {
-      folder = "ARCHIVE/templates",
+      folder = "templates",
     },
 
     attachments = {
       -- The default folder to place images in via `:ObsidianPasteImg`.
       -- If this is a relative path it will be interpreted as relative to the vault root.
-      img_folder = "ARCHIVE/attachments",
+      img_folder = "second_brain_vault/ARCHIVE/attachments",
     },
 
     completion = {
