@@ -106,14 +106,14 @@ mind_palace = MindPalace(
         Room(
             room_name="Old wizard's house",
             objects=[
-                "wizard's cane",
+                "wizard's staff",
                 "magical scrolls",
                 "pathfinder string",
                 "minotaur statuette",
                 "labyrinth map",
                 "book pile",
                 "old chair",
-                "boiling potion",
+                "boiling cauldron",
                 "potion brew cabinet",
                 "mushroom pot",
             ],
