@@ -26,6 +26,8 @@ configs/claude/skills/.trash/
 configs/claude/state/
 configs/claude/feedback/
 configs/claude/remote-settings.json.*
+configs/claude/chrome/*
+
 
 
 # OMC runtime state
