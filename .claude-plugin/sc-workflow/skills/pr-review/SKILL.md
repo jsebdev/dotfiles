@@ -127,11 +127,11 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    in the files themselves when the diff alone is not enough to judge a change. Test files are
    reviewed in their own right, one test at a time. Reading them only to see what they cover is not
    a review of them.
-8. **Compile the feedback**, opening with the "What the PR does" summary and then the three
+8. **Compile the feedback**, opening with the "What the PR does" summary and then the four
    severity groups below, written to `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
    ends with a "Files examined / commands run" section listing the skills loaded and the `CLAUDE.md`
    files read, inline reviews included.
-9. **Publish the review exactly once**, as a single message carrying the summary and all three
+9. **Publish the review exactly once**, as a single message carrying the summary and all four
    groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
@@ -250,7 +250,7 @@ Good  The backend owns the IH/non-IH split. `requires_an_appointment` in
 ```
 
 When the author declined or pushed back on any earlier comment, open the review with this section,
-above the three groups. Leave it out when nobody pushed back.
+above the four groups. Leave it out when nobody pushed back.
 
 ### ↩️ Author pushback (your call)
 
@@ -259,7 +259,26 @@ above the three groups. Leave it out when nobody pushed back.
 
 Nothing in this section is staged on the PR. The reply is the reviewer's to write.
 
-Organize the rest of the feedback as a flat list under exactly these three groups:
+Organize the rest of the feedback as a flat list under exactly these four groups. Every finding gets
+exactly one severity here, and `sc-workflow:pr-comments` turns it into the comment tag without
+second-guessing it, so the severity is final.
+
+**Names, tests above all.** A name is judged on one question: is it truthful, clear and concise? A
+test name is how the next developer learns what the test is about, so it gets no discount.
+
+- It lies, misleads or confuses: **Important**. It claims something the code does not do, points the
+  reader at the wrong behaviour, or cannot be understood without reading the body.
+- It is truthful, clear and concise but breaks a naming convention: **Nitpick**.
+
+```
+Bad   Suggestion: the `client_and_vendor` fixture returns nothing, so its name promises a value
+      it never hands back.
+Good  Important: the same, because the name lies to every test that requests it.
+
+Bad   Suggestion: "shows the status and vendor of a fire suppression assignment" names two
+      outcomes.
+Good  Nitpick: the same, because the name is true and clear and only breaks the one-outcome rule.
+```
 
 ### 🔴 Critical (must fix)
 
@@ -273,16 +292,24 @@ decision recorded on the ticket.
 Performance, maintainability, and code quality problems that cost something real if left alone:
 duplicated logic that must be kept in sync, a test that can pass without exercising its behavior, a
 document that misstates shipped behavior. Readability problems belong here too, never under
-Suggestions: a name that misstates what it holds, a name this PR made stale, or code with no clear
-place to live.
+Suggestions: a name that lies, misleads or confuses, a name this PR made stale, or code with no
+clear place to live.
 
 - **[file:line]** — the issue and what to do instead
 
 ### 🟢 Suggestions (nice to have)
 
-Minor improvements, style preferences, alternative approaches worth considering.
+Minor improvements, alternative approaches worth considering. Anything that would let the next
+reader understand the code faster, however small the edit, is at least a Suggestion.
 
 - **[file:line]** — the suggestion and the reasoning behind it
+
+### ⚪ Nitpicks (free to ignore)
+
+A fix that changes nothing about how well the code reads: a typo, a stray import, a formatting slip,
+or a truthful, clear name that only breaks a naming convention.
+
+- **[file:line]** — the nitpick and the fix
 
 Rules:
 
