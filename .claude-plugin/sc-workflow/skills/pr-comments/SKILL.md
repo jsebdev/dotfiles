@@ -34,25 +34,40 @@ out makes the author do the work twice.
 **`nitpick:` is for a fix that changes nothing about how the code reads** — a typo, a stray import,
 a formatting slip. The moment a change would let the next reader understand the code faster it is a
 `suggestion:`, however small the edit, because the reader pays that cost on every visit while the
-author pays for the fix once. Anything about a **name** is a `suggestion:`, and test code gets no
-discount: it is read more often than the code it covers.
+author pays for the fix once.
+
+### Names, tests above all
+
+A name is judged on one question: **is it truthful, clear and concise?** A test name is how the next
+developer learns what the test is about, so it gets no discount.
+
+- **It lies, misleads or confuses: `issue:`.** It claims something the code does not do, points
+  the reader at the wrong behaviour, or cannot be understood without reading the body.
+- **It is truthful, clear and concise but breaks a naming convention: `nitpick:`.** Two outcomes
+  in one test name, a word order the style guide prefers otherwise. The reader already knows what
+  it means, so the fix changes nothing important.
 
 ```
-Bad   nitpick: The `client_and_vendor` fixture returns nothing, so the name promises a value it
+Bad   suggestion: The `client_and_vendor` fixture returns nothing, so the name promises a value
+      it never hands back.
+Good  issue: The `client_and_vendor` fixture returns nothing, so the name promises a value it
       never hands back.
 
-Good  suggestion: The `client_and_vendor` fixture returns nothing, so the name promises a value it
-      never hands back.
+      Please return the vendor the tests re-query, or rename it to say it seeds records.
 
-      Return the vendor the tests re-query, or rename it to say it seeds records.
+Bad   suggestion: "shows the status and vendor of a fire suppression assignment" names two
+      outcomes. ...
+Good  nitpick: "shows the status and vendor of a fire suppression assignment" names two
+      outcomes. A status chip test and a subtitle test would keep one outcome per name.
 ```
 
 ### Tag follows severity
 
 When the comment comes from a review that already sorted its findings, the severity picks the tag,
 so the two cannot disagree once they are apart on GitHub: Critical and Important become `issue:`,
-Suggestions become `suggestion:`, and a finding flagged for discussion becomes `question:`. Reach
-for `nitpick:` or `thought:` only for something that was never a finding.
+Suggestions become `suggestion:`, and a finding flagged for discussion becomes `question:`. The
+exception is a Suggestion that is a nitpick by the rules above, which becomes `nitpick:`. Reach for
+`thought:` only for something that was never a finding.
 
 ## Length and language
 
