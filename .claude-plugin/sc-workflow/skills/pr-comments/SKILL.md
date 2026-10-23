@@ -96,24 +96,31 @@ Good  issue: This file is only deferred work and recommendations, which the docu
 
 ### Pointing at other code
 
-Name another place in the code by its **full path in the repository**, then say in words which part
-of that file you mean. Never by a line number, and never by a bare filename.
+**Every file or symbol a comment mentions is named together with its file.** Any reader must reach what a comment points at without
+searching.
 
-A line number is wrong as soon as the next commit shifts it, and it sends the reader somewhere
-unrelated with no hint that it moved. A bare filename does not say where the file lives, and a
-repository usually holds several files with the same name.
+- A file goes by its **bare filename when no other file in the repository shares it**, and by its
+  path when one does. Check before writing it.
+- A symbol from another file goes with that file's
+  name: `` `latest_note` in `project_document.py` ``. A description ("the modal spec", "the task
+  query-count test") is never a substitute for the name.
+- Say in words which part of the file you mean. Never give a line number: it is wrong as soon as the
+  next commit shifts it, and it sends the reader somewhere unrelated with no hint that it moved.
 
 ```
+Bad   suggestion: These tests repeat what the modal spec already proves.
+
+Good  suggestion: These tests repeat what `adjusterNotesModal.spec.tsx` already proves through the
+      rendered modal.
+
 Bad   issue: Same off-by-one as `serializers.py:212`.
+      (the repository holds several `serializers.py`)
 
 Good  issue: The window here ends one day early, the same way the date range in
       `reporting/exports/serializers.py` does, in the serializer that builds the monthly CSV.
 
       Please make the end date inclusive in both.
 ```
-
-The line the comment is anchored to is the exception: it needs no reference at all, because GitHub
-already shows the reader exactly where they are.
 
 ## Posting
 
