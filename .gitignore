@@ -27,6 +27,9 @@ configs/claude/state/
 configs/claude/feedback/
 configs/claude/remote-settings.json.*
 configs/claude/chrome/*
+configs/claude/policy-limits.json.signature-iat.json
+configs/claude/policy-limits.json.signature.json
+
 
 
 
