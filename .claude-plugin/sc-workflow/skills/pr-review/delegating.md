@@ -1,6 +1,6 @@
 # Delegating a review
 
-Hand the `sc-workflow:code-reviewer` agent the ticket's acceptance criteria and the decisions recorded in its
+Hand the `sc-workflow:code-reviewer` agent the ticket's acceptance criteria and the questions and answers in its
 comments verbatim, along with the PR threads sorted by step 3. Pass on any scope the user asked for,
 and require a "Files examined / commands run" section so procedural questions remain answerable.
 

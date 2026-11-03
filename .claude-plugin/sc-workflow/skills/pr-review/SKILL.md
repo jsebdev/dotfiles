@@ -82,9 +82,8 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
      have several Jira servers configured; pick the one whose site matches the ticket link in the
      PR body.
    - Never review from the description alone. The comments are where the team asks the open
-     questions and where product answers them, and an answer recorded there **outranks the PR
-     description, the commit messages, and any plan or spec file committed in the PR**. Read every
-     comment, oldest to newest, and note which question each one answers.
+     questions and where product answers them. Read every comment, oldest to newest, and note
+     which question each one answers.
    - **If the ticket cannot be resolved or cannot be read, stop and do not review.** That covers:
      no ticket key found anywhere, no Jira MCP server for the site, permission denied, or a failing
      fetch. Warn the user, say what you tried and how it failed, and ask them for the ticket key or
@@ -127,12 +126,12 @@ Good  (no finding: the spec is only an input, and the code is what gets reviewed
    in the files themselves when the diff alone is not enough to judge a change. Test files are
    reviewed in their own right, one test at a time. Reading them only to see what they cover is not
    a review of them.
-8. **Compile the feedback**, opening with the "What the PR does" summary and then the four
-   severity groups below, written to `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
+8. **Compile the feedback**, opening with the "What the PR does" summary, then the new pieces, then
+   the four severity groups below, written to `<scratchpad>/review-<pr>.md`. That file is the single source the review is published from. It
    ends with a "Files examined / commands run" section listing the skills loaded and the `CLAUDE.md`
    files read, inline reviews included.
-9. **Publish the review exactly once**, as a single message carrying the summary and all four
-   groups. Never relay a
+9. **Publish the review exactly once**, as a single message carrying the summary, the new pieces
+   and all four groups. Never relay a
    partial review: when findings arrive in pieces, accumulate them silently and publish when
    complete.
 10. **Stage the findings on the PR**, following the `sc-workflow:pr-comments` skill for how each comment is
@@ -156,8 +155,7 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
   two side by side. Every claim the restatement adds is an interpretation, so test it against the
   criterion's stated reason (its "because" or "so that") and the story's goal. If the reason
   contradicts the interpretation, that is an **Important** finding. If the ticket supports an
-  alternative reading just as well, raise a **[Question]** that names both readings. An answer
-  recorded in a ticket comment is a decision, not an interpretation.
+  alternative reading just as well, raise a **[Question]** that names both readings.
 
   ```
   Bad   AC 4 covered: the audit signal fills the four columns from the allocation account.
@@ -166,9 +164,11 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
         values". The spec adds that new audits fill them from the account, which writes live
         values into new snapshots. [Question] Should new audits leave them null?
   ```
-- Every decision recorded in the ticket comments, especially the answer to a question the team asked
-  there. Code implementing the option that was rejected is a **Critical** finding, and the comment
-  that settles it goes in the item, quoted.
+- Every answer recorded in the ticket comments. A comment speaks only to the behavior it was asked
+  about, never to how the code is built, and its author can be as wrong as the developer. Code that
+  contradicts an answer is an **Important** finding that quotes the comment. An answer that looks
+  wrong, or rests on a premise the codebase contradicts, is a **[Question]** that names the
+  conflict, to be settled on the ticket.
 - Behavior the PR description, a ticket comment, or an author reply on the PR claims that the code
   does not actually do.
   Documentation misstating shipped behavior is a finding in its own right, because it is what the
@@ -231,11 +231,9 @@ level, skipping any that do not apply:
 - **Flow, before and after.** Which client called which endpoint, and what it calls now.
 - **Who decides.** Which layer and module owns each new rule (frontend or backend, and where), and
   how the other layers learn the result: a flag in a response, a template variable, a status.
-- **Why the new pieces exist.** For each new file, endpoint or module, why the author added it
-  instead of extending the existing one.
 - **What stays untouched.** Existing paths the change reuses or leaves as they were.
 
-Do not judge here. Findings and caveats belong in the groups below.
+Do not judge here. Judgment belongs in the next section and the groups below.
 
 ```
 Bad   Non-IH vendors now accept a job with one confirmed click, and RMs get a plain "Manually
@@ -247,6 +245,21 @@ Good  The backend owns the IH/non-IH split. `requires_an_appointment` in
       vendor type, it only branches on that flag. Before, every accept went through the one legacy
       `vendor-response/` endpoint, whose PATCH branched on the body to tell decline from booking.
       Now a non-IH accept calls a new `PATCH vendor-response/acceptance/` instead.
+```
+
+### 🧩 New pieces and patterns
+
+One line per piece the next developer could reuse or copy: a new mixin, base class, permission,
+endpoint, a mechanism or pattern the codebase did not use before, etc. 
+Each line says what the piece does, then **Keep** or **Rethink**. A pattern invented for one ticket is usually worse
+than the one the codebase has, so search for what already does the job. Keep the piece only when that
+code cannot, and is not itself the thing to fix. A piece that works around broken code is a Rethink:
+fix that code first, in its own PR. Every Rethink is also a finding in the groups below.
+
+```
+Bad   `RestrictedColumnsMixin` hides the listed columns from roles that cannot read them. Keep.
+Good  `RestrictedColumnsMixin` patches a nested serializer that applies no read permissions.
+      Rethink: replace that serializer with the one that does (Important).
 ```
 
 When the author declined or pushed back on any earlier comment, open the review with this section,
@@ -282,8 +295,7 @@ Good  Nitpick: the same, because the name is true and clear and only breaks the 
 
 ### 🔴 Critical (must fix)
 
-Bugs, security vulnerabilities, data loss, broken functionality, behavior that contradicts a
-decision recorded on the ticket.
+Bugs, security vulnerabilities, data loss, broken functionality.
 
 - **[file:line]** — the issue and what to do instead
 
@@ -318,15 +330,12 @@ Rules:
 - Under a narrowed scope, list the acceptance criteria you did not assess, so the gap is visible.
 - One or two sentences per item, maximum. The file path, affected lines, and the suggested fix are
   sufficient. No elaboration blocks.
-- Always include the file path and line number or range when applicable.
-- Give the fix inline, in the same item.
 - For a finding that comes from ticket context, cite the acceptance criterion or the comment behind
   it, with its author and date, so the author can check the source.
 - Write "None" under a group that has no items.
 - Prefix an uncertain recommendation with **[Question]** to flag it for discussion.
 - No positives, praise, congratulations, or personal messages. Surface only what needs fixing. The
-  "What the PR does" summary is description, not praise, and is the one section that is not a
-  finding.
+  "What the PR does" summary and the Keep lines are description, not praise.
 - End with a one or two sentence status summary, for example "3 critical issues to address before
   merge, mostly around input validation and error handling." Never recap every finding.
 
