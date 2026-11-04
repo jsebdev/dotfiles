@@ -188,12 +188,15 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
 
 - Reachable states only. Before asking for a new test case, permission combination, or input,
   confirm the code allows that state: check the model's `clean`, its `CheckConstraint`s, and its
-  field choices. Never request coverage for a state the model rejects.
+  field choices. Never request coverage for a state the model rejects. Only code or the schema can
+  rule a state out. Data an operator can change at runtime, such as permission rows, feature flags
+  or admin settings, proves nothing about what is reachable.
 - Unjustified optionality. For every optional prop, parameter, or field the PR adds or widens, and
   every `?.`, `??`, `if (!x) return`, or default that covers a missing value, ask what real
-  situation produces the missing case. If the answer is only "a caller might not pass it", it is
-  **Critical**, not a style note: the type is licensing a wiring bug to render as empty state. Say
-  in the finding whether the type should be required or the consumer should throw.
+  situation produces the missing case, judged by the reachability rule above. If the answer is
+  only "a caller might not pass it", it is **Critical**, not a style note: the type is licensing a
+  wiring bug to render as empty state. Say in the finding whether the type should be required or
+  the consumer should throw.
 - Test coverage for new functionality. Use `sc-workflow:general-testing-guidelines`, plus `sc-workflow:python-testing` or
   `sc-workflow:go-testing` for the relevant language.
   - For every branch, guard, or early return the PR adds, name the test that fails when it is
