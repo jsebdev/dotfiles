@@ -251,15 +251,27 @@ Good  The backend owns the IH/non-IH split. `requires_an_appointment` in
 
 One line per piece the next developer could reuse or copy: a new mixin, base class, permission,
 endpoint, a mechanism or pattern the codebase did not use before, etc. 
-Each line says what the piece does, then **Keep** or **Rethink**. A pattern invented for one ticket is usually worse
-than the one the codebase has, so search for what already does the job. Keep the piece only when that
-code cannot, and is not itself the thing to fix. A piece that works around broken code is a Rethink:
-fix that code first, in its own PR. Every Rethink is also a finding in the groups below.
+Each line says what the piece does, then **Keep** or **Rethink**. Search for what already does the
+job first: a pattern invented for one ticket is usually worse than the one the codebase has. A piece
+is a **Rethink** when any of these holds, and every Rethink is also a finding in the groups below:
+
+- **Existing code already does the job.** Use that code instead.
+- **Existing code could be extended to do the job.** Extend it instead.
+- **It works around broken code.** Fix that code first, in its own PR.
+- **It works around a missing API capability**: the client merges requests, or filters, sorts or
+  searches what an endpoint returns. Add the capability to the endpoint in this
+  PR, as an Important finding. The next screen can use the API, but it would have to copy the
+  workaround.
 
 ```
 Bad   `RestrictedColumnsMixin` hides the listed columns from roles that cannot read them. Keep.
 Good  `RestrictedColumnsMixin` patches a nested serializer that applies no read permissions.
       Rethink: replace that serializer with the one that does (Important).
+
+Bad   The vendor loader fetches the default company and puts it in front of the vendor page. Keep.
+Good  The vendor loader merges two requests and repeats the server's search on the client,
+      because the endpoint cannot filter by several types. Rethink: add a `type__in` filter and
+      the ordering to the endpoint (Important).
 ```
 
 When the author declined or pushed back on any earlier comment, open the review with this section,
