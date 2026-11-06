@@ -94,6 +94,29 @@ Good  issue: This file is only deferred work and recommendations, which the docu
       Please turn each item into a ticket and delete the file.
 ```
 
+### Code fixes go in a suggestion block
+
+When the fix replaces the lines the comment is anchored to, the ask is a GitHub `suggestion` block
+instead of a "Please" paragraph.
+
+- The block holds the full replacement for the anchored line or `start_line`–`line` range, with
+  its original indentation. Anchor the comment to exactly the lines it rewrites.
+- Code in the block does not count toward the 70 words.
+- Only lines on the `RIGHT` side can take a suggestion. A fix that touches other lines, another
+  file, or is only described stays a "Please" paragraph.
+
+````
+Bad   suggestion: On a write ...
+
+      Please use `copy(self.instance) if self.instance else StatementOfLoss()`.
+
+Good   suggestion: On a write ...
+
+      ```suggestion
+              statement_of_loss = copy(self.instance) if self.instance else StatementOfLoss()
+      ```
+````
+
 ### Pointing at other code
 
 **Every file or symbol a comment mentions is named together with its file.** Any reader must reach what a comment points at without
@@ -148,7 +171,9 @@ gh api repos/<owner>/<repo>/pulls/<pr>/reviews --input <scratchpad>/review-comme
 ```
 
 - **Omit `event`.** Including it submits the review immediately and there is no draft left to edit.
-- A paragraph break inside a body is `\n\n`, which the JSON file carries literally.
+- A paragraph break inside a body is `\n\n`, which the JSON file carries literally. A suggestion
+  block ends the body: a blank line, the opening fence with `suggestion`, the replacement lines and
+  the closing fence, each line ending in `\n`.
 - `line` must be a line this PR's diff actually touches. Use `"side": "LEFT"` to comment on a
   deleted line, and `start_line` with `line` for a range.
 - A point about the file as a whole is anchored to the nearest line the PR changed in that file.
