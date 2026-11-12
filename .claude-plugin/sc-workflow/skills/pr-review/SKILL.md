@@ -210,6 +210,14 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
     Good  the only portfolio in the database is the one being imported, so deleting the guard
           leaves the test green. Add a second portfolio that already has a blank number.
     ```
+  - A finding that asks for a test says where the test observes the outcome (the response, the
+    stored record, the log event). A bare identifier reads as an internal variable, and a test
+    never asserts one.
+
+    ```
+    Bad   Add a case asserting the settlement is in `flagged_settlement_ids`
+    Good  Add a case asserting that the recalculation log event lists the settlement in `flagged_settlement_ids`
+    ```
 
 ### Data layer
 

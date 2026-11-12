@@ -1,12 +1,13 @@
 ---
-name: writing-skills
-description: How to write or edit a skill that stays useful. Triggers when (1) asked to create, write, edit, or add a skill, (2) asked to fix or generalize an existing skill, (3) about to encode a correction or preference so it is not repeated, or (4) reviewing a skill someone else wrote.
+name: writing-claude-instructions
+description: How to write or edit an instruction file for Claude that stays useful. A skill, a CLAUDE.md, or a rules file under .claude/rules/. Triggers when (1) asked to create, write, edit, or add to a skill, a CLAUDE.md or a rules file, (2) asked to fix, shorten or generalize one, (3) about to encode a correction or preference so it is not repeated, or (4) reviewing one someone else wrote.
 ---
 
-# Writing Skills
+# Writing Claude Instructions
 
-A skill is a standing instruction loaded into a future session that has none of this
-conversation's context. It earns its place only if it changes what that session does.
+A skill, a `CLAUDE.md` and a rules file are all standing instructions loaded into a future session
+that has none of this conversation's context. What follows says "skill" and applies to all three.
+An instruction earns its place only if it changes what that session does.
 
 ## Write the rule, not the incident
 
@@ -44,8 +45,12 @@ calls.
   in a sentence or two, and only where a reader who disagrees would otherwise ignore it.
 - **Short.** No one reads 200 lines. Cut anything the tooling already enforces — a linter, a type
   checker, or a failing test is a better teacher than a paragraph.
-- **Examples in pairs.** One wrong, one right, minimal, directly comparable. The pair does more
-  work than the prose around it.
+- **An addition to an existing file is one sentence of rule and one example pair.** Delete each
+  further sentence in turn: it stays only if a reader would act differently without it. A list of
+  cases the example already implies goes, and so does an edge case the incident never hit.
+- **Examples in pairs.** One wrong, one right, directly comparable. The two differ only in what
+  the rule is about, and keep nothing else from the incident. The pair does more work than the
+  prose around it.
 - **Say what is out of scope.** Name the sibling skills that own adjacent ground and defer to them
   rather than restating their content, which will drift.
 
