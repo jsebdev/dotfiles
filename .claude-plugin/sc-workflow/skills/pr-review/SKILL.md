@@ -180,6 +180,13 @@ check. They have to fix it to merge anyway, so a comment on it only adds noise.
 - The rules loaded in step 6 and the `sc-workflow:software-designer-mindset` skill are this checklist. Hold every
   identifier and every file the PR adds or changes against them, tests included. Skimming the rules
   once and then reading the diff for bugs is how a misleading name gets through.
+- Before asking to fix a piece of code (rename it, test it, document it), ask whether a simpler
+  version would remove it. If so, the finding asks for that removal instead.
+
+  ```
+  Bad   Rename the `FileOwnerId` type parameter, since three callers pass the file's own id.
+  Good  Every caller passes a `number`, so drop the type parameter. The misleading name goes with it.
+  ```
 - If a plan or spec file is available, do a functionality gap assessment against it, and anchor
   any gap it reveals to the code. Where the plan conflicts with the ticket, the ticket wins, and the
   plan itself is still not a finding.
